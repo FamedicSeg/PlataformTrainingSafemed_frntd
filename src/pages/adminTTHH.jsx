@@ -134,9 +134,9 @@ export default function AdminTalentoHumano() {
     doc.text("Otorgado a", w / 2 + 40, 80, { align: "center" });
 
     doc.setFont("times", "italic");
-    doc.setFontSize(38);
+    doc.setFontSize(35);
     doc.setTextColor("#000000");
-    doc.text(record.nombre, w / 2 + 40, 95, { align: "center" });
+    doc.text(record.nombre, w / 2 + 30, 95, { align: "center" });
 
     // TEXTO
     doc.setFont("helvetica", "normal");
@@ -182,7 +182,7 @@ export default function AdminTalentoHumano() {
     doc.line(w / 2 + 0, h - 25, w / 2 + 85, h - 25);
 
     const firmaURL = "/img/firma.png";
-    doc.addImage(firmaURL, "PNG", w /2 + 10, h - 52, 75, 25);
+    doc.addImage(firmaURL, "PNG", w /2 + 10, h - 58, 65, 32);
     doc.setFont("times", "italic");
     doc.text("Abigail Cisneros", w / 2 + 40, h - 15, { align: "center" });
     doc.setFont("times", "italic");
