@@ -1,0 +1,105 @@
+# Dependencias
+node_modules/
+npm-debug.log*
+
+# Variables de entorno - CRÍTICO NO SUBIR
+.env
+.env.local
+.env.production
+.env.development
+*.env
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# En tu frontend/.gitignore
+public/videos/talento_humano/curso1/*.mp4
+public/videos/*.mov
+public/videos/*.avi
+public/videos/*.mkv
+public/videos/*.webm
+
+# Videos del curso 1
+public/videos/curso1/*.mp4
+public/videos/curso1/*.mov
+public/videos/curso1/*.avi
+public/videos/curso1/*.mkv
+public/videos/curso1/*.webm
+
+# Videos de todos los cursos
+public/videos/curso2/*.mp4
+public/videos/curso3/*.mp4
+public/videos/curso4/*.mp4
+public/videos/sgcs/*.mp4
+public/videos/talento_humano/*.mp4
+
+# Cualquier video en la carpeta videos
+public/videos/**/*.mp4
+public/videos/**/*.mov
+public/videos/**/*.avi
+public/videos/**/*.mkv
+public/videos/**/*.webm
+public/videos/**/*.MP4
+
+# ===========================================
+# PDFs - Opcional (si son muy pesados)
+# ===========================================
+
+
+# ===========================================
+# ARCHIVOS TEMPORALES/DE SISTEMA
+# ===========================================
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+.env.local
+.env.production
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+📁 Versión más específica (si quieres ser más detallado):
+gitignore
+
+
+
+# TODOS LOS VIDEOS EN CARPETAS DE CURSOS
+public/video/talento_humano/curso1/podcast_derechos_de_las_mujeres.mp4
+public/video/talento_humano/curso3/Violencia_en_el_trabajo_Como_detectarla.mp4
+
+
+
+

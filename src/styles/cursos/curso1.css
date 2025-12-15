@@ -1,0 +1,264 @@
+:root {
+  --azul-profesional: #085e78;
+  --azul-medio: #0d7a9c;
+  --azul-claro: #e8f4f8;
+  --blanco: #ffffff;
+  --gris-fondo: #f8fafc;
+  --gris-borde: #e2e8f0;
+  --gris-texto: #0a0a0a;
+  --verde-accion: #059669;
+  --verde-hover: #047857;
+  --verde-completado: #10b981;
+}
+
+.contenedor-principal{
+  max-width: 1000 px !important;
+}
+.container-fluid.py-5.mt-5 {
+  margin-top: 70px !important; 
+  padding-top: 30px !important;
+}
+.course-wrapper {
+  max-width: 900px !important;
+  margin: 0 auto;
+  padding: 60px;
+  background: var(--blanco);
+  border-radius: 20px;
+  box-shadow: 0px 8px 30px rgba(0,0,0,0.08);
+  border: 1px solid var(--gris-borde);
+  animation: fadeIn 0.6s ease;
+}
+
+/* Animación suave al entrar */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================
+   TÍTULO Y DESCRIPCIÓN
+================================= */
+.titulo-curso-page {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: var(--azul-profesional) !important;
+  margin-bottom: 20px;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.descripcion-curso-page {
+  color: var(--gris-texto) !important;
+  max-width: 900px;
+  margin: 0 auto 30px;
+  font-size: 1.25rem !important;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.descripcion-curso-page2 {
+  color: var(--azul-profesional) !important;
+  max-width: 700px;
+  margin: 0 auto 30px;
+  font-size: 1.25rem !important;
+  font-weight: 600;
+  line-height: 1.7;
+  text-align: center;
+  border-left: 4px solid var(--verde-accion);
+  padding-left: 20px;
+}
+
+/* ================================
+   PROGRESO DEL CURSO
+================================= */
+.progress-box {
+  background: var(--gris-fondo);
+  max-width: 1000px;
+  padding: 30px;
+  border-radius: 30px;
+  border: 1px solid var(--gris-borde);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin: 0 auto 30px;
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.progress-curso {
+  height: 28px !important;
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: var(--gris-borde);
+  
+}
+
+.progress-curso .progress-bar {
+  background: linear-gradient(135deg, var(--verde-accion), var(--verde-completado));
+  transition: width 0.8s ease;
+}
+
+/* ================================
+   NIVELES
+================================= */
+.niveles-contenedor {
+  display: grid;
+  gap: 25px;
+  margin-top: 40px;
+  max-width: 1200px;
+  margin: 0 auto 30px;
+  border-radius: 30px;
+}
+
+/* Acciones dentro de un nivel: separar botones y mejorar estética */
+.nivel-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+.nivel-actions .btn {
+  border-radius: 10px;
+}
+.nivel-actions .btn-action {
+  flex: 0 1 220px; /* tamaño preferido, crece si hay espacio */
+}
+
+@media (max-width: 576px) {
+  .nivel-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .nivel-actions .btn-action {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+}
+
+/* Tarjeta de cada nivel */
+.nivel-card {
+  background: var(--blanco) !important;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid var(--gris-borde);
+  box-shadow: 0px 3px 12px rgba(0,0,0,0.04);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nivel-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--azul-profesional);
+  opacity: 0.7;
+}
+
+.nivel-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 20px rgba(13, 122, 156, 0.12);
+  border-color: var(--azul-medio);
+}
+
+/* Título del nivel */
+.titulo-nivel {
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--azul-profesional) !important;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.titulo-nivel::before {
+  content: "•";
+  color: var(--verde-accion);
+  font-size: 1.8rem;
+}
+
+/* Descripción de nivel */
+.descripcion-nivel {
+  color: var(--gris-texto) !important;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* ================================
+   BOTÓN DE COMPLETAR
+================================= */
+.btn-nivel {
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: linear-gradient(135deg, var(--verde-accion), var(--verde-completado)) !important;
+  color: var(--blanco);
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2);
+}
+
+.btn-nivel:hover {
+  background: linear-gradient(135deg, var(--verde-hover), var(--verde-accion)) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+  color: var(--blanco);
+}
+
+/* Botón deshabilitado */
+.btn-nivel:disabled {
+  background: var(--gris-borde) !important;
+  color: #94a3b8;
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ================================
+   MENSAJE FINAL
+================================= */
+.alert-success {
+  border-radius: 16px !important;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 1px solid #bbf7d0;
+  color: var(--azul-profesional);
+  padding: 25px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+/* ================================
+   ELEMENTOS ADICIONALES PARA MEJORAR ESTÉTICA
+================================= */
+.nivel-completado {
+  background: var(--azul-claro) !important;
+  border-color: var(--azul-medio);
+}
+
+.nivel-completado::before {
+  background: var(--verde-completado);
+  opacity: 1;
+}
+
+.estado-nivel {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--azul-claro);
+  color: var(--azul-profesional);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.estado-completado {
+  background: var(--verde-completado);
+  color: var(--blanco);
+}

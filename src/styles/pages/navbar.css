@@ -1,0 +1,277 @@
+.navbar {
+  background: linear-gradient(135deg, #a4c4ff, #0077c8) !important;
+  padding: 0.5rem 0 !important;
+  height: 80px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-height: 60px) {
+  .navbar {
+  height: 120px;
+}
+}
+
+.container {
+  max-width: 1200px;
+  padding: 0 15px;
+}
+
+/* CONTENEDOR LOGO + TEXTO */
+.navbar-brand-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.navbar-brand {
+  padding: 0;
+  margin-right: 0;
+}
+
+.navbar-logo {
+  height: 35px;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.05);
+}
+
+/* TEXTO CENTRAL */
+.navbar-center-text {
+  color: white;
+  text-align: left;
+  margin-left: 10px;
+  overflow: hidden;
+}
+
+.navbar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: block;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar-title-mobile {
+  font-size: 1rem;
+  font-weight: 600;
+  display: block;
+}
+
+.navbar-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  font-weight: 400;
+  margin-top: -2px;
+}
+
+/* BOTÓN HAMBURGUESA */
+.navbar-toggler {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0.25rem 0.5rem;
+  margin-left: auto;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+/* MENÚ DE NAVEGACIÓN */
+.navbar-collapse {
+  background: linear-gradient(135deg, #8ab4f8, #0066b3);
+  border-radius: 0 0 8px 8px;
+  margin-top: 5px;
+  padding: 10px;
+}
+
+.nav-link {
+  color: white !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  margin: 2px 0;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(3px);
+}
+
+/* BOTÓN SALIR ESPECIAL */
+.logout-link {
+  color: #ffcccb !important;
+  font-weight: 600;
+}
+
+.btn-logout-desktop {
+  background-color: rgba(220, 53, 69, 0.2);
+  border: 1px solid rgba(220, 53, 69, 0.4);
+  border-radius: 20px;
+  padding: 0.4rem 1rem !important;
+}
+
+.btn-logout-desktop:hover {
+  background-color: rgba(220, 53, 69, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+/* INFO USUARIO */
+.navbar-user-info {
+  padding-left: 15px;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-avatar {
+  color: white;
+}
+
+.user-name {
+  color: white;
+  line-height: 1.2;
+}
+
+.user-role {
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+/* DROPDOWN EN MÓVIL */
+.dropdown-menu {
+  background-color: rgba(255, 255, 255, 0.95);
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  color: #333;
+  transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #0077c8;
+}
+
+/* MEDIA QUERIES PARA RESPONSIVE */
+
+@media (min-width: 576px) {
+  .navbar {
+    padding: 0.6rem 0 !important;
+    min-height: 65px;
+  }
+  
+  .navbar-logo {
+    height: 40px;
+  }
+  
+  .navbar-title {
+    font-size: 1.2rem;
+  }
+  
+  .navbar-subtitle {
+    font-size: 0.85rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    padding: 0.7rem 0 !important;
+  }
+  
+  .navbar-center-text {
+    text-align: center;
+    margin-left: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 300px;
+  }
+  
+  .navbar-title {
+    font-size: 1.3rem;
+  }
+  
+  .navbar-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .navbar-collapse {
+    background: transparent !important;
+    border-radius: 0;
+    margin-top: 0;
+    padding: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .navbar-center-text {
+    max-width: 400px;
+  }
+  
+  .navbar-title {
+    font-size: 1.4rem;
+  }
+  
+  .nav-link {
+    padding: 0.6rem 1.2rem !important;
+  }
+  
+  .navbar-user-info {
+    margin-left: 1rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .navbar-center-text {
+    max-width: 500px;
+  }
+  
+  .navbar-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .navbar-title-mobile {
+    font-size: 0.9rem;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .navbar-logo {
+    height: 30px;
+  }
+  
+  .nav-link {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .navbar-brand-container {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+  
+  .navbar-center-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .navbar-title, .navbar-title-mobile {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    display: inline-block;
+  }
+}
