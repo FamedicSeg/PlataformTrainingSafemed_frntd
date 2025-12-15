@@ -10,7 +10,7 @@ export const cursoIgualdadGenero = {
         id: 201,
         titulo: "¿Igualdad de Género?",
         tipo: "video",
-        url: "https://res.cloudinary.com/dfk4zdkgg/video/upload/v1764617478/Igualdad_de_genero_xyv2cu.mp4", 
+        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831156/Igualdad_de_genero_a8ptsq.mp4", 
         completado: false,
         width: "200",
         height: "215",
@@ -21,7 +21,7 @@ export const cursoIgualdadGenero = {
         id: 202,
         titulo: "Panorama Global y Desafíos Pendientes",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dfk4zdkgg/image/upload/v1765302520/Infografia_3_n4x9xv.png",
+        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829843/Infografia_3_uigzmo.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -29,7 +29,7 @@ export const cursoIgualdadGenero = {
         id: 203,
         titulo: "Beneficios de la Igualdad",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dfk4zdkgg/image/upload/v1765302526/Infografia_4_db5wfn.png",
+        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829886/Infografia_4_xnpip7.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
 
@@ -38,7 +38,7 @@ export const cursoIgualdadGenero = {
         id: 204,
         titulo: "Acciones para un mundo igualitario",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dfk4zdkgg/image/upload/v1765302539/Infografia_5_kinihl.png",
+        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829899/Infografia_5_srmbb0.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -70,7 +70,7 @@ export const cursoIgualdadGenero = {
         id: 208,
         titulo: "Cómo educar en la igualdad de género. Marina Subirats, socióloga",
         tipo: "video",
-        url: "https://res.cloudinary.com/dfk4zdkgg/video/upload/v1764617477/Como_educar_en_la_igualdad_de_genero_wkw2yd.mp4",
+        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831165/Como_educar_en_la_igualdad_de_genero_tp8kdv.mp4",
         completado: false,
         width: 200,
         height: 215,

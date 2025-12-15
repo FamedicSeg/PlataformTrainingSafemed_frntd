@@ -10,7 +10,7 @@ export const cursoDerechosLaborales = {
       id: 1,
       titulo: "Video: Legislación Laboral",
       tipo: "video",
-      url: "https://res.cloudinary.com/dfk4zdkgg/video/upload/v1764615638/Video_Legislacion_laboral_y6xf4i.mp4", 
+      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765830904/Video_Legislacion_laboral_r4gdlq.mp4", 
       completado: false,
       width: "200",
       height: "215",
@@ -21,7 +21,7 @@ export const cursoDerechosLaborales = {
       id: 2,
       titulo: "Introducción a los Derechos laborales en el Ecuador",
       tipo: "video",
-      url: "https://res.cloudinary.com/dfk4zdkgg/video/upload/v1764615638/Derechos_laborales_en_Ecuador_jke7pr.mp4", 
+      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765830972/Derechos_laborales_en_Ecuador_dqmhe9.mp4", 
       completado: false,
       width: "200",
       height: "215",
@@ -32,7 +32,7 @@ export const cursoDerechosLaborales = {
       id: 3,
       titulo: "La base de la Justicia Laboral Igualdad y Cero Discriminación",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dfk4zdkgg/image/upload/v1765288675/Infografia_1_tv7fe3.png",
+      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829753/Infografia_1_sxsron.png",
       completado: false,
       descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -40,7 +40,7 @@ export const cursoDerechosLaborales = {
       id: 4,
       titulo: "Equidad por Ley: Lo que debes saber de la ley orgánica para la igualdad salarial (LOIS)",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dfk4zdkgg/image/upload/v1765288681/Infografia_2_ekxlyo.png",
+      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829774/Infografia_2_nyyvsu.png",
       completado: false,
       descripcion: "Revisa el contenido de la siguiente infografía."
 
@@ -49,7 +49,7 @@ export const cursoDerechosLaborales = {
       id: 5,
       titulo: "DERECHO LABORAL ¿Qué es?¿Fuentes?",
       tipo: "video",
-      url: "https://res.cloudinary.com/dfk4zdkgg/video/upload/v1764615641/Derecho_Laboral_Que_es_o7n4mt.mp4",
+      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831001/Derecho_Laboral_Que_es_fvpr5r.mp4",
       completado: false,
       descripcion: "Video explicativo sobre los conceptos básicos del derecho laboral.",
       autor: "Autor: Derecho Virtual"
@@ -66,7 +66,7 @@ export const cursoDerechosLaborales = {
       id: 7,
       titulo: "Derechos laborales específicos de las mujeres",
       tipo:"video",
-      url: "https://res.cloudinary.com/dfk4zdkgg/video/upload/v1764615642/Derechos_laborales_especificos_de_las_mujeres_ckwvqf.mp4",
+      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831024/Derechos_laborales_especificos_de_las_mujeres_stfejr.mp4",
       completado: false,
       descripcion: "Video explicativo sobre los derechos laborales específicos de las mujeres.",
       autor: "FES Ecuador"
@@ -75,7 +75,7 @@ export const cursoDerechosLaborales = {
       id:8,
       titulo:"¿Por qué los Hombres ganan más que las Mujeres?", 
       tipo: "video",
-      url: "https://res.cloudinary.com/dfk4zdkgg/video/upload/v1764615639/Por_que_los_hombres_ganan_mas_que_las_mujeres_gmrfsd.mp4",
+      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831034/Por_que_los_hombres_ganan_mas_que_las_mujeres_rdldeh.mp4",
       completado: false,
       width: "200",
       height: "215",
