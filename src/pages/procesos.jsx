@@ -8,11 +8,12 @@ export default function Procesos(){
 
     const courses =[
         {id:1, name: "Talento Humano" ,desc: "Capacitación de Talento Humano" ,link: "/courses" },
-        {id:2, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capcitación de SGCS" , link: "/inicio"},
-        {id:3, name: "Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/inicio"},
-        {id:4, name: "Producción", desc: "Capacitación de Producción", link: "/principal"},
-        {id:5, name: "Salud Ocupacional", desc: "Capacitación de Salud Ocupacional", link:"/principal"},
-        {id:6, name: "Seguridad Industrial", desc: "Capacitación de Seguridad Industrial", link:"/principal"},
+        {id:2, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capcitación de SGCS" , link: "/soporte"},
+        {id:3, name: "Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/soporte"},
+        {id:4, name: "Producción", desc: "Capacitación de Producción", link: "/soporte"},
+        {id:5, name: "Salud Ocupacional", desc: "Capacitación de Salud Ocupacional", link:"/soporte"},
+        {id:6, name: "Seguridad Industrial", desc: "Capacitación de Seguridad Industrial", link:"/soporte"},
+        {id:7, name: "Seguridad Informática", desc: "Capacitación de la Seguridad en la Información", link:"/soporte"},
     ];
 
     //const [progress, setProgress] = useState(0);
