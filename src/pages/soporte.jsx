@@ -7,13 +7,12 @@ export default function Soporte() {
         <div className="inicio-container">
             <div className="inicio-card">
                 <h1 className="inicio-title">
-                    Estimado Usuario , <span className="nombre">{usuario}</span>
+                    Estimado/a <span className="nombre">{usuario}</span>
                 </h1>
                 
                 <p className="inicio-text">
-                    Estamos realizando mejoras en la plataforma para brindarte una mejor experiencia. 
-                    Muy pronto tendrás acceso a nuevos cursos y en la ampliación de contenidos formativos. 
-                    En breve podrás acceder a nuevos materiales de capacitación.
+                    Estamos realizando mejoras en la plataforma para brindarte una mejor experiencia.
+                    Muy pronto tendrás acceso a nuevos cursos y a la ampliación de los contenidos formativos.
                 </p>
 
         <div className="inicio-logos">
@@ -25,7 +24,7 @@ export default function Soporte() {
           className="inicio-btn"
           onClick={() => window.location.href = "/procesos"}
         >
-          Comenzar Capacitación
+          Regresar
         </button>
 
       </div>
