@@ -8,8 +8,8 @@ export default function Procesos(){
 
     const courses =[
         {id:1, name: "Talento Humano" ,desc: "Capacitación de Talento Humano" ,link: "/courses" },
-        {id:2, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capcitación de SGCS" , link: "/principal"},
-        {id:3, name: "Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/principal"},
+        {id:2, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capcitación de SGCS" , link: "/inicio"},
+        {id:3, name: "Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/inicio"},
         {id:4, name: "Producción", desc: "Capacitación de Producción", link: "/principal"},
         {id:5, name: "Salud Ocupacional", desc: "Capacitación de Salud Ocupacional", link:"/principal"},
         {id:6, name: "Seguridad Industrial", desc: "Capacitación de Seguridad Industrial", link:"/principal"},

@@ -20,6 +20,7 @@ import Procesos from './pages/procesos';
 import AdminTalentoHumano from './pages/adminTTHH';
 import LoginAdminProceso from './pages/adminProcesos';
 import ScrollToTop from './pages/scrollToTop';
+import Soporte from './pages/soporte';
 
 import { cursoDerechosLaborales } from "./cursos/curso1/datos_curso";
 import { cursoIgualdadGenero } from "./cursos/curso2/datos_curso2";
@@ -262,15 +263,8 @@ function App() {
           <Route path="/admin/procesos" element={<LoginAdminProceso />} />
 
           {/* Rutas protegidas para usuarios logueados */}
-          <Route 
-            path="/inicio" 
-            element={
-              <ProtectedUserRoute>
-                <Home />
-              </ProtectedUserRoute>
-            } 
-          />
-          
+          <Route path="/inicio" element={<ProtectedUserRoute><Home /></ProtectedUserRoute>} />
+          <Route path="/soporte" element={<ProtectedUserRoute><Soporte /></ProtectedUserRoute>} />
           <Route 
             path="/courses" 
             element={
