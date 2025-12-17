@@ -110,7 +110,7 @@ body {
   background-repeat: no-repeat;
   background-position: 12px !important;      
   background-color: #cde9ee !important;
-  width: 100% !important;
+  width: 50% !important;
   height: auto !important;
   border: none;
   color: rgb(150, 158, 160);;
@@ -147,7 +147,7 @@ body {
   background-repeat: no-repeat;
   background-position: 12px !important;      
   background-color: #cde9ee !important;
-  width: 100% !important;
+  width: 50% !important;
   height: auto !important;
   border: none;
   color: rgb(150, 158, 160);;
@@ -184,7 +184,7 @@ body {
 .form-control-custom {
   border-radius: 10px;
   padding: 10px 12px !important;
-  width: 100% !important;
+  width: 90% !important;
   height: 42px !important;
   border: 1px solid #bcd7ef;
   background: #f7f9fc;
