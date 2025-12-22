@@ -143,7 +143,7 @@ export default function LoginNombre() {
       {/* Bienvenida */}
       <div className="text-center mb-4">
         <h3 className="bienvenida-titulo">PLATAFORMA INTERNA - DHISVE</h3>
-        <h4 className="bienvenida-subtitulo">Bienvenido</h4>
+        <h3 className="bienvenida-subtitulo">Bienvenido</h3>
         <p className="instruccion-texto">Ingresa tu cédula de identidad para continuar.</p>
         <h5 className="instruccion-texto2">Nota: Tu cédula de identidad también es tu contraseña </h5>
       </div>

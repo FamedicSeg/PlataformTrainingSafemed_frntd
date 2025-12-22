@@ -110,10 +110,10 @@ body {
   background-repeat: no-repeat;
   background-position: 12px !important;      
   background-color: #cde9ee !important;
-  width: 50% !important;
+  width: 45% !important;
   height: auto !important;
   border: none;
-  color: rgb(150, 158, 160);;
+  color: rgb(150, 158, 160);
   padding: 15px 15px 15px 60px;
   text-align: center;
   text-decoration: none;
@@ -147,10 +147,10 @@ body {
   background-repeat: no-repeat;
   background-position: 12px !important;      
   background-color: #cde9ee !important;
-  width: 50% !important;
+  width: 45% !important;
   height: auto !important;
   border: none;
-  color: rgb(150, 158, 160);;
+  color: rgb(150, 158, 160);
   padding: 15px 15px 15px 60px;
   text-align: center;
   text-decoration: none;
@@ -184,8 +184,8 @@ body {
 .form-control-custom {
   border-radius: 10px;
   padding: 10px 12px !important;
-  width: 90% !important;
-  height: 42px !important;
+  width: 80% !important;
+  height: 35px !important;
   border: 1px solid #bcd7ef;
   background: #f7f9fc;
   font-size: 18px;
@@ -198,6 +198,7 @@ body {
   background: #ffffff;
   border-color: #0d6efd;
   box-shadow: 0 0 8px rgba(13, 110, 253, 0.4);
+  padding: 13px 12px !important;
 }
 
 @media (min-width: 768px) {
@@ -248,19 +249,20 @@ body {
 }
 
 .bienvenida-subtitulo {
-  font-size: clamp(16px, 3.5vw, 22px);
-  font-weight: 600;
-  color: #0a58ca;
+  font-size: clamp(40px, 3.5vw, 40px);
+  font-weight: 700;
+  color: #094c80;
   margin-top: -5px;
 }
 
 .instruccion-texto {
-  font-size: 15px;
+  font-size: clamp(20px, 2.5vw, 24px);
   color: #000000;
   opacity: 0.9;
+  font-weight: bold;
 }
 .instruccion-texto2 {
-  font-size: 15px;
+  font-size: 20px;
   color: #000000;
   opacity: 0.9;
   font-weight: bold;
