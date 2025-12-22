@@ -212,14 +212,14 @@ export default function LoginNombre() {
               className="btn-adminProceso"
               onClick={() => navigate("/admin/procesos")}
             >
-              ÁREA DEL ADMINISTRADOR DE PROCESOS
+              ADMIN. DE PROCESOS
             </button>
 
             <button
               className="btn-adminPrincipal"
               onClick={() => navigate("/admin")}
             >
-              ÁREA DE ADMINISTRADOR PRINCIPAL
+              ADMIN. PRINCIPAL
             </button>
           </div>
         </div>
