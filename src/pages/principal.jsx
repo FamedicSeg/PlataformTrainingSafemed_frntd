@@ -212,7 +212,7 @@ export default function LoginNombre() {
               className="btn-adminProceso"
               onClick={() => navigate("/admin/procesos")}
             >
-              ADMIN. DE PROCESOS
+              ADMIN. PROCESOS
             </button>
 
             <button
