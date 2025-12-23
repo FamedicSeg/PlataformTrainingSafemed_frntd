@@ -55,41 +55,25 @@
 
 /* Tabla responsive con altura máxima y scroll */
 /* que la tabla NO se aplaste en celular: aparece scroll horizontal */
-.tabla-mobile table {
-  min-width: 850px; /* ajusta si quieres: 800-1000 según se vea */
+.table-responsive {
+  min-width: 850px;
   margin-bottom: 0;
-}
-
-/* más cómodo al tacto */
-.tabla-mobile th,
-.tabla-mobile td {
-  white-space: nowrap;
-  vertical-align: middle;
 }
 
 /* en móvil: reduce letra/padding + botón full width */
 @media (max-width: 576px) {
-  .tabla-mobile {
+  .table-responsive {
     border-radius: 16px;
   }
 
-  .tabla-mobile th,
-  .tabla-mobile td {
+  .table-responsive th,
+  .table-responsive td {
     font-size: 0.78rem;
     padding: 8px 10px;
-  }
-
-  /* que el botón no quede apretado */
-  .tabla-mobile .btn {
-    width: 100%;
-    padding: 8px 10px;
-    font-size: 0.78rem;
-    white-space: normal; /* permite 2 líneas */
-    line-height: 1.1;
   }
 
   /* badges más compactos */
-  .tabla-mobile .badge {
+  .table-responsive .badge {
     font-size: 0.72rem;
     padding: 6px 8px;
   }

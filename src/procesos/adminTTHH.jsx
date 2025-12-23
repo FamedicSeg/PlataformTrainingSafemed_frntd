@@ -260,7 +260,7 @@ export default function AdminTalentoHumano() {
       )}
 
       {!loading && resultados.length > 0 && (
-        <div className="table-responsive tabla-mobile">
+        <div className="table-responsive">
           <table className="table table-bordered table-striped">
             <thead className="table-dark">
               <tr>
