@@ -1,10 +1,10 @@
 /* =========================================================
-   ✅ BASE / FIX OVERFLOW GLOBAL
+   ✅ BASE / FIX OVERFLOW GLOBAL (MUY IMPORTANTE EN MÓVIL)
    ========================================================= */
 html, body {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden; /* evita que la página se haga ancha */
+  overflow-x: auto;
 }
 
 /* =========================================================
@@ -68,39 +68,40 @@ html, body {
 }
 
 /* =========================================================
-   ✅ TABLA RESPONSIVE - SCROLL REAL + FIX COLUMNA NOMBRE
+   ✅ TABLA RESPONSIVE - CORREGIDO PARA CELULAR
+   IMPORTANTE:
+   - NO poner min-width en .table-responsive
+   - min-width va en el <table>
+   - usar .tabla-mobile para controlar esto sin romper otras tablas
    ========================================================= */
+
+/* Wrapper con scroll SOLO para la tabla */
 .table-responsive.tabla-mobile {
   width: 100%;
   max-width: 100%;
-
-  overflow-x: auto !important; /* scroll horizontal */
-  overflow-y: hidden !important;
+  overflow-x: auto; /* ✅ scroll horizontal dentro de la tabla */
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-
-  /* gestos en móvil */
-  touch-action: pan-x;
-  overscroll-behavior-x: contain;
-
   background: #ffffff;
+
   padding-left: 8px;
-  padding-right: 8px;
+  padding-right: 8;
+
+  /*max-height: calc(100vh - 200px);*/
 
   border: 1px solid #dee2e6;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
 
+  /* 🔥 evita centrado raro */
   display: block;
 }
 
-/* La tabla interna debe ser más ancha para habilitar scroll */
+/* La tabla interna sí debe tener min-width */
 .table-responsive.tabla-mobile > table {
-  min-width: 980px;
-  width: max-content;
-  margin: 0;
-  border-collapse: separate; /* ✅ necesario para sticky column */
-  border-spacing: 0;
+  min-width: 980px; /* 🔥 más ancho para que no se aplaste */
+  margin: 0;        /* no centrar */
 }
 
 /* Estilos de tabla */
@@ -111,15 +112,15 @@ html, body {
 
 .table th,
 .table td {
-  white-space: nowrap;
+  white-space: nowrap;  /* no se rompen las columnas */
   vertical-align: middle;
 }
 
 /* =========================================================
-   ✅ Sticky header (solo en th)
+   ✅ Sticky header SIN doble sticky raro
    ========================================================= */
 .table thead {
-  position: static;
+  position: static; /* quitamos sticky aquí */
 }
 
 .table-dark {
@@ -144,25 +145,6 @@ html, body {
 .table td {
   padding: 12px 10px;
   border-color: #e9ecef;
-}
-
-/* =========================================================
-   ✅ FIX DEFINITIVO: Columna "Nombre" SIEMPRE visible
-   ========================================================= */
-.table-responsive.tabla-mobile th:first-child,
-.table-responsive.tabla-mobile td:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 5;
-  background: #ffffff; /* fondo sólido */
-  box-shadow: 2px 0 0 rgba(0, 0, 0, 0.08); /* separación */
-}
-
-/* Header de "Nombre" con el color del thead */
-.table-responsive.tabla-mobile thead th:first-child {
-  z-index: 10;
-  background: linear-gradient(135deg, #0b5168 0%, #0e6187 100%) !important;
-  color: #fff;
 }
 
 /* Filas con efecto hover */
@@ -285,6 +267,7 @@ html, body {
   }
 
   .table-responsive.tabla-mobile {
+    max-height: calc(100vh - 180px);
     margin-top: 15px;
   }
 
@@ -312,6 +295,7 @@ html, body {
 
 /* 📱 CELULARES */
 @media (max-width: 576px) {
+  /* ✅ evita centrar raro y recortes en móvil */
   .container {
     max-width: 100% !important;
     margin: 0 !important;
@@ -323,6 +307,7 @@ html, body {
   }
 
   .table-responsive.tabla-mobile {
+    max-height: calc(100vh - 160px);
     border-radius: 16px;
   }
 
@@ -332,6 +317,7 @@ html, body {
     padding: 8px 10px;
   }
 
+  /* ✅ Botón certificado usable */
   .table .btn {
     width: 100%;
     white-space: normal;
@@ -353,6 +339,10 @@ html, body {
 
   .header-section h2 {
     font-size: 1.1rem;
+  }
+
+  .table-responsive.tabla-mobile {
+    max-height: calc(100vh - 140px);
   }
 
   .table thead th,
