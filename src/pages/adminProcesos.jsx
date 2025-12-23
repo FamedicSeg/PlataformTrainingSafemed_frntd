@@ -116,7 +116,8 @@ export default function LoginAdminProceso() {
       setError("");
       
       // Redirigir al dashboard del proceso específico
-      navigate(`/adminProcesoDashboard/${data.user.proceso_name}`);
+      navigate(`/admin/${data.user.proceso_name}`);
+
       
     } catch (err) {
       console.error("❌ Error en login:", err);

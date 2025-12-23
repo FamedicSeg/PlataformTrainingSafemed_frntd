@@ -17,10 +17,11 @@ import Curso4 from './cursos/curso4/curso4';
 import Navbar from './pages/navbar';
 import Navbar2 from './pages/navbar2';
 import Procesos from './pages/procesos';
-import AdminTalentoHumano from './pages/adminTTHH';
+import AdminTalentoHumano from './procesos/adminTTHH';
 import LoginAdminProceso from './pages/adminProcesos';
 import ScrollToTop from './pages/scrollToTop';
 import Soporte from './pages/soporte';
+import AdminDireccion from './procesos/adminDireccion';
 
 import { cursoDerechosLaborales } from "./cursos/curso1/datos_curso";
 import { cursoIgualdadGenero } from "./cursos/curso2/datos_curso2";
@@ -164,10 +165,9 @@ function Layout({ children }) {
     }
     
     // Ruta con Navbar2 (admin)
-    if (location.pathname === "/adminTTHH") {
+    if (location.pathname.startsWith("/admin")) {
       return <Navbar2 />;
     }
-    
     // Todas las demás rutas con Navbar normal
     return <Navbar />;
   };
@@ -332,10 +332,18 @@ function App() {
 
           {/* Rutas protegidas de administrador */}
           <Route 
-            path="/adminTTHH" 
+            path="/admin/Talento Humano" 
             element={
               <PrivateRoute>
                 <AdminTalentoHumano />
+              </PrivateRoute>
+            }
+          />
+          <Route 
+            path="/admin/Dirección" 
+            element={
+              <PrivateRoute>
+                <AdminDireccion />
               </PrivateRoute>
             }
           />

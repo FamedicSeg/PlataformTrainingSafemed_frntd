@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import "../styles/pages/adminTTHH.css"
+import "../styles/pages/adminProceso.css"
 
 export default function AdminTalentoHumano() {
   const [resultados, setResultados] = useState([]);
