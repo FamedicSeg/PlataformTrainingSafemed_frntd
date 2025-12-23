@@ -54,91 +54,47 @@
 }
 
 /* Tabla responsive con altura máxima y scroll */
-/* CONTENEDOR RESPONSIVE DE TABLA */
-.table-responsive {
-  max-height: calc(100vh - 180px); /* mejor ajuste en móvil */
-  overflow-x: auto;
-  overflow-y: auto;
-
-  border: 1px solid #000000;
-  border-radius: 14px;
-
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-  background-color: #ffffff;
-
-  margin-top: 16px;
-  padding: 8px;
-
-  -webkit-overflow-scrolling: touch; /* scroll suave en iOS */
-}
-
-/* TABLA INTERNA */
-.table-responsive table {
+/* que la tabla NO se aplaste en celular: aparece scroll horizontal */
+.tabla-mobile table {
+  min-width: 850px; /* ajusta si quieres: 800-1000 según se vea */
   margin-bottom: 0;
-  font-size: 0.85rem; /* texto más compacto en móvil */
 }
 
-/* CELDAS MÁS AMIGABLES AL TACTO */
-.table-responsive th,
-.table-responsive td {
-  padding: 10px 12px;
-  white-space: nowrap; /* evita que se rompa feo el contenido */
+/* más cómodo al tacto */
+.tabla-mobile th,
+.tabla-mobile td {
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
-/* CABECERA MÁS CLARA */
-.table-responsive thead th {
-  background-color: #084965;
-  font-weight: 600;
-  font-size: 0.8rem;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-
-/* SCROLLBAR SUAVE (Chrome / Edge) */
-.table-responsive::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
-}
-
-.table-responsive::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
-  border-radius: 10px;
-}
-
-.table-responsive::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-/* 📱 MEJORAS PARA CELULARES PEQUEÑOS */
+/* en móvil: reduce letra/padding + botón full width */
 @media (max-width: 576px) {
-  .table-responsive {
-    max-height: calc(100vh - 150px);
+  .tabla-mobile {
     border-radius: 16px;
-    padding: 6px;
   }
 
-  .table-responsive table {
+  .tabla-mobile th,
+  .tabla-mobile td {
     font-size: 0.78rem;
-  }
-
-  .table-responsive th,
-  .table-responsive td {
     padding: 8px 10px;
   }
-}
 
-/* 💻 TABLET Y DESKTOP */
-@media (min-width: 768px) {
-  .table-responsive {
-    margin-top: 30px;
-    max-height: calc(100vh - 220px);
+  /* que el botón no quede apretado */
+  .tabla-mobile .btn {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    white-space: normal; /* permite 2 líneas */
+    line-height: 1.1;
   }
 
-  .table-responsive table {
-    font-size: 0.95rem;
+  /* badges más compactos */
+  .tabla-mobile .badge {
+    font-size: 0.72rem;
+    padding: 6px 8px;
   }
 }
+
 
 /* Estilos de la tabla */
 .table {
@@ -154,7 +110,7 @@
 }
 
 .table-dark {
-  background: linear-gradient(135deg, #343a40 0%, #495057 100%) !important;
+  background: linear-gradient(135deg, #0b5168 0%, #0e6187 100%) !important;
   position: sticky;
   top: 0;
 }
