@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 
 import Home from './pages/inicio';
 import Courses from './pages/cursos';
-import Admin from './pages/adminPrincipal';
+import AdminPrincipal from './pages/adminPrincipal';
 import Login from './pages/login';
 import LoginNombre from './pages/principal';
 import Curso from "./cursos/curso1/curso1";
@@ -22,6 +22,7 @@ import LoginAdminProceso from './pages/adminProcesos';
 import ScrollToTop from './pages/scrollToTop';
 import Soporte from './pages/soporte';
 import AdminDireccion from './procesos/adminDireccion';
+import Sidebar from './pages/sidebar';
 
 import { cursoDerechosLaborales } from "./cursos/curso1/datos_curso";
 import { cursoIgualdadGenero } from "./cursos/curso2/datos_curso2";
@@ -160,7 +161,7 @@ function Layout({ children }) {
   // Determinar qué navbar mostrar
   const renderNavbar = () => {
     // Rutas sin navbar
-    if (["/", "/admin", "/admin/procesos"].includes(location.pathname)) {
+    if (["/", "/admin", "/admin/procesos","/adminPrincipal", "/sidebar"].includes(location.pathname)) {
       return null;
     }
     
@@ -261,6 +262,8 @@ function App() {
           <Route path="/" element={<LoginNombre />} />
           <Route path="/admin" element={<Login />} />
           <Route path="/admin/procesos" element={<LoginAdminProceso />} />
+          <Route path="/adminPrincipal" element={<AdminPrincipal />} />
+          <Route path="/sidebar" element={<Sidebar />} />
 
           {/* Rutas protegidas para usuarios logueados */}
           <Route path="/inicio" element={<ProtectedUserRoute><Home /></ProtectedUserRoute>} />
