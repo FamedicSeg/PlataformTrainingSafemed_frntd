@@ -18,7 +18,8 @@ export default function LoginAdminProceso() {
   useEffect(() => {
     const fetchProcesos = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/auth/api/procesos`);
+        // ✅ CORREGIDO: Eliminar el /api/ duplicado
+        const res = await fetch(`${API_URL}/api/auth/procesos`);
         if (!res.ok) throw new Error("Error al cargar procesos");
         
         const data = await res.json();
@@ -53,17 +54,16 @@ export default function LoginAdminProceso() {
 
   // Verificar si ya está autenticado
   useEffect(() => {
-    const token = localStorage.getItem("admin_proceso_token");
+    const token = localStorage.getItem("admin_token");
     const userData = localStorage.getItem("admin_proceso_user");
     
     if (token && userData) {
       try {
         const user = JSON.parse(userData);
-        // Redirigir al dashboard si ya está autenticado
-        navigate(`/adminProcesoDashboard/${user.proceso_name}`);
+        navigate(`/admin/${encodeURIComponent(user.proceso_name)}`);
       } catch (error) {
         console.error("Error parsing user data:", error);
-        localStorage.removeItem("admin_proceso_token");
+        localStorage.removeItem("admin_token");
         localStorage.removeItem("admin_proceso_user");
       }
     }
@@ -74,7 +74,6 @@ export default function LoginAdminProceso() {
     setError("");
     setLoading(true);
 
-    // Validación básica
     if (!username.trim() || !password.trim() || !proceso_name) {
       setError("Todos los campos son obligatorios");
       setLoading(false);
@@ -82,7 +81,11 @@ export default function LoginAdminProceso() {
     }
 
     try {
-      const res = await fetch(`${API_URL}/api/auth/api/login/procesos`, {
+      // ✅ CORREGIDO: URL correcta
+      const loginUrl = `${API_URL}/api/auth/login/procesos`;
+      console.log("🔍 Intentando login a:", loginUrl);
+      
+      const res = await fetch(loginUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
@@ -92,32 +95,26 @@ export default function LoginAdminProceso() {
         }),
       });
 
-      // Leer respuesta como texto primero
-      const text = await res.text();
-      let data;
-      
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error(`Servidor devolvió una respuesta no válida: ${text.slice(0, 80)}...`);
-      }
+      const data = await res.json();
 
-      // Verificar código HTTP
-      if (!res.ok) {
-        throw new Error(data.message || `Error de inicio de sesión (${res.status})`);
-      }
-
-      // Login exitoso - Validar estructura de respuesta
-      if (!data.success) {
-        throw new Error(data.message || "Error en la respuesta del servidor");
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Error de inicio de sesión");
       }
       
-      // Mostrar mensaje de éxito
-      setError("");
+      // Guardar token y datos del usuario
+      if (data.token) {
+        localStorage.setItem("admin_token", data.token);
+      } else {
+        localStorage.setItem("admin_token", "temp_token_" + Date.now());
+      }
+      localStorage.setItem("admin_proceso_user", JSON.stringify(data.user));
       
-      // Redirigir al dashboard del proceso específico
-      navigate(`/admin/${data.user.proceso_name}`);
-
+      console.log("✅ Login exitoso");
+      console.log("   Usuario:", data.user.username);
+      console.log("   Proceso:", data.user.proceso_name);
+      
+      // Redirigir al dashboard
+      navigate(`/admin/${encodeURIComponent(data.user.proceso_name)}`);
       
     } catch (err) {
       console.error("❌ Error en login:", err);
@@ -152,7 +149,6 @@ export default function LoginAdminProceso() {
               placeholder="Ingresa tu usuario"
               disabled={loading}
               required
-              autoComplete="username"
             />
           </div>
 
@@ -166,7 +162,6 @@ export default function LoginAdminProceso() {
               placeholder="Ingresa tu contraseña"
               disabled={loading}
               required
-              autoComplete="current-password"
             />
             <button
               type="button"
@@ -175,11 +170,7 @@ export default function LoginAdminProceso() {
               style={{ transform: "translateY(-50%)" }}
               disabled={loading}
             >
-              {showPassword ? (
-                <span title="Ocultar contraseña">🔒</span>
-              ) : (
-                <span title="Mostrar contraseña">🔍</span>
-              )}
+              {showPassword ? "🔒" : "🔍"}
             </button>
           </div>
 
@@ -203,14 +194,6 @@ export default function LoginAdminProceso() {
                 </option>
               ))}
             </select>
-            {loadingProcesos && (
-              <div className="mt-2">
-                <small className="text-muted">
-                  <span className="spinner-border spinner-border-sm me-1"></span>
-                  Cargando lista de procesos...
-                </small>
-              </div>
-            )}
           </div>
 
           <button 
@@ -218,17 +201,9 @@ export default function LoginAdminProceso() {
             className="btn btn-primary w-100 py-2 fw-semibold"
             disabled={loading}
           >
-            {loading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2"></span>
-                Verificando...
-              </>
-            ) : (
-              "Iniciar Sesión"
-            )}
+            {loading ? "Verificando..." : "Iniciar Sesión"}
           </button>
         </form>
-
       </div>
     </div>
   );

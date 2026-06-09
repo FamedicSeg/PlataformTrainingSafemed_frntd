@@ -241,6 +241,22 @@
   animation: fadeInUp 0.6s ease-out;
 }
 
+/* Estilos para cursos bloqueados */
+.curso-bloqueado {
+  border: 2px solid #adb5bd !important;
+  background-color: rgba(173, 181, 189, 0.08) !important;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.curso-bloqueado .titulo-curso {
+  color: #6c757d !important;
+}
+
+.curso-bloqueado .descripcion-curso {
+  color: #9aa0a6 !important;
+}
+
 /* Estilos adicionales para cursos completados */
 .curso-completado {
   border: 2px solid #28a745 !important;
