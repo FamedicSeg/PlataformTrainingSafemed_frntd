@@ -1,15 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Nivel from "./nivel4";
-import "../../styles/cursos/curso1.css";
+import Nivel from "./nivel5";
 
-export default function Curso4({ curso }) {
+export default function Curso5({ curso }) {
   const _location = useLocation();
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
   
   const _courseId = curso.id;
-  const nombreCursoBD = "otrosRelacionados"; 
+  const nombreCursoBD = "reglamentoInterno"; 
   const nombre = localStorage.getItem("usuario");
   
   const [niveles, setNiveles] = useState(curso.niveles);
@@ -17,6 +16,7 @@ export default function Curso4({ curso }) {
   const [courseCompletedFromDB, setCourseCompletedFromDB] = useState(false);
   const [cursoMarcadoCompletado, setCursoMarcadoCompletado] = useState(false);
   const [mostrarProcesando, setMostrarProcesando] = useState(false);
+  const [documentoEnviado, setDocumentoEnviado] = useState(false);
   
   const total = niveles.length;
   const completados = niveles.filter(n => n.completado).length;
@@ -63,6 +63,25 @@ export default function Curso4({ curso }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
+  // VERIFICAR SI YA ENVIÓ EL DOCUMENTO
+  useEffect(() => {
+    const verificarDocumentoEnviado = async () => {
+      if (cursoMarcadoCompletado) {
+        try {
+          const res = await fetch(`${API_URL}/api/documentos/verificar/${nombre}/${nombreCursoBD}`);
+          const data = await res.json();
+          if (data.enviado) {
+            setDocumentoEnviado(true);
+          }
+        } catch (error) {
+          console.error("Error verificando documento:", error);
+        }
+      }
+    };
+    
+    verificarDocumentoEnviado();
+  }, [cursoMarcadoCompletado, nombre, nombreCursoBD, API_URL]);
+  
   // GUARDAR ÍTEM COMPLETADO EN BD
   const guardarItemEnBD = async (itemId) => {
     try {
@@ -76,7 +95,7 @@ export default function Curso4({ curso }) {
     }
   };
   
-  // MARCAR CURSO COMO COMPLETADO EN LA BD (CORREGIDO)
+  // MARCAR CURSO COMO COMPLETADO EN LA BD
   const marcarCursoCompletadoEnBD = useCallback(async () => {
     try {
       console.log("Marcando curso como completado en BD...");
@@ -206,7 +225,7 @@ export default function Curso4({ curso }) {
     finalizarCurso();
   }, [progreso, cargando, cursoMarcadoCompletado, navigate, marcarCursoCompletadoEnBD, curso.nombre, nombreCursoBD]);
   
-  //   6. MARCAR NIVEL COMPLETADO
+  // MARCAR NIVEL COMPLETADO
   const marcarCompletado = (nivelId) => {
     setNiveles(prevNiveles =>
       prevNiveles.map(nivel =>
@@ -216,7 +235,7 @@ export default function Curso4({ curso }) {
     guardarItemEnBD(nivelId);
   };
   
-  //   RENDER
+  // RENDER
   if (cargando) {
     return <div className="text-center mt-5">Cargando progreso...</div>;
   }
@@ -330,9 +349,31 @@ export default function Curso4({ curso }) {
           })}
         </div>
         
-        {progreso === 100 && (
-          <div className="alert alert-success text-center mt-5 shadow-sm rounded-pill py-3 fs-5">
-            🎉 ¡Has completado este curso!
+        {/* MENSAJE DE CURSO COMPLETADO Y BOTÓN DEL DOCUMENTO */}
+        {progreso === 100 && cursoMarcadoCompletado && (
+          <div className="alert alert-success text-center mt-5 shadow-sm rounded-3 py-4">
+            <h4 className="mb-3">🎉 ¡Felicidades! Has completado este curso</h4>
+            {!documentoEnviado ? (
+              <>
+                <p className="mb-3">Para finalizar el proceso, debes firmar el documento de conformidad:</p>
+                <button
+                  className="btn btn-primary btn-lg px-5 py-2"
+                  onClick={() => navigate("/documento-form", { 
+                    state: { cursoNombre: curso.nombre }
+                  })}
+                >
+                  📄 Firmar documento de conformidad
+                </button>
+              </>
+            ) : (
+              <div className="mt-3">
+                <div className="alert alert-success">
+                  <i className="bi bi-check-circle-fill fs-3 me-2"></i>
+                  <h5 className="d-inline-block mb-0">✓ Documento de conformidad firmado y enviado</h5>
+                  <p className="mt-2 mb-0 text-muted">Gracias por completar el proceso. Tu documento ha sido registrado exitosamente.</p>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

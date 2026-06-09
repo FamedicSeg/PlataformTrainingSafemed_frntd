@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Nivel from "./nivel3";
-import "../../styles/cursos/curso1.css";
+//import "../../styles/cursos/curso3.css";
 
 export default function Curso3({ curso }) {
 

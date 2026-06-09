@@ -11,32 +11,44 @@ export default function Courses() {
   const courses = [
     { 
       id: 1, 
-      name: "1. Derechos laborales de mujeres y hombres", 
-      desc: "Duración: 10 horas", 
-      link: "/courses/derechoslaborales",
-      dbName: "derechos_laborales" // Nombre en la base de datos
+      name: "1. Retroalimentación Reglamento Interno de Trabajo", 
+      desc: "Duración: 2 horas", 
+      link: "/courses/reglamentointerno",
+      dbName: "reglamentoInterno",
+      bloqueado: false
     },
     { 
       id: 2, 
-      name: "2. Igualdad de género", 
+      name: "2. Derechos laborales de mujeres y hombres", 
       desc: "Duración: 10 horas", 
-      link: "/courses/igualdadgenero",
-      dbName: "igualdad_genero"
+      link: "/courses/derechoslaborales",
+      dbName: "derechos_laborales",
+      bloqueado: true
     },
     { 
       id: 3, 
-      name: "3. Erradicación de violencia y no discriminación en un centro de trabajo", 
+      name: "3. Igualdad de género", 
       desc: "Duración: 10 horas", 
-      link: "/courses/erradicacionviolencia",
-      dbName: "erradicacion_Violencia"
+      link: "/courses/igualdadgenero",
+      dbName: "igualdad_genero",
+      bloqueado: true
     },
     { 
       id: 4, 
-      name: "4. Otros relacionados para establecer el trabajo de igual valor", 
+      name: "4. Erradicación de violencia y no discriminación en un centro de trabajo", 
+      desc: "Duración: 10 horas", 
+      link: "/courses/erradicacionviolencia",
+      dbName: "erradicacion_Violencia",
+      bloqueado: true
+    },
+    { 
+      id: 5, 
+      name: "5. Otros relacionados para establecer el trabajo de igual valor", 
       desc: "Duración: 10 horas", 
       link: "/courses/otrosrelacionados",
-      dbName: "otrosRelacionados"
-    },
+      dbName: "otrosRelacionados",
+      bloqueado: true
+    }
   ];
 
   const [progress, setProgress] = useState(0);
@@ -156,6 +168,7 @@ export default function Courses() {
 
   // Manejar clic en botón de curso
   const manejarClicCurso = (curso) => {
+    if (curso.bloqueado) return;
     if (estaCursoCompletado(curso.dbName)) {
       // Si el curso ya está completado, preguntar si quiere repasar
       if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
@@ -181,7 +194,7 @@ export default function Courses() {
           </p>
         </div>
 
-        {/* PROGRESO GENERAL */}
+        {/* PROGRESO GENERAL 
         <div className="progreso-contenedor mb-5">
           <label className="form-label fw-semibold">
             Progreso general:
@@ -204,6 +217,7 @@ export default function Courses() {
             </small>
           </div>
         </div>
+        */}
 
         {/* LISTA DE CURSOS */}
         <h4 className="fw-bold text-secondary mb-4">
@@ -223,13 +237,17 @@ export default function Courses() {
             
             return (
               <div key={curso.id} className="col-md-3">
-                <div className={`card card-curso shadow-sm h-100 ${completado ? 'curso-completado' : ''}`}>
+                <div className={`card card-curso shadow-sm h-100 ${completado ? 'curso-completado' : ''} ${curso.bloqueado ? 'curso-bloqueado' : ''}`}>
                   <div className="card-body d-flex flex-column">
                     <div className="d-flex justify-content-between align-items-start mb-2">
                       <h5 className="titulo-curso">
                         {curso.name}
                       </h5>
-                      {completado && (
+                      {curso.bloqueado ? (
+                        <span className="badge bg-secondary">
+                          🔒
+                        </span>
+                      ) : completado && (
                         <span className="badge bg-success">
                           ✅
                         </span>
@@ -242,10 +260,10 @@ export default function Courses() {
                     {/* Estado del curso */}
                     <div className="mt-auto">
                       <div className="mb-2">
-                        <small className={`badge ${completado ? 'bg-success' : 'bg-secondary'}`}>
-                          {completado ? 'Completado' : 'Por comenzar'}
+                        <small className={`badge ${curso.bloqueado ? 'bg-secondary' : completado ? 'bg-success' : 'bg-secondary'}`}>
+                          {curso.bloqueado ? 'Próximamente' : completado ? 'Completado' : 'Por comenzar'}
                         </small>
-                        {completado && (
+                        {!curso.bloqueado && completado && (
                           <small className="ms-2 text-success">
                             <i className="bi bi-check-circle"></i> Realizado
                           </small>
@@ -253,10 +271,16 @@ export default function Courses() {
                       </div>
                       
                       <button
-                        className={`btn w-100 ${completado ? 'btn-success' : 'btn-iniciar'}`}
+                        className={`btn w-100 ${curso.bloqueado ? 'btn-secondary' : completado ? 'btn-success' : 'btn-iniciar'}`}
                         onClick={() => manejarClicCurso(curso)}
+                        disabled={curso.bloqueado}
                       >
-                        {completado ? (
+                        {curso.bloqueado ? (
+                          <>
+                            <i className="bi bi-lock me-2"></i>
+                            PRÓXIMAMENTE
+                          </>
+                        ) : completado ? (
                           <>
                             <i className="bi bi-check-circle me-2"></i>
                             Curso realizado
@@ -267,13 +291,13 @@ export default function Courses() {
                       </button>
                       
                       {/* Botón para repasar incluso si está completado */}
-                      {completado && (
+                      {!curso.bloqueado && completado && (
                         <button
                           className="btn btn-outline-primary w-100 mt-2"
                           onClick={() => navigate(curso.link, { state: { courseId: curso.id, repasar: true } })}
                         >
                           <i className="bi bi-arrow-repeat me-2"></i>
-                          Repasar curso
+                          Volver a revisar el curso
                         </button>
                       )}
                     </div>
@@ -284,7 +308,7 @@ export default function Courses() {
           })}
         </div>
 
-        {/* Resumen de progreso */}
+        {/* Resumen de progreso 
         <div className="card mb-4">
           <div className="card-body">
             <h5 className="card-title">Resumen de progreso</h5>
@@ -320,6 +344,7 @@ export default function Courses() {
             </div>
           </div>
         </div>
+        */}
 
         {/* PRUEBA FINAL */}
         <div className="text-center mt-5">

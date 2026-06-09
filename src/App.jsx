@@ -10,10 +10,11 @@ import Courses from './pages/cursos';
 import AdminPrincipal from './pages/adminPrincipal';
 import Login from './pages/login';
 import LoginNombre from './pages/principal';
-import Curso from "./cursos/curso1/curso1";
-import Curso2 from './cursos/curso2/curso2';
-import Curso3 from './cursos/curso3/curso3';
-import Curso4 from './cursos/curso4/curso4';
+import Curso from './cursos/TalentoHumano/curso1/curso1';
+import Curso2 from './cursos/TalentoHumano/curso2/curso2';
+import Curso3 from './cursos/TalentoHumano/curso3/curso3';
+import Curso4 from './cursos/TalentoHumano/curso4/curso4';
+import Curso5 from './cursos/TalentoHumano/curso5/curso5';
 import Navbar from './pages/navbar';
 import Navbar2 from './pages/navbar2';
 import Procesos from './pages/procesos';
@@ -22,12 +23,14 @@ import LoginAdminProceso from './pages/adminProcesos';
 import ScrollToTop from './pages/scrollToTop';
 import Soporte from './pages/soporte';
 import AdminDireccion from './procesos/adminDireccion';
+import DocumentoForm from './cursos/TalentoHumano/curso5/documentoForm';
 import Sidebar from './pages/sidebar';
 
-import { cursoDerechosLaborales } from "./cursos/curso1/datos_curso";
-import { cursoIgualdadGenero } from "./cursos/curso2/datos_curso2";
-import { cursoErradicacionViolencia } from "./cursos/curso3/datos_curso3";
-import { cursoOtrosRelacionados } from './cursos/curso4/datos_curso4';
+import { cursoDerechosLaborales } from "./cursos/TalentoHumano/curso1/datos_curso";
+import { cursoIgualdadGenero } from "./cursos/TalentoHumano/curso2/datos_curso2";
+import { cursoErradicacionViolencia } from "./cursos/TalentoHumano/curso3/datos_curso3";
+import { cursoOtrosRelacionados } from './cursos/TalentoHumano/curso4/datos_curso4';
+import {cursoReglamentoInterno} from './cursos/TalentoHumano/curso5/datos_curso5';
 
 import Prueba from './pages/prueba';
 
@@ -203,8 +206,8 @@ function Layout({ children }) {
             className="mt-3 w-100"
             style={{ height: "200px", objectFit: "cover" }}
           />
-          <small className="text-muted">
-            Copyright © 2025, DHISVE | Sistema de Capacitación Interna | Todos los derechos reservados
+          <small className="footer-full">
+            Copyright © 2025, DHISVE | Sistema de Capacitación Interna | Todos los derechos reservados | Analista de Transformaciión Digital
           </small>
         </footer>
       )}
@@ -264,10 +267,12 @@ function App() {
           <Route path="/admin/procesos" element={<LoginAdminProceso />} />
           <Route path="/adminPrincipal" element={<AdminPrincipal />} />
           <Route path="/sidebar" element={<Sidebar />} />
+          
 
           {/* Rutas protegidas para usuarios logueados */}
           <Route path="/inicio" element={<ProtectedUserRoute><Home /></ProtectedUserRoute>} />
           <Route path="/soporte" element={<ProtectedUserRoute><Soporte /></ProtectedUserRoute>} />
+          <Route path="/documento-form" element={<DocumentoForm />} />
           <Route 
             path="/courses" 
             element={
@@ -319,6 +324,15 @@ function App() {
             element={
               <ProtectedUserRoute>
                 <Curso4 curso={cursoOtrosRelacionados} />
+              </ProtectedUserRoute>
+            } 
+          />
+
+          <Route 
+            path="/courses/reglamentointerno" 
+            element={
+              <ProtectedUserRoute>
+                <Curso5 curso={cursoReglamentoInterno} />
               </ProtectedUserRoute>
             } 
           />
