@@ -297,7 +297,7 @@ export default function Courses() {
                           onClick={() => navigate(curso.link, { state: { courseId: curso.id, repasar: true } })}
                         >
                           <i className="bi bi-arrow-repeat me-2"></i>
-                          Volver a revisar el curso
+                          Volver a Revisar el Curso
                         </button>
                       )}
                     </div>
