@@ -17,6 +17,59 @@ export default function AdminTalentoHumano() {
   const proceso = "Talento Humano";
   const tablaRef = useRef(null);
 
+  // 🆕 Función global para formatear fechas desde la base de datos
+  const formatearFechaDesdeDB = (fechaStr) => {
+    if (!fechaStr) return 'N/A';
+    
+    // Si ya viene en formato DD/MM/YYYY, devolverlo directamente
+    if (typeof fechaStr === 'string' && fechaStr.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+      return fechaStr;
+    }
+    
+    // Para fechas en formato YYYY-MM-DD (como viene de la DB)
+    if (typeof fechaStr === 'string' && fechaStr.match(/^\d{4}-\d{2}-\d{2}/)) {
+      const partes = fechaStr.split('T')[0].split('-');
+      return `${partes[2]}/${partes[1]}/${partes[0]}`; // DD/MM/YYYY
+    }
+    
+    // Para fechas con fecha y hora (YYYY-MM-DD HH:MM:SS)
+    if (typeof fechaStr === 'string' && fechaStr.includes(' ')) {
+      const fechaParte = fechaStr.split(' ')[0];
+      const partes = fechaParte.split('-');
+      return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+    
+    // Fallback: intentar con Date pero ajustando zona horaria
+    try {
+      const date = new Date(fechaStr);
+      if (isNaN(date.getTime())) return fechaStr;
+      
+      const dia = date.getUTCDate().toString().padStart(2, '0');
+      const mes = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+      const anio = date.getUTCFullYear();
+      return `${dia}/${mes}/${anio}`;
+    } catch (error) {
+      console.error("Error formateando fecha:", error);
+      return fechaStr;
+    }
+  };
+
+  // 🆕 Función para formatear fecha y hora
+  const formatearFechaHoraDB = (fechaStr) => {
+    if (!fechaStr) return 'N/A';
+    
+    // Para fechas con fecha y hora (YYYY-MM-DD HH:MM:SS)
+    if (typeof fechaStr === 'string' && fechaStr.includes(' ')) {
+      const [fechaParte, horaParte] = fechaStr.split(' ');
+      const fechaFormateada = formatearFechaDesdeDB(fechaParte);
+      // Mostrar solo hora y minutos (sin segundos)
+      const horaFormateada = horaParte.substring(0, 5);
+      return `${fechaFormateada} ${horaFormateada}`;
+    }
+    
+    return formatearFechaDesdeDB(fechaStr);
+  };
+
   // Cargar resultados
   useEffect(() => {
     const fetchResultados = async () => {
@@ -47,7 +100,7 @@ export default function AdminTalentoHumano() {
     fetchResultados();
   }, []);
 
-  // 🆕 Cargar documentos de conformidad
+  // Cargar documentos de conformidad
   useEffect(() => {
     const fetchDocumentos = async () => {
       try {
@@ -129,10 +182,13 @@ export default function AdminTalentoHumano() {
             .firma { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 12px;}
             .footer { margin-top: 50px; font-size: 12px; color: #666; text-align: center; }
             .logo-img { max-width: 680px; margin-bottom: 20px; display: block; margin-left: 0; margin-right: 0; text-align: center; }
+            @media print {
+              body { margin: 0; padding: 20px; }
+              .btn-print { display: none; }
+            }
           </style>
         </head>
         <body>
-         <!-- LOGO EN LA PARTE SUPERIOR -->
           <div class="header-logo">
             <img src="/img/imagen6.png" alt="imagen6" class="logo-img" onerror="this.style.display='none'">
           </div>
@@ -149,14 +205,14 @@ export default function AdminTalentoHumano() {
             <div class="campo"><span class="label">C.I./ Pasaporte:</span> ${doc.cedula_identidad}</div>
             <div class="campo"><span class="label">Proceso:</span> ${doc.proceso || "N/A"}</div>
             <div class="campo"><span class="label">Cargo:</span> ${doc.cargo || "N/A"}</div>
-            <div class="campo"><span class="label">Fecha de Recepción:</span> ${new Date(doc.fecha_recepcion).toLocaleDateString()}</div>
+            <div class="campo"><span class="label">Fecha de Recepción:</span> ${formatearFechaDesdeDB(doc.fecha_recepcion)}</div>
           </div>
           
           <div class="seccion">
             <div class="titulo-seccion">INFORMACIÓN DEL CURSO</div>
             <div class="campo"><span class="label">Curso:</span> ${doc.curso}</div>
             <div class="campo"><span class="label">Usuario del sistema:</span> ${doc.usuario}</div>
-            <div class="campo"><span class="label">Fecha de envío:</span> ${new Date(doc.fecha_envio).toLocaleString()}</div>
+            <div class="campo"><span class="label">Fecha de envío:</span> ${formatearFechaHoraDB(doc.fecha_envio)}</div>
           </div>
           
           <div class="firma">
@@ -185,8 +241,8 @@ export default function AdminTalentoHumano() {
       doc.curso,
       doc.proceso || "N/A",
       doc.cargo || "N/A",
-      new Date(doc.fecha_recepcion).toLocaleDateString(),
-      new Date(doc.fecha_envio).toLocaleString()
+      formatearFechaDesdeDB(doc.fecha_recepcion),  // ✅ Corregido
+      formatearFechaHoraDB(doc.fecha_envio)        // ✅ Corregido
     ]);
     
     const csvContent = [headers, ...rows].map(row => row.join(",")).join("\n");
@@ -281,7 +337,7 @@ export default function AdminTalentoHumano() {
       "Puntaje": `${item.puntaje}%`,
       "Estado": item.aprobado ? "Aprobado" : "Reprobado",
       "Fecha Registro": item.fecha_registro
-        ? new Date(item.fecha_registro).toLocaleDateString('es-EC')
+        ? formatearFechaDesdeDB(item.fecha_registro)  // ✅ Corregido
         : 'N/A',
       "Proceso": item.proceso
     }));
@@ -307,7 +363,7 @@ export default function AdminTalentoHumano() {
 
   return (
     <div className="container py-5">
-      {/* 🆕 Pestañas */}
+      {/* Pestañas */}
       <div className="d-flex justify-content-center mb-4">
         <div className="btn-group" role="group">
           <button
@@ -390,7 +446,7 @@ export default function AdminTalentoHumano() {
                       </td>
                       <td>
                         {item.fecha_registro
-                          ? new Date(item.fecha_registro).toLocaleDateString('es-EC')
+                          ? formatearFechaDesdeDB(item.fecha_registro)  // ✅ Corregido
                           : 'N/A'}
                       </td>
                       <td>{item.proceso}</td>
@@ -412,7 +468,7 @@ export default function AdminTalentoHumano() {
         </>
       )}
 
-      {/* 🆕 SECCIÓN DE DOCUMENTOS DE CONFORMIDAD */}
+      {/* SECCIÓN DE DOCUMENTOS DE CONFORMIDAD */}
       {pestanaActiva === "documentos" && (
         <>
           <div className="header-section">
@@ -474,8 +530,8 @@ export default function AdminTalentoHumano() {
                       <td>{doc.curso}</td>
                       <td>{doc.proceso || "N/A"}</td>
                       <td>{doc.cargo || "N/A"}</td>
-                      <td>{new Date(doc.fecha_recepcion).toLocaleDateString()}</td>
-                      <td>{new Date(doc.fecha_envio).toLocaleString()}</td>
+                      <td>{formatearFechaDesdeDB(doc.fecha_recepcion)}</td>  {/* ✅ Corregido */}
+                      <td>{formatearFechaHoraDB(doc.fecha_envio)}</td>  {/* ✅ Corregido */}
                       <td>
                         <button 
                           className="btn btn-sm btn-secondary mb-1"
