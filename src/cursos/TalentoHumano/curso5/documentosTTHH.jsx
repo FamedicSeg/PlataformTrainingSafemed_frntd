@@ -99,14 +99,125 @@ Cargo: JEFA DE TALENTO HUMANO
         <head>
           <title>Documento Conformidad - ${doc.apellidos_nombres}</title>
           <style>
-            body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
-            h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
-            .seccion { margin: 30px 0; }
-            .titulo-seccion { background: #f0f0f0; padding: 10px; font-weight: bold; margin-bottom: 15px; }
-            .campo { margin: 10px 0; }
-            .label { font-weight: bold; display: inline-block; min-width: 180px; }
-            .firma { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; }
-            .footer { margin-top: 50px; font-size: 12px; color: #666; text-align: center; }
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            
+            body { 
+              font-family: Arial, sans-serif; 
+              padding: 40px; 
+              max-width: 800px; 
+              margin: 0 auto; 
+              text-align: justify; 
+            }
+            
+            h1 { 
+              text-align: center; 
+              color: #2c3e50; 
+              border-bottom: 2px solid #2c3e50; 
+              padding-bottom: 10px; 
+              margin-bottom: 30px;
+            }
+            
+            p {
+              margin-bottom: 15px;
+              line-height: 1.5;
+            }
+            
+            .seccion { 
+              margin: 30px 0; 
+            }
+            
+            .titulo-seccion { 
+              background: #f0f0f0; 
+              padding: 10px; 
+              font-weight: bold; 
+              margin-bottom: 15px; 
+              font-size: 16px;
+            }
+            
+            .campo { 
+              margin: 10px 0; 
+            }
+            
+            .label { 
+              font-weight: bold; 
+              display: inline-block; 
+              min-width: 180px; 
+            }
+            
+            .footer { 
+              margin-top: 50px; 
+              font-size: 12px; 
+              color: #666; 
+              text-align: center; 
+              border-top: 1px solid #ddd;
+              padding-top: 20px;
+            }
+            
+            /* ESTILOS PARA PANTALLA */
+            .firma { 
+              display: flex; 
+              justify-content: space-between; 
+              align-items: center; 
+              margin-top: 50px;
+              margin-bottom: 30px;
+              width: 100%;
+            }
+            
+            .firma-nombre { 
+              margin: 0; 
+              text-align: left; 
+              font-size: 12px; 
+            }
+            
+            .firma-cargo { 
+              margin: 0; 
+              text-align: right; 
+              font-size: 12px; 
+            }
+            
+            /* ESTILOS ESPECÍFICOS PARA IMPRESIÓN (Ctrl+P) */
+            @media print {
+              body {
+                padding: 20px;
+                margin: 0;
+              }
+              
+              .firma {
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                width: 100% !important;
+                margin-top: 50px !important;
+                margin-bottom: 30px !important;
+                page-break-inside: avoid !important;
+              }
+              
+              .firma-nombre {
+                text-align: left !important;
+                margin: 0 !important;
+                padding: 0 !important;
+              }
+              
+              .firma-cargo {
+                text-align: right !important;
+                margin: 0 !important;
+                padding: 0 !important;
+              }
+              
+              .titulo-seccion {
+                background: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+              }
+              
+              .seccion {
+                page-break-inside: avoid !important;
+              }
+            }
           </style>
         </head>
         <body>
@@ -135,8 +246,8 @@ Cargo: JEFA DE TALENTO HUMANO
           </div>
           
           <div class="firma">
-            <p><strong>Entregado por:</strong> ABIGAIL CISNEROS</p>
-            <p><strong>Cargo:</strong> JEFA DE TALENTO HUMANO</p>
+            <p class="firma-nombre"><strong>Entregado por:</strong> ABIGAIL CISNEROS</p>
+            <p class="firma-cargo"><strong>Cargo:</strong> JEFA DE TALENTO HUMANO</p>
           </div>
           
           <div class="footer">

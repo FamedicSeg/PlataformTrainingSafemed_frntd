@@ -119,13 +119,14 @@ export default function AdminTalentoHumano() {
       <html>
         <head>
           <style>
-            body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+            body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; font-size: 12px; }
             h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
+            p { font-size: 14px; line-height: 1.5; color: #333; text-align: justify; }
             .seccion { margin: 30px 0; }
             .titulo-seccion { background: #f0f0f0; padding: 10px; font-weight: bold; margin-bottom: 15px; }
             .campo { margin: 10px 0; }
             .label { font-weight: bold; display: inline-block; min-width: 180px; }
-            .firma { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 14px;}
+            .firma { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 12px;}
             .footer { margin-top: 50px; font-size: 12px; color: #666; text-align: center; }
             .logo-img { max-width: 680px; margin-bottom: 20px; display: block; margin-left: 0; margin-right: 0; text-align: center; }
           </style>
@@ -160,7 +161,7 @@ export default function AdminTalentoHumano() {
           
           <div class="firma">
             <p><strong>Entregado por:</strong> ABIGAIL CISNEROS</p>
-            <p><strong>Cargo:</strong> JEFA DE TALENTO HUMANO</p>
+            <p><strong>Cargo:</strong> JEFE DE TALENTO HUMANO</p>
           </div>
         </body>
       </html>

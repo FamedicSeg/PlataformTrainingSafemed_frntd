@@ -11,7 +11,7 @@ export default function Courses() {
   const courses = [
     { 
       id: 1, 
-      name: "1. Retroalimentación Reglamento Interno de Trabajo", 
+      name: "1. Reglamento Interno de Trabajo - Código de Ética - Política de Responsabilidad Social", 
       desc: "Duración: 2 horas", 
       link: "/courses/reglamentointerno",
       dbName: "reglamentoInterno",
