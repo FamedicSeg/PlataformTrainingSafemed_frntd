@@ -204,7 +204,7 @@ export default function Curso5({ curso }) {
         
         if (cursoMarcado) {
           setMostrarProcesando(false);
-          
+         /* 
           // Redirigir después de un breve retraso
           setTimeout(() => {
             navigate("/courses", { 
@@ -215,7 +215,8 @@ export default function Curso5({ curso }) {
                 mensaje: `🎉 ¡Felicidades! Has completado el curso "${curso.nombre}"`
               } 
             });
-          }, 1000);
+          }, 1000);*/
+        console.log(`🎉 ¡Felicidades! Has completado el curso "${curso.nombre}"`);
         } else {
           setMostrarProcesando(false);
         }
@@ -355,7 +356,7 @@ export default function Curso5({ curso }) {
             <h4 className="mb-3">🎉 ¡Felicidades! Has completado este curso</h4>
             {!documentoEnviado ? (
               <>
-                <p className="mb-3">Para finalizar el proceso, debes firmar el documento de conformidad:</p>
+                <p className="mb-3">Para finalizar el proceso, debes llenar el documento de conformidad:</p>
                 <button
                   className="btn btn-primary btn-lg px-5 py-2"
                   onClick={() => navigate("/documento-form", { 

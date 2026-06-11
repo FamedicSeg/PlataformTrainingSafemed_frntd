@@ -207,7 +207,7 @@ function Layout({ children }) {
             style={{ height: "200px", objectFit: "cover" }}
           />
           <small className="footer-full">
-            Copyright © 2025, DHISVE | Sistema de Capacitación Interna | Todos los derechos reservados | Analista de Transformaciión Digital
+            Copyright © 2026, DHISVE | Sistema de Capacitación Interna | Todos los derechos reservados | Analista de Transformaciión Digital
           </small>
         </footer>
       )}

@@ -189,8 +189,10 @@ export default function DocumentoForm() {
             
             <div className="firma-entregado">
               <div className="entregado-por">
-                <p><strong>Entregado por:</strong> ABIGAIL CISNEROS</p>
-                <p><strong>Cargo:</strong> JEFA DE TALENTO HUMANO</p>
+                <div className="entregado-por" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+                  <p><strong>Entregado por:</strong> ABIGAIL CISNEROS</p>
+                  <p style={{ textAlign: 'right' }}><strong>Cargo:</strong> JEFE DE TALENTO HUMANO</p>
+                </div>
               </div>
             </div>
           </div>

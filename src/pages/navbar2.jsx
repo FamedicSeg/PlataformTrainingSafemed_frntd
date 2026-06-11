@@ -47,6 +47,7 @@ export default function Navbar() {
       localStorage.removeItem("user_token");
       localStorage.removeItem("userId");
       localStorage.removeItem("cedula");
+      localStorage.clear();
   
       // Forzar evento
       window.dispatchEvent(new Event('storage'));

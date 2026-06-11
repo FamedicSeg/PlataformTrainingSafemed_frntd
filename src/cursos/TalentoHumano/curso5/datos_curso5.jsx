@@ -1,6 +1,6 @@
 export const cursoReglamentoInterno = {
   id: 5,
-  nombre: "Reglamento Interno de Trabajo",
+  nombre: "Reglamento Interno de Trabajo - Código de Ética - Política de Responsabilidad Social",
   descripcion:
     "Conoce temas que también estan ligados a un buen entorno laboral.",
   descripcion2:
@@ -32,7 +32,7 @@ export const cursoReglamentoInterno = {
 
     },
     {
-      id: 505,
+      id: 504,
       titulo: "Obligaciones y Prohibición de Trabajadores",
       tipo: "pdf",
       url: "/pdf/Obligaciones_y_Prohibición_de_Trabajadores.pdf",
@@ -40,7 +40,7 @@ export const cursoReglamentoInterno = {
       descripcion: "Documento sobre obligaciones y prohibiciones de los trabajadores."
     },
     {
-      id: 506,
+      id: 505,
       titulo: "Pautas y Normativas Esenciales sobre Faltas del Trabajador",
       tipo: "pdf",
       url: "/pdf/Pautas_y_Normativas_Esenciales_sobre_Faltas_del_Trabajador.pdf",
@@ -48,7 +48,7 @@ export const cursoReglamentoInterno = {
       descripcion: "Documento sobre pautas y normativas esenciales sobre faltas del trabajador."
     },
     {
-      id: 507,
+      id: 506,
       titulo: "Terminación y Disposiciones Finales",
       tipo: "pdf",
       url: "/pdf/Terminación_y_Disposiciones_Finales.pdf",
@@ -56,7 +56,7 @@ export const cursoReglamentoInterno = {
       descripcion: "Documento sobre terminación y disposiciones finales."
     },
     {
-      id_: 508,
+      id: 507,
       titulo: "Normas de Asistencia y Puntualidad",
       tipo:"pdf",
       url:"/pdf/ASISTENCIA_NORMAS.pdf",
@@ -64,15 +64,15 @@ export const cursoReglamentoInterno = {
       descripcion: "Documento sobre normas de asistencia y puntualidad."
     },
     {
-      id: 509,
+      id: 508,
       titulo: "Código de Ética",
       tipo: "pdf",
-      url: "/pdf/Código_de_Ética.pdf",
+      url: "/pdf/Codigo-de-Etica-2024.pdf",
       completado: false,
       descripcion: "Revisa el Código de Ética de la Compañía."
     },
     {
-      id: 510,
+      id: 509,
       titulo: "Política de Responsabilidad Social",
       tipo: "pdf",
       url: "/pdf/Política_de_Responsabilidad_Social.pdf",
@@ -80,28 +80,28 @@ export const cursoReglamentoInterno = {
       descripcion: "Revisa la Política de Responsabilidad Social de la Compañía."
     },
     {
-      id: 511,
-      titulo: "REGLAMENTO INTERNO DE TRABAJO",
+      id: 510,
+      titulo: "REGLAMENTO INTERNO DE TRABAJO (DESCARGA)",
       tipo: "pdf",
       url: "/pdf/REGLAMENTO_INTERNO_DE_TRABAJO.pdf",
       completado: false,
-      descripcion: "Revisa el Reglamento Interno de Trabajo de la Compañía."
+      descripcion: "Revisa y DESCARGA el Reglamento Interno de Trabajo de la Compañía."
+    },
+    {
+      id: 511,
+      titulo:"POLÍTICA DE RESPONSABILIDAD SOCIAL (DESCARGA)",
+      tipo:"pdf",
+      url:"/pdf/PO-GDR-03_POLITICA_DE_RESPONSABILIDAD_SOCIAL.pdf",
+      completado: false,
+      descripcion: "Revisa y DESCARGA la Política de Responsabilidad Social de la Compañía."
     },
     {
       id: 512,
-      titulo:"POLÍTICA DE RESPONSABILIDAD SOCIAL",
+      titulo: "CÓDIGO DE ÉTICA (DESCARGA)",
       tipo:"pdf",
-      url:"/pdf/PO-GDR-03_POLÍTICA_DE_RESPONSABILIDAD_SOCIAL.pdf",
+      url:"/pdf/PO-GDR-04_CODIGO_DE_ETICA_V2.pdf",
       completado: false,
-      descripcion: "Revisa la Política de Responsabilidad Social de la Compañía."
-    },
-    {
-      id: 513,
-      titulo: "CÓDIGO DE ÉTICA",
-      tipo:"pdf",
-      url:"/pdf/PO-GDR-01_CÓDIGO_DE_ÉTICA.pdf",
-      completado: false,
-      descripcion: "Revisa el Código de Ética de la Compañía."
+      descripcion: "Revisa y DESCARGA el Código de Ética de la Compañía."
     }
  ],
 };
