@@ -223,7 +223,7 @@ Cargo: JEFA DE TALENTO HUMANO
         <body>
           <h1>RECIBO CONFORME</h1>
           
-          <p>Acepto conforme la recepción del <strong>Reglamento Interno de Trabajo, Código de Ética y la Política de Responsabilidad Social.</strong></p>
+          <p>Acepto conforme la recepción del <strong>Reglamento Interno de Trabajo, Código de Ética y la Política de Responsabilidad Social de la Compañía Limitada Famedic.</strong></p>
           
           <p>Reconozco haber sido notificado de que debo leer, conocer, entender y cumplir con los artículos contenidos en dichos documentos.</p>
           
