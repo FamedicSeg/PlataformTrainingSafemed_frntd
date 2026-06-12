@@ -278,6 +278,7 @@ export default function Curso5({ curso }) {
               </div>
             ) : (
               <div>
+                {/*
                 <button
                   className="btn btn-primary me-2"
                   onClick={() => {
@@ -286,7 +287,7 @@ export default function Curso5({ curso }) {
                   }}
                 >
                   ▶ Iniciar curso
-                </button>
+                </button> */}
                 {progreso === 100 && (
                   <button
                     className="btn btn-warning btn-sm"
