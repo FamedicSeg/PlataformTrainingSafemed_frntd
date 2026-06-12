@@ -364,14 +364,14 @@ export default function Curso5({ curso }) {
                     state: { cursoNombre: curso.nombre }
                   })}
                 >
-                  📄 Firmar documento de conformidad
+                  📄 Completar el documento de conformidad
                 </button>
               </>
             ) : (
               <div className="mt-3">
                 <div className="alert alert-success">
                   <i className="bi bi-check-circle-fill fs-3 me-2"></i>
-                  <h5 className="d-inline-block mb-0">✓ Documento de conformidad firmado y enviado</h5>
+                  <h5 className="d-inline-block mb-0">✓ Documento de conformidad enviado</h5>
                   <p className="mt-2 mb-0 text-muted">Gracias por completar el proceso. Tu documento ha sido registrado exitosamente.</p>
                 </div>
               </div>
