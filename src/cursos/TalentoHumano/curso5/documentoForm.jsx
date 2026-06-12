@@ -110,7 +110,7 @@ export default function DocumentoForm() {
           
           <div className="contenido-documento">
             <p className="parrafo">
-              Acepto conforme la recepción del <strong>Reglamento Interno de Trabajo, Código de Ética y la Política de Responsabilidad Social.</strong>
+              Acepto conforme la recepción del <strong>Reglamento Interno de Trabajo, Código de Ética y la Política de Responsabilidad Social de la Compañía Limitada Famedic.</strong>
             </p>
             
             <p className="parrafo">
