@@ -166,6 +166,16 @@ export default function AdminTalentoHumano() {
     }));
   };
 
+  const formatearCedula = (cedula) => {
+    if (!cedula) return "N/A";
+    // Convertir a string, eliminar espacios y agregar ceros a la izquierda si es necesario
+    let cedulaStr = cedula.toString().trim();
+    if (cedulaStr.length === 9) {
+        return '0' + cedulaStr;
+    }
+    return cedulaStr;
+  };
+
   const imprimirDocumento = (doc) => {
     const ventana = window.open("", "_blank");
     ventana.document.write(`
@@ -202,7 +212,7 @@ export default function AdminTalentoHumano() {
           <div class="seccion">
             <div class="titulo-seccion">DATOS DEL COLABORADOR</div>
             <div class="campo"><span class="label">Apellidos y Nombres:</span> ${doc.apellidos_nombres}</div>
-            <div class="campo"><span class="label">C.I./ Pasaporte:</span> ${doc.cedula_identidad}</div>
+            <div class="campo"><span class="label">C.I./ Pasaporte:</span> ${formatearCedula(doc.cedula_identidad)}</div>
             <div class="campo"><span class="label">Proceso:</span> ${doc.proceso || "N/A"}</div>
             <div class="campo"><span class="label">Cargo:</span> ${doc.cargo || "N/A"}</div>
             <div class="campo"><span class="label">Fecha de Recepción:</span> ${formatearFechaDesdeDB(doc.fecha_recepcion)}</div>
@@ -236,7 +246,7 @@ export default function AdminTalentoHumano() {
     const rows = documentos.map(doc => [
       doc.id,
       doc.usuario,
-      doc.cedula_identidad,
+      formatearCedula(doc.cedula_identidad),
       doc.apellidos_nombres,
       doc.curso,
       doc.proceso || "N/A",
@@ -339,6 +349,7 @@ export default function AdminTalentoHumano() {
       "Fecha Registro": item.fecha_registro
         ? formatearFechaDesdeDB(item.fecha_registro)  // ✅ Corregido
         : 'N/A',
+      "C.I./ Pasaporte": formatearCedula(item.cedula_identidad),
       "Proceso": item.proceso
     }));
 
@@ -525,7 +536,7 @@ export default function AdminTalentoHumano() {
                 <tbody>
                   {documentosFiltrados.map(doc => (
                     <tr key={doc.id}>
-                      <td>{doc.cedula_identidad}</td>
+                      <td>{formatearCedula(doc.cedula_identidad)}</td>
                       <td>{doc.apellidos_nombres}</td>
                       <td>{doc.curso}</td>
                       <td>{doc.proceso || "N/A"}</td>

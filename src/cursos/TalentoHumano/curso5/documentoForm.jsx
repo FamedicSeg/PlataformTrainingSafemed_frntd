@@ -81,7 +81,7 @@ export default function DocumentoForm() {
       }, 3000);
     } else {
       // 📌 Muestra el error real del servidor
-      alert(`Error: ${data.error || data.message || "Error al enviar el documento"}`);
+      alert(`Error: ${data.error || data.message || "Error al enviar el documento. Si su número de cédula empieza con 0, digite pero sin el número 0 al inicio."}`);
     }
   } catch (error) {
     console.error("Error detallado:", error);
@@ -144,7 +144,7 @@ export default function DocumentoForm() {
                   value={formData.ciPasaporte}
                   onChange={handleChange}
                   required
-                  placeholder="Escriba su número de identificación"
+                  placeholder="Escriba su número de identificación. Si su número de cédula empieza con 0, digite pero sin el número 0 al inicio."
                 />
               </div>
               
