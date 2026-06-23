@@ -15,7 +15,7 @@ export default function Courses() {
       desc: "Duración: 2 horas", 
       link: "/courses/reglamentointerno",
       dbName: "reglamentoInterno",
-      bloqueado: true
+      bloqueado: false
     },
     { 
       id: 2, 
