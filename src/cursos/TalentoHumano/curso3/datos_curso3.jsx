@@ -65,7 +65,7 @@ export const cursoErradicacionViolencia = {
         id: 307,
         titulo: "¿Cómo erradicar la violencia y discriminación en una empresa o centros de trabajo?",
         tipo: "pdf",
-        url: "/pdf/Violencia_Discriminacion_en_el_trabajo.pdf",
+        url: "/pdf/Violencia_Discriminacion_en_el_trabajoV2.pdf",
         completado: false,
         descripcion: "Lee el siguiente documento para entender la relación entre igualdad de género."
     },

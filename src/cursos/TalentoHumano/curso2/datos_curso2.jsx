@@ -81,7 +81,7 @@ export const cursoIgualdadGenero = {
         id: 209,
         titulo: "Igualdad de Género",
         tipo: "pdf",
-        url: "/pdf/Igualdad_Genero.pdf",
+        url: "/pdf/Igualdad_GeneroV2.pdf",
         completado: false,
         descripcion: "Lee el siguiente documento para entender la relación entre igualdad de género."
     },
