@@ -31,7 +31,7 @@ export default function Courses() {
       desc: "Duración: 10 horas", 
       link: "/courses/igualdadgenero",
       dbName: "igualdad_genero",
-      bloqueado: true
+      bloqueado: false
     },
     { 
       id: 4, 
@@ -39,7 +39,7 @@ export default function Courses() {
       desc: "Duración: 10 horas", 
       link: "/courses/erradicacionviolencia",
       dbName: "erradicacion_Violencia",
-      bloqueado: true
+      bloqueado: false
     },
     { 
       id: 5, 
@@ -47,7 +47,7 @@ export default function Courses() {
       desc: "Duración: 10 horas", 
       link: "/courses/otrosrelacionados",
       dbName: "otrosRelacionados",
-      bloqueado: true
+      bloqueado: false
     }
   ];
 
