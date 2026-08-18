@@ -58,7 +58,7 @@ export const cursoDerechosLaborales = {
       id: 6,
       titulo: "Derechos Laborales y Ley Orgánica para la Igualdad Salarial",
       tipo: "pdf",
-      url: "/pdf/Derechos_Laborales_de_Hombres_MujeresV2.pdf.pdf",
+      url: "/pdf/Derechos_Laborales_de_Hombres_MujeresV2.pdf",
       completado: false,
       descripcion: "Lee el siguiente documento para entender los derechos laborales y la ley de igualdad salarial."
     },

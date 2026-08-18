@@ -21,7 +21,7 @@ export const cursoIgualdadGenero = {
         id: 202,
         titulo: "Panorama Global y Desafíos Pendientes",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829843/Infografia_3_uigzmo.png",
+        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1787084281/Panorama_Global_y_Desaf%C3%ADos_Pendientes_zza3yw.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -29,7 +29,7 @@ export const cursoIgualdadGenero = {
         id: 203,
         titulo: "Beneficios de la Igualdad",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829886/Infografia_4_xnpip7.png",
+        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1787084172/lOS_bENEFICIOS_DE_LA_IGUALDAD_qm7j9w.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
 
@@ -38,7 +38,7 @@ export const cursoIgualdadGenero = {
         id: 204,
         titulo: "Acciones para un mundo igualitario",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829899/Infografia_5_srmbb0.png",
+        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1787084179/Acciones_para_un_mundo_igualitario_rpml1q.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },

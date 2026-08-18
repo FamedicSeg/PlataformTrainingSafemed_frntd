@@ -21,7 +21,7 @@ export const cursoErradicacionViolencia = {
         id: 302,
         titulo: "Cero Tolerancia a La Violencia Laboral",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829933/Infografia_6_gvj9pv.png",
+        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1787084919/CERO_TOLERANCIA_A_LA_VIOLENCIA_LABORAL_e7z3l2.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -29,7 +29,7 @@ export const cursoErradicacionViolencia = {
         id: 303,
         titulo: "No discriminación - Inclusión",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829975/Infografia_7_lkfbd8.png",
+        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1787084935/NO_DISCRIMINACI%C3%93N_-_INCLUSI%C3%93N_c1uppk.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
 
@@ -47,7 +47,7 @@ export const cursoErradicacionViolencia = {
         id: 305,
         titulo: "Canal de Denuncias - Protocolos",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829995/Infografia_8_qvh6gq.png",
+        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1787084951/CANAL_DE_DENUNCIAS_-_PROTOCOLOS_ryfqw2.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },
