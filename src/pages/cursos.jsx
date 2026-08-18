@@ -23,7 +23,7 @@ export default function Courses() {
       desc: "Duración: 10 horas", 
       link: "/courses/derechoslaborales",
       dbName: "derechos_laborales",
-      bloqueado: true
+      bloqueado: false
     },
     { 
       id: 3, 
