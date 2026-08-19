@@ -38,10 +38,10 @@ export const cursoErradicacionViolencia = {
         id: 304,
         titulo: "Discriminación Laboral",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831260/Discriminacion_Laboral_dlaure.mp4",
+        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1787146236/Brechas_laborales_que_a%C3%BAn_enfrentan_las_mujeres_en_Ecuador_idcqo7.mp4",
         completado: false,
-        descripcion: "Revisa el siguiente video informativo.",
-        autor: "Autor: Silvana Leal"
+        descripcion: "Revisa el siguiente reportaje sobre las Brechas laborales entre hombres y mujeres en el Ecuador.",
+        autor: "Autor: Teleamazonas"
     },
     {
         id: 305,
