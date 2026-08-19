@@ -59,8 +59,7 @@ export default function LoginAdminProceso() {
     if (token && userData) {
       try {
         const user = JSON.parse(userData);
-        // Redirigir al dashboard si ya está autenticado
-        navigate(`/adminProcesoDashboard/${user.proceso_name}`);
+        navigate(`/admin/${encodeURIComponent(user.proceso_name)}`);
       } catch (error) {
         console.error("Error parsing user data:", error);
         localStorage.removeItem("admin_proceso_token");
@@ -115,8 +114,8 @@ export default function LoginAdminProceso() {
       // Mostrar mensaje de éxito
       setError("");
       
-      // Redirigir al dashboard del proceso específico
-      navigate(`/adminProcesoDashboard/${data.user.proceso_name}`);
+      // Redirigir al dashboard
+      navigate(`/admin/${encodeURIComponent(data.user.proceso_name)}`);
       
     } catch (err) {
       console.error("❌ Error en login:", err);

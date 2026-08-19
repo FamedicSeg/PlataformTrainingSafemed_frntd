@@ -21,6 +21,9 @@ import AdminTalentoHumano from './pages/adminTTHH';
 import LoginAdminProceso from './pages/adminProcesos';
 import ScrollToTop from './pages/scrollToTop';
 import Soporte from './pages/soporte';
+import AdminDireccion from './procesos/adminDireccion';
+import DocumentoForm from './cursos/TalentoHumano/curso5/documentoForm';
+import Sidebar from './pages/sidebar';
 
 import { cursoDerechosLaborales } from "./cursos/curso1/datos_curso";
 import { cursoIgualdadGenero } from "./cursos/curso2/datos_curso2";
@@ -265,6 +268,7 @@ function App() {
           {/* Rutas protegidas para usuarios logueados */}
           <Route path="/inicio" element={<ProtectedUserRoute><Home /></ProtectedUserRoute>} />
           <Route path="/soporte" element={<ProtectedUserRoute><Soporte /></ProtectedUserRoute>} />
+          <Route path="/documento-form" element={<DocumentoForm />} />
           <Route 
             path="/courses" 
             element={
@@ -331,6 +335,22 @@ function App() {
           />
 
           {/* Rutas protegidas de administrador */}
+          <Route 
+            path="/admin/home" 
+            element={
+              <PrivateRoute>
+                <AdminProcesoHome />
+              </PrivateRoute>
+            }
+          />
+          <Route 
+            path="/admin/cursos" 
+            element={
+              <PrivateRoute>
+                <AdminCursos />
+              </PrivateRoute>
+            }
+          />
           <Route 
             path="/adminTTHH" 
             element={

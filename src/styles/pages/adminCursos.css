@@ -1,0 +1,33 @@
+/* =========================================================
+   CONTENEDOR - SOLO PADDING TOP PARA COMPENSAR NAVBAR FIJO
+   ========================================================= */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 20px 20px;
+}
+
+/* El padding-top se aplica al body o al contenedor principal */
+body {
+  padding-top: 70px; /* Ajusta según la altura de tu navbar */
+}
+
+/* =========================================================
+   SECCIÓN DEL ENCABEZADO - SIN STICKY PARA EVITAR PROBLEMAS
+   ========================================================= */
+.header-section {
+  background: linear-gradient(135deg, #bbc5d6 0%, #92b7c9 100%);
+  z-index: 1;
+  padding: 12px 0;
+  margin-bottom: 15px;
+  border-bottom: 3px solid #0a2752;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header-info {
+    grid: auto / auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+

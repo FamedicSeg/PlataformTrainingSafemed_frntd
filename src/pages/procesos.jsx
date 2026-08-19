@@ -7,17 +7,14 @@ export default function Procesos(){
     const location = useLocation();
 
     const courses =[
-        {id:1, name: "Talento Humano" ,desc: "Capacitación de Talento Humano" ,link: "/courses" },
-        {id:2, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capcitación de SGCS" , link: "/soporte"},
-        {id:3, name: "Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/soporte"},
-        {id:4, name: "Producción", desc: "Capacitación de Producción", link: "/soporte"},
-        {id:5, name: "Salud Ocupacional", desc: "Capacitación de Salud Ocupacional", link:"/soporte"},
-        {id:6, name: "Seguridad Industrial", desc: "Capacitación de Seguridad Industrial", link:"/soporte"},
-        {id:7, name: "Seguridad Informática", desc: "Capacitación de la Seguridad en la Información", link:"/soporte"},
+        {id:1, name: "Talento Humano" ,desc: "Capacitación de Talento Humano" ,link: "/courses", enabled: true },
+        {id:2, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capcitación de SGCS" , link: "/soporte", enabled: false},
+        {id:3, name: "Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/soporte", enabled: false},
+        {id:4, name: "Producción", desc: "Capacitación de Producción", link: "/soporte", enabled: false},
+        {id:5, name: "Salud Ocupacional", desc: "Capacitación de Salud Ocupacional", link:"/soporte", enabled: false},
+        {id:6, name: "Seguridad Industrial", desc: "Capacitación de Seguridad Industrial", link:"/soporte", enabled: false},
+        {id:7, name: "Seguridad Informática", desc: "Capacitación de la Seguridad en la Información", link:"/soporte", enabled: false},
     ];
-
-    //const [progress, setProgress] = useState(0);
-
 
     useEffect(() => {
         if(location.state && location.state.refrescar){

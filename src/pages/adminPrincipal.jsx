@@ -1,234 +1,201 @@
-import { useEffect, useState } from "react";
-import { jsPDF } from "jspdf";
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import { useEffect, useMemo, useState } from "react";
+import { Search, Plus, MoreVertical, Mail, Shield, UserX } from "lucide-react";
+import Sidebar from "./sidebar";
+import "../styles/pages/globals.css";
 
-export default function Admin() {
-  const API_URL = import.meta.env.VITE_API_URL;
-  const URL = `${API_URL}/results`; 
+export default function AdminPrincipal() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeView, setActiveView] = useState("usuarios"); // Estado para la vista activa
 
-  const [submissions, setSubmissions] = useState([]);
+  // ✅ usuarios desde DB
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  // Cargar datos desde backend
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    const fetchResults = async () => {
+    const fetchUsers = async () => {
       try {
-        const res = await fetch(URL);
+        setLoading(true);
+        setErrorMsg("");
+
+        const res = await fetch(`${API_URL}/api/usuarios/load`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          // credentials: "include", // úsalo si manejas cookies/sesión
+        });
+
+        if (!res.ok) {
+          const txt = await res.text();
+          throw new Error(`Error ${res.status}: ${txt}`);
+        }
+
         const data = await res.json();
-        setSubmissions(data);
-      } catch (error) {
-        console.error("❌ Error al obtener datos del backend:", error);
+        setUsers(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error cargando usuarios:", err);
+        setErrorMsg("No se pudieron cargar los usuarios. Revisa tu API.");
+        setUsers([]);
       } finally {
         setLoading(false);
       }
     };
-    fetchResults();
-  }, []);
 
-  // Agrupar intentos por persona
-  const grouped = submissions.reduce((acc, curr) => {
-    if (!curr.nombre) return acc;
-    if (!acc[curr.nombre]) acc[curr.nombre] = [];
-    acc[curr.nombre].push(curr);
-    return acc;
-  }, {});
+    if (API_URL) fetchUsers();
+    else {
+      setLoading(false);
+      setErrorMsg("Falta configurar VITE_API_URL en tu frontend.");
+    }
+  }, [API_URL]);
 
-  const total = submissions.length;
-  const passed = submissions.filter((s) => s.aprobado).length;
-  const failed = total - passed;
+  // ✅ Filtrado (igual que tenías)
+  const filteredUsers = useMemo(() => {
+    return users.filter((user) => {
+      const nombre = (user.nombre || "").toLowerCase();
+      const cedula_identidad = (user.cedula_identidad || "").toLowerCase(); 
+      const term = searchTerm.toLowerCase();
 
-  // Generar certificado
-  const generateCertificate = (record) => {
-  const doc = new jsPDF({ orientation: "landscape" });
-  const w = doc.internal.pageSize.getWidth();
-  const h = doc.internal.pageSize.getHeight();
-
-  // === COLORES ===
-  const azulOscuro = "#00334e";
-  const azulMedio = "#007c8a";
-  const aqua = "#00b3b3";
-
-  // === FONDO CON FORMAS (imitación del certificado) ===
-  doc.setFillColor(azulOscuro);
-  doc.rect(0, 0, w, h * 0.20, "F");
-
-  doc.setFillColor(aqua);
-  doc.rect(0, h * 0.18, w, 15, "F");
-
-  // Capa decorativa inferior
-  doc.setFillColor(azulMedio);
-  doc.rect(0, h - 40, w, 40, "F");
-
-  // === CABECERA ===
-  doc.setTextColor("#00334e");
-  doc.setFontSize(16);
-  doc.text("COMPAÑÍA LIMITADA FAMEDIC", w / 2, 30, { align: "center" });
-
-  doc.setFontSize(40);
-  doc.setTextColor("#000000");
-  doc.text("CERTIFICADO", w / 2, 55, { align: "center" });
-
-  doc.setFillColor(aqua);
-  doc.rect(w / 2 - 120, 62, 240, 12, "F");
-  doc.setTextColor("#ffffff");
-  doc.setFontSize(14);
-  doc.text("DE CULMINACIÓN DE LA CAPACITACIÓN INTERNA", w / 2, 71, { align: "center" });
-
-  // === CUERPO ===
-  doc.setTextColor("#000000");
-  doc.setFontSize(14);
-  doc.text("Este certificado se otorga a:", w / 2, 95, { align: "center" });
-
-  doc.setFontSize(30);
-  doc.setTextColor(azulOscuro);
-  doc.text(record.nombre, w / 2, 115, { align: "center" });
-
-  doc.setFontSize(13);
-  doc.setTextColor("#000000");
-  doc.text(
-    "Por haber completado satisfactoriamente el programa de formación correspondiente,",
-    w / 2,
-    135,
-    { align: "center" }
-  );
-  doc.text(
-    "demostrando competencia en los principios y prácticas establecidas.",
-    w / 2,
-    145,
-    { align: "center" }
-  );
-
-  // === FECHA Y DURACIÓN ===
-  doc.setFontSize(11);
-  const fecha = record.date || new Date().toLocaleDateString();
-  doc.text(`Fecha: ${fecha}`, w / 2 - 80, 165);
-  doc.text(`Duración: 40 horas`, w / 2 + 50, 165);
-
-  // === FIRMA ===
-  doc.setDrawColor(0);
-  doc.line(w / 2 - 60, h - 45, w / 2 + 60, h - 45);
-
-  doc.setFontSize(14);
-  doc.text("LILIANA ABIGAIL CISNEROS NOVOA", w / 2, h - 30, { align: "center" });
-  doc.setFontSize(11);
-  doc.text(
-    "JEFE DE TALENTO HUMANO",
-    w / 2,
-    h - 22,
-    { align: "center" }
-  );
-
-  // === GUARDAR ===
-  doc.save(`Certificado_${record.nombre}.pdf`);
-};
-
-  // Exportar a Excel
-  const exportToExcel = () => {
-    if (submissions.length === 0) return alert("No hay datos para exportar.");
-
-    const rows = submissions.map((r, i) => ({
-      "#": i + 1,
-      "Nombre completo": r.nombre,
-      "Puntaje (%)": r.puntaje,
-      Estado: r.aprobado ? "Aprobado" : "No aprobado",
-      Fecha: r.fecha
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Resultados");
-
-    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-    const blob = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      return nombre.includes(term) || cedula_identidad.includes(term);
     });
-    saveAs(blob, "Reporte_Capacitaciones.xlsx");
-  };
+  }, [users, searchTerm]);
 
   return (
-    <div className="container py-5">
-      <h2 className="fw-bold text-primary mb-4 text-center">🧾 Panel de Administración</h2>
+    <div className="admin-layout">
+      <Sidebar onNavigate={setActiveView} activeView={activeView} />
+      <main className="main-content">
+        {activeView === 'usuarios' && (
+          <div className="admin-users">
+            {/* Header */}
+            <div className="admin-users-header">
+              <div>
+                <h1>EMPLEADOS DHISVE</h1>
+                <p>Administra los empleados de tu plataforma</p>
+              </div>
 
-      {loading ? (
-        <div className="alert alert-info text-center">Cargando datos desde el servidor...</div>
-      ) : (
-        <>
-          <div className="alert alert-info text-center mb-4">
-            <strong>Total de evaluaciones realizadas:</strong> {total} •{" "}
-            <strong>Aprobados:</strong> {passed} •{" "}
-            <strong>No aprobados:</strong> {failed}
-          </div>
-
-          {submissions.length > 0 && (
-            <div className="text-end mb-3">
-              <button className="btn btn-success" onClick={exportToExcel}>
-                <i className="bi bi-file-earmark-excel me-2"></i> Exportar a Excel
+              <button className="btn-new-user">
+                <Plus className="w-5 h-5" />
+                Nuevo Usuario
               </button>
             </div>
-          )}
 
-          {Object.keys(grouped).length === 0 ? (
-            <div className="alert alert-warning text-center">
-              No se encontraron registros.
+            {/* Filtros */}
+            <div className="filters-card">
+              <div className="search-wrap">
+                <div className="search-icon">
+                  <Search />
+                  <input
+                    type="text"
+                    placeholder="Busca por Nombre o Cédula de Identidad"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="search-field"
+                  />
+                </div>
+              </div>
             </div>
-          ) : (
-            <div className="table-responsive">
-              <table className="table table-bordered align-middle text-center">
-                <thead className="table-primary">
-                  <tr>
-                    <th>#</th>
-                    <th>Nombre completo</th>
-                    <th>Intentos</th>
-                    <th>Último puntaje</th>
-                    <th>Estado</th>
-                    <th>Última fecha</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(grouped).map(([name, attempts], i) => {
-                    const sorted = [...attempts].sort(
-                      (a, b) => Number(b.id) - Number(a.id)
-                    );
-                    const last = sorted[0];
-                    const approved = last.aprobado;
 
-                    return (
-                      <tr key={i}>
-                        <td>{i + 1}</td>
-                        <td className="text-start">{name}</td>
-                        <td>{attempts.length}</td>
-                        <td>{last.puntaje}%</td>
-                        <td>
-                          {approved ? (
-                            <span className="badge bg-success">Aprobado</span>
-                          ) : (
-                            <span className="badge bg-danger">No aprobado</span>
-                          )}
-                        </td>
-                        <td>{last.fecha}</td>
-                        <td>
-                          {approved ? (
-                            <button
-                              className="btn btn-outline-success btn-sm"
-                              onClick={() => generateCertificate(last)}
-                            >
-                              <i className="bi bi-file-earmark-arrow-down"></i> Certificado
-                            </button>
-                          ) : (
-                            <span className="text-muted small">Sin certificado</span>
-                          )}
-                        </td>
+            {/* Estados */}
+            {loading && (
+              <div className="state-card">
+                Cargando usuarios...
+              </div>
+            )}
+
+            {!loading && errorMsg && (
+              <div className="state-card error">
+                {errorMsg}
+              </div>
+            )}
+
+            {!loading && !errorMsg && filteredUsers.length === 0 && (
+              <div className="state-card">
+                No hay usuarios para mostrar.
+              </div>
+            )}
+
+            {/* Tabla */}
+            {!loading && !errorMsg && filteredUsers.length > 0 && (
+              <div className="table-card">
+                <div className="table-scroll">
+                  <table className="users-table">
+                    <thead>
+                      <tr>
+                        <th>Usuario</th>
+                        <th>Cédula de Identidad</th>
+                        <th>Proceso</th>
+                        <th>Cargo</th>
+                        <th>Empresa</th>
+                        <th>Fecha de Registro</th>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </>
-      )}
+                    </thead>
+
+                    <tbody>
+  {filteredUsers.map((user) => (
+    <tr key={user.id}>
+      {/* ✅ Columna: Usuario */}
+      <td>
+        <div className="user-cell">
+          <div className="user-avatar">
+            <span>
+              {(user.nombre || "U")
+                .split(" ")
+                .filter(Boolean)
+                .map((n) => n[0])
+                .join("")
+                .slice(0, 2)}
+            </span>
+          </div>
+          <div>
+            <p className="user-name">{user.nombre}</p>
+            <p className="user-email">{user.email}</p>
+          </div>
+        </div>
+      </td>
+
+      {/* ✅ Columna: Cédula */}
+      <td>
+        {user.cedula_identidad || "N/A"}
+      </td>
+
+      {/* ✅ Columna: Proceso */}
+      <td>
+        {user.proceso || "N/A"}
+      </td>
+
+      {/* ✅ Columna: Cargo */}
+      <td>
+        {user.cargo || "N/A"}
+      </td>
+
+      {/* ✅ Columna: Empresa */}
+      <td>
+        {user.empresa_socio || "N/A"}
+      </td>
+
+      {/* ✅ Columna: Fecha Registro */}
+      <td>
+        {user.fecha_registro
+          ? new Date(user.fecha_registro).toLocaleDateString("es-EC")
+          : "N/A"}
+      </td>
+    </tr>
+  ))}
+</tbody>
+
+
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        {activeView === 'Talento Humano' && <div>Contenido de Talento Humano</div>}
+        {activeView === 'Control de Calidad' && <div>Contenido de Control de Calidad</div>}
+        {activeView === 'Dirección' && <div>Contenido de Dirección</div>}
+        {activeView === 'Aseguramiento de la Calidad' && <div>Contenido de Aseguramiento de la Calidad</div>}
+        {activeView === 'Resultados' && <div>Contenido de Resultados</div>}
+      </main>
     </div>
   );
 }
