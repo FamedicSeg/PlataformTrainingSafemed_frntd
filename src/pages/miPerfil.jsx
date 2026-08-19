@@ -568,12 +568,12 @@ export default function MiPerfil() {
                     <table className="table table-sm table-bordered align-middle mb-0">
                       <thead className="table-light">
                         <tr>
-                          <th>Año</th>
-                          <th>Estado</th>
+                          <th className="text-center">Año</th>
+                          <th className="text-center">Estado</th>
                           <th className="text-center">Módulos</th>
                           <th className="text-center">Calificación</th>
                           <th className="text-center">Resultado</th>
-                          <th>Finalizado</th>
+                          <th className="text-center">Finalizado</th>
                         </tr>
                       </thead>
                       <tbody>

@@ -30,23 +30,6 @@
   top: 0;
 }
 
-@media (max-width: 768px) {
-  .perfil-layout {
-    min-width: 0;
-    flex-direction: column;
-    min-height: 0;
-
-
-  }
-
-  .perfil-sidebar {
-    margin-top: 15px;
-    position: static;
-    width: 100%;
-    height: auto;
-  }
-}
-
 .perfil-sidebar__avatar {
   width: 80px;
   height: 80px;
@@ -515,3 +498,71 @@
   border-radius: 12px;
 }
 
+.text-center{
+    font-size: 0.8rem;
+}
+
+.historial-grupo td{
+    font-size: 0.9rem;
+    padding: 0.3rem 0.5rem;
+    align-items: center;
+}
+
+/* ── Diseño para móviles ───────────────────────────────────────────── */
+@media (max-width: 450px) {
+  .perfil-layout {
+    min-width: 0px;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .perfil-sidebar {
+    margin-top: 15px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    max-width: 95%;
+    margin: 0 auto;
+    height: auto;
+  }
+  
+  .tabla-cursos-principal thead th {
+    font-size: 0.4rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .tabla-cursos-principal tbody td {
+    font-size: 0.5rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .perfil-historial {
+    gap: 0.75rem;
+  }
+  .historial-grupo__header {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .historial-grupo__proceso {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .historial-grupo .table-responsive {
+    font-size: 0.6rem;
+  }
+
+  .text-center {
+    font-size: 0.6rem;
+  }
+
+  .historial-grupo td{
+    font-size: 0.6rem;
+    padding: 0.3rem 0.5rem;
+  }
+  
+  .text-muted{
+    font-size: 0.5rem;
+  }
+}
