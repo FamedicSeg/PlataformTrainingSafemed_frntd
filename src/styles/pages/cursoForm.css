@@ -1,0 +1,43 @@
+.d-flex.gap-2{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.btn-crear-actualizar {
+    background-color: #38c98d;
+    color: #ffffff;
+    border: none;
+    width: 200px;
+    height: 50px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-crear-actualizar:hover {
+    background-color: #1bae6c;
+}
+
+.btn-cancelar2 {
+    background-color: #bd2608;
+    color: #ffffff;
+    border: none;
+    width: 200px;
+    height: 50px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-cancelar2:hover {
+    background-color: #6e1807;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px;
+    transition: border-color 0.3s ease;
+    text-transform: none;
+}

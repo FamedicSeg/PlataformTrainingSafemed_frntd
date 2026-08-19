@@ -168,7 +168,7 @@ export default function Curso({ curso }) {
           
           // Redirigir después de un breve retraso
           setTimeout(() => {
-            navigate("/courses", { 
+            navigate("/courses/tthh", { 
               replace: true, 
               state: { 
                 refrescar: true,

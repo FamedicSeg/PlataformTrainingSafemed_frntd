@@ -1,23 +1,19 @@
 import { useState, useEffect } from 'react';
 import { AlertCircle, CheckCircle } from 'lucide-react';
-import '../styles/pages/documentoForm.css';
+import '../styles/pages/cursoForm.css';
 
-/**
- * CursoForm - Formulario para crear/editar cursos
- * 
- * Props:
- *   - cursoId: null (crear) o number (editar)
- *   - onSave: callback cuando se guarda
- *   - onCancel: callback cuando se cancela
- *   - initialData: datos iniciales (opcional)
- */
+//CursoForm - Formulario para crear/editar cursos
 export default function CursoForm({ cursoId = null, onSave, onCancel, initialData = null }) {
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("admin_token");
 
   const [formData, setFormData] = useState({
     nombre: '',
-    descripcion: ''
+    descripcion: '',
+    razon_curso: '',
+    dirigido_a: '',
+    fecha_inicio: '',
+    fecha_fin: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -29,7 +25,11 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
     if (initialData) {
       setFormData({
         nombre: initialData.nombre || '',
-        descripcion: initialData.descripcion || ''
+        descripcion: initialData.descripcion || '',
+        razon_curso: initialData.razon_curso || '',
+        dirigido_a: initialData.dirigido_a || '',
+        fecha_inicio: initialData.fecha_inicio ? new Date(initialData.fecha_inicio).toISOString().slice(0, 16) : '',
+        fecha_fin: initialData.fecha_fin ? new Date(initialData.fecha_fin).toISOString().slice(0, 16) : ''
       });
     }
   }, [initialData]);
@@ -50,6 +50,23 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
 
     if (!formData.nombre.trim()) {
       setError('El nombre del curso es requerido');
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.razon_curso.trim()) {
+      setError('La razón del curso es requerida');
+      setLoading(false);
+      return;
+    }
+    if (!formData.dirigido_a.trim()) {
+      setError('El campo "Dirigido a" es requerido');
+      setLoading(false);
+      return;
+    }
+
+    if (formData.fecha_inicio && formData.fecha_fin && new Date(formData.fecha_fin) <= new Date(formData.fecha_inicio)) {
+      setError('La fecha de fin debe ser posterior a la fecha de inicio');
       setLoading(false);
       return;
     }
@@ -110,7 +127,7 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
 
       <div className="mb-3">
         <label className="form-label fw-semibold">
-          Nombre del Curso *
+          Nombre del Curso:
         </label>
         <input
           type="text"
@@ -118,14 +135,14 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
           name="nombre"
           value={formData.nombre}
           onChange={handleChange}
-          placeholder="Ej: Seguridad Industrial 2026"
+          placeholder="Ingrese el nombre del curso Ej: "
           disabled={loading}
         />
       </div>
 
       <div className="mb-3">
         <label className="form-label fw-semibold">
-          Descripción
+          Descripción:
         </label>
         <textarea
           className="form-control"
@@ -138,17 +155,81 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
         />
       </div>
 
+      <div className="mb-3">
+        <label className="form-label fw-semibold">
+          Justificación del Curso:
+        </label>
+        <textarea
+          className="form-control"
+          name="razon_curso"
+          value={formData.razon_curso}
+          onChange={handleChange}
+          placeholder="Ejemplo: El siguiente video muestra los riesgos y prevenciones de accidentes laborales..."
+          rows="4"
+          disabled={loading}
+          required
+        />
+        <small className="form-text text-muted">
+          Explica por qué se crea este curso. Talento Humano lo usará para decidir si aprobarlo.
+        </small>
+      </div>
+      <div>
+        <label className="form-label fw-semibold">
+          Dirigido a:
+        </label>
+        <textarea
+          className="form-control"
+          name="dirigido_a"
+          value={formData.dirigido_a}
+          onChange={handleChange}
+          placeholder="Ejemplo: Personal de planta, contratistas, etc..."
+          rows="4"
+          disabled={loading}
+        ></textarea>
+      </div>
+
+      <div className="row mt-3">
+        <div className="col-md-6 mb-3">
+          <label className="form-label fw-semibold">
+            📅 Fecha y Hora de Inicio:
+          </label>
+          <input
+            type="datetime-local"
+            className="form-control"
+            name="fecha_inicio"
+            value={formData.fecha_inicio}
+            onChange={handleChange}
+            disabled={loading}
+          />
+          <small className="form-text text-muted">El curso se habilitará automáticamente en esta fecha.</small>
+        </div>
+        <div className="col-md-6 mb-3">
+          <label className="form-label fw-semibold">
+            🕑 Fecha y Hora de Fin:
+          </label>
+          <input
+            type="datetime-local"
+            className="form-control"
+            name="fecha_fin"
+            value={formData.fecha_fin}
+            onChange={handleChange}
+            disabled={loading}
+          />
+          <small className="form-text text-muted">El curso se bloqueará automáticamente en esta fecha.</small>
+        </div>
+      </div>
+
       <div className="d-flex gap-2">
         <button
           type="submit"
-          className="btn btn-primary"
+          className="btn-crear-actualizar"
           disabled={loading}
         >
           {loading ? 'Guardando...' : (cursoId ? 'Actualizar' : 'Crear')} Curso
         </button>
         <button
           type="button"
-          className="btn btn-secondary"
+          className="btn-cancelar2"
           onClick={onCancel}
           disabled={loading}
         >

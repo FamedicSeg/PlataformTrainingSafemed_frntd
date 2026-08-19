@@ -5,8 +5,11 @@ import "../styles/pages/navbar.css";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const [isNavCollapsed, setIsNavCollapsed] = useState(true); // ⬅️ ESTADO
-  const navbarRef = useRef(null); // ⬅️ REF PARA DETECTAR CLICS EXTERNOS
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const navbarRef = useRef(null);
+
+  // Leer nombre del usuario para mostrarlo en el botón de perfil
+  const _usuario = JSON.parse(localStorage.getItem('usuario_logueado') || '{}');
 
   const handleLogout = async (e) => {
   e.preventDefault();
@@ -129,9 +132,9 @@ export default function Navbar() {
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
           aria-controls="navbarNav"
-          aria-expanded={!isNavCollapsed ? "true" : "false"} // ⬅️ IMPORTANTE
+          aria-expanded={!isNavCollapsed ? "true" : "false"} 
           aria-label="Toggle navigation"
-          onClick={handleNavToggle} // ⬅️ MANEJADOR PROPIO
+          onClick={handleNavToggle} 
         >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -160,6 +163,18 @@ export default function Navbar() {
               >
                 <i className="bi bi-diagram-3 d-lg-none me-2"></i>
                 Procesos
+              </Link>
+            </li>
+
+            {/* LINK MI PERFIL */}
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to="/mi-perfil"
+                onClick={handleNavLinkClick}
+              >
+                <i className="bi bi-person-circle me-1"></i>
+                Mi Perfil
               </Link>
             </li>
 
@@ -193,12 +208,15 @@ export default function Navbar() {
           </ul>
         </div>
 
-        {/* USUARIO INFO SOLO EN DESKTOP */}
+        {/* USUARIO INFO SOLO EN DESKTOP 
         <div className="navbar-user-info d-none d-lg-flex align-items-center order-lg-4 ms-3">
-          <div className="user-avatar me-2">
-            <i className="bi bi-person-circle" style={{ fontSize: "1.5rem" }}></i>
-          </div>
-        </div>
+          <Link to="/mi-perfil" className="d-flex align-items-center text-white text-decoration-none">
+            <i className="bi bi-person-circle me-1" style={{ fontSize: '1.5rem' }}></i>
+            <span className="d-none d-xl-inline" style={{ fontSize: '0.85rem', maxWidth: '130px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {usuario.nombre || 'Mi perfil'}
+            </span>
+          </Link>
+        </div>*/}
       </div>
     </nav>
   );

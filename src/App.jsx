@@ -6,7 +6,21 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { useState, useEffect } from 'react';
 
 import Home from './pages/inicio';
-import Courses from './pages/cursos';
+import CoursesTTHH from './pages/procesos/cursosTTHH';
+import CoursesSegInd from './pages/procesos/cursosSegInd';
+import CoursesOperaciones from './pages/procesos/cursosOperaciones';
+import CoursesSaludOc from './pages/procesos/cursosSaludOc';
+import CoursesAsuntosRegulatorios from './pages/procesos/cursosARCC';
+import CoursesSGCS from './pages/procesos/cursosSGCS';
+import CoursesAlmacenamientoLogistica from './pages/procesos/cursosALogistica';
+import CoursesSeguridadInformatica from './pages/procesos/cursosSeguridadInformatica';
+import CoursesGerencia from './pages/procesos/cursosGerencia';
+import CoursesGestionComercial from './pages/procesos/cursosGestionComercial';
+import CoursesCompras from './pages/procesos/cursosCompras';
+import CoursesInfraMantenimiento from './pages/procesos/cursosInfraMantenimiento';
+import CoursesInvestigacionDesarrollo from './pages/procesos/cursosInvestigaciónDesarrollo';
+import CoursesMarketing from './pages/procesos/cursosMarketing';
+
 import AdminPrincipal from './pages/adminPrincipal';
 import Login from './pages/login';
 import LoginNombre from './pages/principal';
@@ -18,13 +32,20 @@ import Curso5 from './cursos/TalentoHumano/curso5/curso5';
 import Navbar from './pages/navbar';
 import Navbar2 from './pages/navbar2';
 import Procesos from './pages/procesos';
-import AdminTalentoHumano from './procesos/adminTTHH';
 import LoginAdminProceso from './pages/adminProcesos';
 import ScrollToTop from './pages/scrollToTop';
 import Soporte from './pages/soporte';
-import AdminDireccion from './procesos/adminDireccion';
+import AdminCursos from './pages/adminCursos';
+import AdminProcesoHome from './pages/adminProcesoHome';
+import AprobacionCursos from './pages/aprobacionCursos';
+import CursosDisponibles from './pages/cursosDisponibles';
+import VisorCurso from './pages/visorCurso';
+import MiPerfil from './pages/miPerfil';
 import DocumentoForm from './cursos/TalentoHumano/curso5/documentoForm';
 import Sidebar from './pages/sidebar';
+import CambiarPassword from './pages/cambiarPassword';
+import Prueba from './pages/prueba';
+import Pruebas from './pages/pruebas';
 
 import { cursoDerechosLaborales } from "./cursos/TalentoHumano/curso1/datos_curso";
 import { cursoIgualdadGenero } from "./cursos/TalentoHumano/curso2/datos_curso2";
@@ -32,7 +53,7 @@ import { cursoErradicacionViolencia } from "./cursos/TalentoHumano/curso3/datos_
 import { cursoOtrosRelacionados } from './cursos/TalentoHumano/curso4/datos_curso4';
 import {cursoReglamentoInterno} from './cursos/TalentoHumano/curso5/datos_curso5';
 
-import Prueba from './pages/prueba';
+
 
 // COMPONENTE SIMPLIFICADO PARA RUTAS PROTEGIDAS
 // COMPONENTE MEJORADO PARA RUTAS PROTEGIDAS
@@ -164,7 +185,7 @@ function Layout({ children }) {
   // Determinar qué navbar mostrar
   const renderNavbar = () => {
     // Rutas sin navbar
-    if (["/", "/admin", "/admin/procesos","/adminPrincipal", "/sidebar"].includes(location.pathname)) {
+    if (["/", "/admin", "/admin/procesos", "/admin/cambiar-password", "/sidebar"].includes(location.pathname)) {
       return null;
     }
     
@@ -206,8 +227,8 @@ function Layout({ children }) {
             className="mt-3 w-100"
             style={{ height: "200px", objectFit: "cover" }}
           />
-          <small className="footer-full">
-            Copyright © 2026, DHISVE | Sistema de Capacitación Interna | Todos los derechos reservados | Analista de Transformaciión Digital
+          <small className="footer-full" style={{ display: 'block', marginTop: '10px', textAlign: 'center' }}>
+            Copyright © 2026 | Sistema de Capacitación Interna | Analista de Transformación Digital
           </small>
         </footer>
       )}
@@ -265,6 +286,7 @@ function App() {
           <Route path="/" element={<LoginNombre />} />
           <Route path="/admin" element={<Login />} />
           <Route path="/admin/procesos" element={<LoginAdminProceso />} />
+          <Route path="/admin/cambiar-password" element={<CambiarPassword />} />
           <Route path="/adminPrincipal" element={<AdminPrincipal />} />
           <Route path="/sidebar" element={<Sidebar />} />
           
@@ -272,16 +294,122 @@ function App() {
           {/* Rutas protegidas para usuarios logueados */}
           <Route path="/inicio" element={<ProtectedUserRoute><Home /></ProtectedUserRoute>} />
           <Route path="/soporte" element={<ProtectedUserRoute><Soporte /></ProtectedUserRoute>} />
+          <Route path="/cursos-disponibles" element={<ProtectedUserRoute><CursosDisponibles /></ProtectedUserRoute>} />
+          <Route path="/mi-perfil" element={<ProtectedUserRoute><MiPerfil /></ProtectedUserRoute>} />
+          <Route path="/curso/:cursoId" element={<ProtectedUserRoute><VisorCurso /></ProtectedUserRoute>} />
           <Route path="/documento-form" element={<DocumentoForm />} />
           <Route 
-            path="/courses" 
+            path="/courses/tthh" 
             element={
               <ProtectedUserRoute>
-                <Courses />
+                <CoursesTTHH />
+              </ProtectedUserRoute>
+            } 
+          /> 
+          <Route 
+            path="/courses/seguridad-industrial" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesSegInd />
               </ProtectedUserRoute>
             } 
           />
-          
+          <Route 
+            path="/courses/gerencia" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesGerencia />
+              </ProtectedUserRoute>
+            } 
+          />
+          <Route 
+            path="/courses/salud-ocupacional" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesSaludOc />
+              </ProtectedUserRoute>
+            } 
+          />
+          <Route 
+            path="/courses/operaciones" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesOperaciones />
+              </ProtectedUserRoute>
+            } 
+          /> 
+          <Route 
+            path="/courses/asuntosRegulatorios" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesAsuntosRegulatorios />
+              </ProtectedUserRoute>
+            } 
+          />
+          <Route 
+            path="/courses/sgcs" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesSGCS />
+              </ProtectedUserRoute>
+            } 
+          /> 
+          <Route 
+            path="/courses/almacenamientoLogistica" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesAlmacenamientoLogistica />
+              </ProtectedUserRoute>
+            } 
+          />
+           <Route 
+            path="/courses/seguridadInformatica" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesSeguridadInformatica />
+              </ProtectedUserRoute>
+            } 
+          />
+          <Route 
+            path="/courses/ventas" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesGestionComercial />
+              </ProtectedUserRoute>
+            } 
+          />
+           <Route 
+            path="/courses/compras" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesCompras />
+              </ProtectedUserRoute>
+            } 
+          />
+          <Route
+            path="/courses/mantenimiento"
+            element={
+              <ProtectedUserRoute>
+                <CoursesInfraMantenimiento />
+              </ProtectedUserRoute>
+            } 
+          />
+          <Route 
+            path="/courses/investigacionDesarrollo" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesInvestigacionDesarrollo />
+              </ProtectedUserRoute>
+            } 
+          />
+          <Route 
+            path="/courses/marketing" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesMarketing />
+              </ProtectedUserRoute>
+            } 
+          />
           <Route 
             path="/procesos" 
             element={
@@ -346,8 +474,24 @@ function App() {
               </ProtectedUserRoute>
             } 
           />
+          <Route 
+            path="/prueba-proceso" 
+            element={
+              <ProtectedUserRoute>
+                <Pruebas />
+              </ProtectedUserRoute>
+            } 
+          />
 
           {/* Rutas protegidas de administrador */}
+          <Route 
+            path="/admin/principal" 
+            element={
+              <PrivateRoute>
+                <AdminProcesoHome />
+              </PrivateRoute>
+            }
+          />
           <Route 
             path="/admin/home" 
             element={
@@ -365,22 +509,13 @@ function App() {
             }
           />
           <Route 
-            path="/admin/Talento Humano" 
+            path="/admin/aprobacion-cursos" 
             element={
               <PrivateRoute>
-                <AdminTalentoHumano />
+                <AprobacionCursos />
               </PrivateRoute>
             }
           />
-          <Route 
-            path="/admin/Dirección" 
-            element={
-              <PrivateRoute>
-                <AdminDireccion />
-              </PrivateRoute>
-            }
-          />
-
           {/* Ruta por defecto/404 */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -128,7 +128,7 @@ export default function InscripcionesManager({ cursoId, onClose }) {
       backgroundColor: 'rgba(0,0,0,0.5)',
       zIndex: 9999
     }}>
-      <div className="card" style={{ maxWidth: '1000px', width: '90%', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="card">
         <div className="card-header d-flex justify-content-between align-items-center">
           <h5 className="mb-0">Inscripciones del Curso</h5>
           <button className="btn-close" onClick={onClose}></button>
@@ -140,28 +140,28 @@ export default function InscripcionesManager({ cursoId, onClose }) {
             <div className="btn-group" role="group">
               <button
                 type="button"
-                className={`btn ${estadoFiltro === 'todos' ? 'btn-primary' : 'btn-outline-primary'}`}
+                className={`btn ${estadoFiltro === 'todos' ? 'btn-primary-todos' : 'btn-outline-primary-todos'}`}
                 onClick={() => setEstadoFiltro('todos')}
               >
                 Todos ({inscripciones.length})
               </button>
               <button
                 type="button"
-                className={`btn ${estadoFiltro === 'no iniciado' ? 'btn-primary' : 'btn-outline-primary'}`}
+                className={`btn ${estadoFiltro === 'no iniciado' ? 'btn-primary-no-iniciado' : 'btn-outline-primary-no-iniciado'}`}
                 onClick={() => setEstadoFiltro('no iniciado')}
               >
                 No Iniciado ({inscripciones.filter(i => i.estado === 'no iniciado').length})
               </button>
               <button
                 type="button"
-                className={`btn ${estadoFiltro === 'en progreso' ? 'btn-primary' : 'btn-outline-primary'}`}
+                className={`btn ${estadoFiltro === 'en progreso' ? 'btn-primary-en-progreso' : 'btn-outline-primary-en-progreso'}`}
                 onClick={() => setEstadoFiltro('en progreso')}
               >
                 En Progreso ({inscripciones.filter(i => i.estado === 'en progreso').length})
               </button>
               <button
                 type="button"
-                className={`btn ${estadoFiltro === 'completado' ? 'btn-primary' : 'btn-outline-primary'}`}
+                className={`btn ${estadoFiltro === 'completado' ? 'btn-primary-completado' : 'btn-outline-primary-completado'}`}
                 onClick={() => setEstadoFiltro('completado')}
               >
                 Completado ({inscripciones.filter(i => i.estado === 'completado').length})
@@ -181,7 +181,7 @@ export default function InscripcionesManager({ cursoId, onClose }) {
               No hay inscripciones para mostrar
             </div>
           ) : (
-            <div className="table-responsive">
+            <div className="table-responsive2">
               <table className="table table-hover align-middle">
                 <thead className="table-light">
                   <tr>
@@ -213,27 +213,26 @@ export default function InscripcionesManager({ cursoId, onClose }) {
                       </td>
                       <td className="text-center">
                         <div className="btn-group btn-group-sm" role="group">
-                          {inscripcion.estado !== 'en progreso' && (
+                          {inscripcion.estado !== 'En progreso' && (
                             <button
-                              className="btn btn-warning"
-                              onClick={() => handleCambiarEstado(inscripcion.id, 'en progreso')}
+                              className="btn-warning2"
+                              onClick={() => handleCambiarEstado(inscripcion.id, 'En progreso')}
                               title="Marcar en progreso"
                             >
-                              ▶️ En Progreso
+                              ▶
                             </button>
                           )}
-                          {inscripcion.estado !== 'completado' && (
+                          {inscripcion.estado !== 'Completado' && (
                             <button
-                              className="btn btn-success"
-                              onClick={() => handleCambiarEstado(inscripcion.id, 'completado')}
+                              className="btn-success"
+                              onClick={() => handleCambiarEstado(inscripcion.id, 'Completado')}
                               title="Marcar completado"
                             >
                               <Check size={16} className="me-1" />
-                              Completado
                             </button>
                           )}
                           <button
-                            className="btn btn-danger"
+                            className="btn-danger"
                             onClick={() => handleEliminarInscripcion(inscripcion)}
                             title="Eliminar inscripción"
                           >

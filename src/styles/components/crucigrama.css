@@ -1,0 +1,297 @@
+/* ============================================================
+   CRUCIGRAMA — Estilos compartidos (Builder + Visor)
+   ============================================================ */
+
+/* ── Builder (admin) ────────────────────────────────────────── */
+.crucigrama-builder {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.crucigrama-pistas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.crucigrama-pista-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+.crucigrama-pista-row input {
+  background: #f6f6f6;
+  color: #303030;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.crucigrama-pista-row input:focus {
+  outline: none;
+  border-color: #4e73df;
+  box-shadow: 0 0 0 2px rgba(78, 115, 223, 0.15);
+}
+
+.crucigrama-pista-row .respuesta-input {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.btn-agregar-pista {
+  margin-top: 0.8rem;
+  background: #5c7fe7;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-eliminar-pista {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.btn-eliminar-pista:hover {
+  background: #fff0f0;
+}
+
+.crucigrama-acciones {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Preview grid (builder) ─────────────────────────────────── */
+.crucigrama-preview-wrapper {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.crucigrama-preview-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.no-colocadas-alert {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  color: #856404;
+}
+
+/* ── Grid (compartido) ──────────────────────────────────────── */
+.crucigrama-grid {
+  display: inline-grid;
+  gap: 2px;
+  background: #343a40;
+  border: 2px solid #343a40;
+  border-radius: 4px;
+  padding: 2px;
+  user-select: none;
+}
+
+.crucigrama-celda {
+  width: 36px;
+  height: 36px;
+  background: #343a40; /* negro por defecto (celda vacía) */
+  position: relative;
+  border-radius: 2px;
+}
+
+.crucigrama-celda.activa-celda {
+  background: #fff;
+}
+
+.crucigrama-celda.activa-celda input {
+  background: #dbeafe;
+}
+
+.crucigrama-celda.pista-activa input {
+  background: #bfdbfe;
+}
+
+.crucigrama-celda.celda-vacia {
+  background: #343a40;
+  pointer-events: none;
+}
+
+.crucigrama-celda.celda-letra {
+  background: #fff;
+  border: 1px solid #adb5bd;
+  cursor: pointer;
+}
+
+.crucigrama-celda.celda-letra:hover {
+  background: #e9f0fd;
+}
+
+.celda-numero {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #374151;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.celda-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  padding-top: 8px;
+  caret-color: transparent;
+  outline: none;
+}
+
+.celda-input:focus {
+  outline: none;
+}
+
+.celda-letra-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e293b;
+  padding-top: 8px;
+  text-transform: uppercase;
+}
+
+/* ── Pistas list (visor) ────────────────────────────────────── */
+.crucigrama-pistas-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 600px) {
+  .crucigrama-pistas-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crucigrama-pistas-grupo h6 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6c757d;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.crucigrama-pistas-grupo ol {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+
+.crucigrama-pistas-grupo li {
+  font-size: 0.82rem;
+  color: #374151;
+  padding: 3px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  border-radius: 4px;
+  padding: 2px 4px;
+  transition: background 0.12s;
+}
+
+.crucigrama-pistas-grupo li:hover {
+  background: #f0f4ff;
+}
+
+.crucigrama-pistas-grupo li.pista-activa-item {
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.pista-num-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  background: #374151;
+  color: #fff;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pista-activa-item .pista-num-badge {
+  background: #2563eb;
+}
+
+/* ── Visor container ────────────────────────────────────────── */
+.crucigrama-visor-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+.crucigrama-info-bar {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.crucigrama-info-bar span strong {
+  color: #374151;
+}

@@ -1,0 +1,309 @@
+.table-responsive {
+    border-radius: 16px;
+    background: #cdc9c9;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+.table-corporate {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.table-corporate thead th{
+    background: linear-gradient(135deg, #9dc9f6 95%, #eef2f6 100%);
+    color: #1e1c1c;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    padding: 16px 20px;
+    border-bottom: 2px solid #cbcfd4;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    text-transform: uppercase;
+    font-family: 'Palatino Linotype', sans-serif;
+    text-align: center;
+}
+
+.table-corporate thead th.col-nom {
+    width: 120px;
+    text-align: center;
+}
+
+.table-corporate thead th.col-desc {
+    width: 260px;
+    text-align: center;
+}
+
+.table-corporate thead th.col-mod {
+    width: 120px;
+    text-align: center;
+}
+
+.table-corporate thead th.col-ins {
+    width: 120px;
+    text-align: center;
+}
+.table-corporate thead th.col-eval {
+    width: 140px;
+    text-align: center;
+}
+
+.table-corporate thead th.col-estado {
+    width: 120px;
+    text-align: center;
+}
+
+.table-corporate thead th.col-asignar {
+    width: 110px;
+    text-align: center;
+}
+
+.table-corporate thead th.col-acciones {
+    width: 120px;
+    text-align: center;
+}
+.table-corporate tbody tr{
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 1px solid #f1f4f9;
+    cursor: default;
+}
+
+.table-corporate tbody tr:hover {
+    background: #f7faff;
+    box-shadow: 0 2px 12px rgba(0, 80, 200, 0.06);
+}
+
+.table-corporate tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table-corporate tbody td {
+    padding: 18px 20px;
+    vertical-align: middle;
+    font-size: 0.875rem;
+    color: #1e293b;
+    background: #ffffff;
+    border-bottom: 1px solid #f1f4f9;
+}
+
+/* ===== TEXTO Y TÍTULOS ===== */
+.table-corporate .nombre-curso {
+    font-weight: 600;
+    font-size: 0.925rem;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+}
+
+.table-corporate .fecha-creacion {
+    font-size: 0.7rem;
+    color: #686a6d;
+    display: block;
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+}
+
+.table-corporate .descripcion-curso {
+    font-size: 12.5px !important;
+    color: #444547;
+    line-height: 1.4;
+    max-width: 240px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ===== BADGES ===== */
+.table-corporate .badge-estado {
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.table-corporate .badge-estado.activo {
+    background: #e6f7ed;
+    color: #0b7a48;
+}
+
+.table-corporate .badge-estado.inactivo {
+    background: #fde8e8;
+    color: #b91c1c;
+}
+
+.table-corporate .badge-estado .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.table-corporate .badge-estado.activo .dot {
+    background: #0b7a48;
+    animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+.table-corporate .badge-estado.inactivo .dot {
+    background: #b91c1c;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* ===== BOTONES ===== */
+.table-corporate .btn-accion {
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid transparent;
+}
+
+.table-corporate .btn-accion.btn-modulos {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.table-corporate .btn-accion.btn-modulos:hover {
+    background: #4f46e5;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.table-corporate .btn-accion.btn-inscritos {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.table-corporate .btn-accion.btn-inscritos:hover {
+    background: #2563eb;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.table-corporate .btn-accion.btn-asignar {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.table-corporate .btn-accion.btn-asignar:hover {
+    background: #059669;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.table-corporate .btn-accion.btn-evaluacion {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.table-corporate .btn-accion.btn-evaluacion:hover {
+    background: #7c3aed;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.table-corporate .btn-accion.btn-editar {
+    background: #fef3c7;
+    color: #d97706;
+    padding: 6px 10px;
+}
+
+.table-corporate .btn-accion.btn-editar:hover {
+    background: #d97706;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+}
+
+.table-corporate .btn-accion.btn-eliminar {
+    background: #fde8e8;
+    color: #dc2626;
+    padding: 6px 10px;
+}
+
+.table-corporate .btn-accion.btn-eliminar:hover {
+    background: #dc2626;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* ===== SELECTORES DE FILA ===== */
+.table-corporate .fila-seleccionada {
+    background: #f0f7ff !important;
+    border-left: 3px solid #2563eb;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+    .table-corporate thead th {
+        font-size: 0.65rem;
+        padding: 12px 14px;
+    }
+    
+    .table-corporate tbody td {
+        padding: 14px 14px;
+        font-size: 0.8rem;
+    }
+    
+    .table-corporate .descripcion-curso {
+        max-width: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        border-radius: 12px;
+    }
+    
+    .table-corporate thead th {
+        font-size: 0.6rem;
+        padding: 10px 12px;
+        white-space: normal;
+    }
+    
+    .table-corporate tbody td {
+        padding: 12px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .table-corporate .btn-accion {
+        padding: 4px 10px;
+        font-size: 0.65rem;
+    }
+    
+    .table-corporate .btn-accion span {
+        display: none;
+    }
+    
+    .table-corporate .nombre-curso {
+        font-size: 0.8rem;
+    }
+    
+    .table-corporate .descripcion-curso {
+        max-width: 80px;
+        font-size: 0.7rem;
+    }
+}

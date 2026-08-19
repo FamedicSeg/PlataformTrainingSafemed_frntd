@@ -1,0 +1,15 @@
+.aph-main{
+    margin-top: 30px;
+}
+.table.table-hover.mb-0{
+  font-size: 12.5px;
+  text-align: center;
+}
+
+.table.table-hover.mb-0 th, .table.table-hover.mb-0 td {
+  padding: 0.75rem 1rem;
+}
+
+.table-text-center {
+  text-align: left !important;
+}

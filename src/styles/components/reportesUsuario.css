@@ -1,0 +1,407 @@
+/* ── Contenedor principal ── */
+.ru-container {
+  padding: 0;
+  position: relative;
+}
+
+/* ── Sección de búsqueda ── */
+.ru-search-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.ru-search-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ru-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ru-search-icon {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.ru-search-input {
+  width: 100%;
+  padding: 0.65rem 2.4rem 0.65rem 2.2rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  background: #f8fafc;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.ru-search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+  background: #fff;
+}
+.ru-search-input::placeholder { color: #94a3b8; }
+
+.ru-search-clear {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.ru-search-clear:hover { color: #ef4444; }
+
+.ru-search-hint {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0.5rem 0 0;
+}
+
+/* ── Dropdown de resultados ── */
+.ru-dropdown {
+  position: absolute;
+  top: calc(100% - 0.25rem);
+  left: 1.5rem;
+  right: 1.5rem;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  z-index: 100;
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.ru-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.ru-dropdown-item:hover { background: #f0f7ff; }
+
+.ru-dropdown-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ru-dropdown-info { display: flex; flex-direction: column; }
+.ru-dropdown-nombre { font-size: 0.9rem; font-weight: 600; color: #1e293b; }
+.ru-dropdown-meta { font-size: 0.78rem; color: #64748b; }
+
+/* ── Tarjeta del usuario seleccionado ── */
+.ru-user-card {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border: 1.5px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ru-user-avatar-lg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ru-user-details { flex: 1; }
+.ru-user-nombre { margin: 0 0 4px; font-size: 1.05rem; font-weight: 700; color: #1e3a8a; }
+.ru-user-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  color: #3b82f6;
+}
+
+/* ── Stats ── */
+.ru-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 700px) {
+  .ru-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+.ru-stat-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.ru-stat-icon { margin-bottom: 2px; }
+.ru-stat-icon.all { color: #3b82f6; }
+.ru-stat-icon.ok  { color: #22c55e; }
+.ru-stat-icon.prog { color: #f59e0b; }
+.ru-stat-icon.pend { color: #ef4444; }
+
+.ru-stat-num { font-size: 1.6rem; font-weight: 700; color: #1e293b; line-height: 1; }
+.ru-stat-lbl { font-size: 0.75rem; color: #64748b; }
+
+/* ── Grupos por proceso ── */
+.ru-proceso-group {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.ru-proceso-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.25rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #1e293b;
+  transition: background 0.12s;
+  text-align: left;
+}
+.ru-proceso-header:hover { background: #f0f7ff; }
+
+.ru-proceso-nombre {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  flex: 1;
+  color: #1e3a8a;
+}
+
+.ru-proceso-count {
+  font-size: 0.78rem;
+  color: #64748b;
+  background: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* ── Lista de cursos ── */
+.ru-cursos-list {
+  border-top: 1px solid #f1f5f9;
+}
+
+.ru-curso-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid #f8fafc;
+  transition: background 0.1s;
+}
+.ru-curso-row:last-child { border-bottom: none; }
+.ru-curso-row:hover { background: #fafbfc; }
+
+@media (max-width: 768px) {
+  .ru-curso-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+.ru-curso-nombre {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.ru-curso-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76rem;
+  color: #94a3b8;
+}
+
+/* ── Badges de estado ── */
+.ru-estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.estado-completado   { background: #dcfce7; color: #15803d; }
+.estado-en-progreso  { background: #fef9c3; color: #a16207; }
+.estado-no-iniciado  { background: #fee2e2; color: #b91c1c; }
+.estado-inscrito     { background: #eff6ff; color: #1d4ed8; }
+.estado-desconocido  { background: #f1f5f9; color: #64748b; }
+
+/* ── Módulos ── */
+.ru-curso-modulos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 110px;
+}
+
+.ru-modulos-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.76rem;
+  color: #64748b;
+}
+
+.ru-pct-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ru-pct-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ru-pct-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.ru-pct-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  min-width: 28px;
+  text-align: right;
+}
+
+/* ── Evaluación ── */
+.ru-curso-eval {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  min-width: 90px;
+}
+
+.ru-eval-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.eval-aprobado { background: #dcfce7; color: #15803d; }
+.eval-reprobado { background: #fee2e2; color: #b91c1c; }
+
+.ru-eval-puntaje {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.ru-eval-sin {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ── Estados vacíos / carga / error ── */
+.ru-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.5rem;
+  color: #64748b;
+  font-size: 0.9rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.ru-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.ru-error {
+  padding: 1rem 1.25rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  color: #b91c1c;
+  font-size: 0.875rem;
+}

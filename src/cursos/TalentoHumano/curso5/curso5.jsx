@@ -127,7 +127,7 @@ export default function Curso5({ curso }) {
         
         // LLAMAR A SUMAR PROGRESO GENERAL
         const prev = parseInt(localStorage.getItem("progreso") || "0");
-        const nuevoProgreso = Math.min(prev + 25, 100);
+        const nuevoProgreso = Math.min(prev + 20, 100);
         
         try {
           await fetch(`${API_URL}/api/progreso/update-general`, {
@@ -207,7 +207,7 @@ export default function Curso5({ curso }) {
          /* 
           // Redirigir después de un breve retraso
           setTimeout(() => {
-            navigate("/courses", { 
+            navigate("/courses/tthh", { 
               replace: true, 
               state: { 
                 refrescar: true,

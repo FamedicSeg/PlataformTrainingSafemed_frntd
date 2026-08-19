@@ -37,7 +37,7 @@ export default function Login() {
 
   // Login exitoso
   localStorage.setItem("admin_token", data.token);
-  navigate("/adminTTHH");
+  navigate("/adminPrincipal");
 } catch (err) {
   console.error("❌ Error en login:", err);
   setError(err.message);

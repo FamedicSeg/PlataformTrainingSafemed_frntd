@@ -1,10 +1,18 @@
 /* =========================================================
    CONTENEDOR - SOLO PADDING TOP PARA COMPENSAR NAVBAR FIJO
    ========================================================= */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px 20px 20px;
+.container-fluid.py-4 {
+    margin-top: 0px; /* Elimina el margin-top para evitar conflictos */
+    /* min-height: calc(100vh - 80px);  Asegura que el contenido ocupe toda la altura disponible */
+    max-height: 100%; /* Limita la altura máxima para evitar desbordamiento */
+    padding: 20px; /* Elimina el padding para evitar conflictos */
+    max-width: 2000px; /* Limita el ancho máximo para mejor legibilidad */
+    background: #f8f9fa; /* Fondo claro para contraste */
+    border-radius: 12px; /* Bordes redondeados para un diseño más suave */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Sombra sutil para profundidad */
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Asegura que el contenedor ocupe toda la altura disponible */
 }
 
 /* El padding-top se aplica al body o al contenedor principal */
@@ -25,9 +33,128 @@ body {
 }
 
 .header-info {
-    grid: auto / auto;
+    padding: 12px 20px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    font-family: 'Inter', sans-serif;
+
 }
 
+.h3{
+    color: #0a2752;
+    font-weight: 600;
+    font-size: 20px;
+    gap: 4px;
+}
+
+.text-muted {
+    color: #000000 !important;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.text-muted.mb-0{
+    color: #000000 !important;
+    font-size: 14px;
+    font-weight: 500;
+
+}
+
+.label-search {
+    border: 1px solid #000000;
+    background-color: #f8f9fa;
+    color: #000000;
+    border-radius: 4px;
+    padding: 20px 12px;
+    width: 70%;
+    height: 40px;
+    transition: border-color 0.3s ease;
+}
+
+.input-group-text{
+    background-color: #f8f9fa;
+    color: #000000;
+    border: none;
+}
+
+.col {
+    padding: 0 80px;
+}
+
+.btn-new-course {
+    background-color: #38c98d;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-new-course:hover {
+    background-color: #5fd5a2;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(95, 213, 162, 0.3);
+}
+
+.btn-return {
+    background: #102a43;
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 4px;
+}
+
+.btn-return:hover {
+    background: #536a80;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(83, 106, 128, 0.3);
+}
+
+.card {
+  background: #ffffff;
+  width: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #a9b0b6;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.card-header {
+  padding: 20px 28px;
+  background: linear-gradient(135deg, #a5c7e8 0%, #ffffff 100%);
+  border-bottom: 2px solid #eef2f6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header h5 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a2332;
+  margin: 0;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-header h5::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(180deg, #2c6bff, #1a4fd0);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.card-body {
+  padding: 28px;
+  background: #ffffff;
+}

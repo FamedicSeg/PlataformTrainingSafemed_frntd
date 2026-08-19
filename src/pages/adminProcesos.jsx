@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/pages/adminProcesos.css";
 
 export default function LoginAdminProceso() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [cedula, setCedula] = useState("");
   const [password, setPassword] = useState("");
   const [proceso_name, setProceso_name] = useState("");
   const [error, setError] = useState("");
@@ -59,8 +60,7 @@ export default function LoginAdminProceso() {
     
     if (token && userData) {
       try {
-        const user = JSON.parse(userData);
-        navigate(`/admin/${encodeURIComponent(user.proceso_name)}`);
+        navigate('/admin/home');
       } catch (error) {
         console.error("Error parsing user data:", error);
         localStorage.removeItem("admin_token");
@@ -74,7 +74,7 @@ export default function LoginAdminProceso() {
     setError("");
     setLoading(true);
 
-    if (!username.trim() || !password.trim() || !proceso_name) {
+    if (!cedula.trim() || !password.trim() || !proceso_name) {
       setError("Todos los campos son obligatorios");
       setLoading(false);
       return;
@@ -89,7 +89,7 @@ export default function LoginAdminProceso() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          username: username.trim(), 
+          cedula: cedula.trim(), 
           password, 
           proceso_name 
         }),
@@ -109,12 +109,19 @@ export default function LoginAdminProceso() {
       }
       localStorage.setItem("admin_proceso_user", JSON.stringify(data.user));
       
-      console.log("✅ Login exitoso");
-      console.log("   Usuario:", data.user.username);
-      console.log("   Proceso:", data.user.proceso_name);
+      console.log("Login exitoso");
+      console.log("Cédula:", data.user.cedula);
+      console.log("Proceso:", data.user.proceso_name);
+      console.log("Primer login:", data.user.primer_login);
       
-      // Redirigir al dashboard
-      navigate(`/admin/${encodeURIComponent(data.user.proceso_name)}`);
+      // Redirigir al cambio de contraseña si es primer login
+      if (data.user.primer_login === true) {
+        console.log("🔐 Redirigiendo a cambiar contraseña...");
+        navigate('/admin/cambiar-password');
+      } else {
+        console.log("✅ Redirigiendo al dashboard...");
+        navigate('/admin/home');
+      }
       
     } catch (err) {
       console.error("❌ Error en login:", err);
@@ -144,8 +151,8 @@ export default function LoginAdminProceso() {
             <input
               type="text"
               className="form-control no-transform"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={cedula}
+              onChange={(e) => setCedula(e.target.value)}
               placeholder="Ingresa tu usuario"
               disabled={loading}
               required
@@ -198,7 +205,7 @@ export default function LoginAdminProceso() {
 
           <button 
             type="submit" 
-            className="btn btn-primary w-100 py-2 fw-semibold"
+            className="btn-login-admin-proceso"
             disabled={loading}
           >
             {loading ? "Verificando..." : "Iniciar Sesión"}

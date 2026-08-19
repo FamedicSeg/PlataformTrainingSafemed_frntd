@@ -1,17 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Download, DownloadCloud } from 'lucide-react';
 import Swal from 'sweetalert2';
 
-/**
- * VisorModulos - Visor de módulos para estudiantes
- * Permite a los estudiantes ver el contenido de los módulos de un curso
- * 
- * Props:
- *   - cursoId: ID del curso
- *   - onBack: callback para volver atrás
- *   - onCourseComplete: callback cuando se completa el curso (opcional)
- */
-export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
+export default function VisorCurso({ onCourseComplete }) {
+  const navigate = useNavigate();
+  const { cursoId } = useParams();
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("user_token");
   const usuario = JSON.parse(localStorage.getItem("usuario_logueado") || '{}');
@@ -23,7 +17,6 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
   const [inscripcion, setInscripcion] = useState(null);
   const [curso, setCurso] = useState(null);
 
-  // Cargar datos
   useEffect(() => {
     cargarDatos();
   }, [cursoId]);
@@ -32,37 +25,43 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
     try {
       setLoading(true);
 
-      // Cargar módulos
       const modulosRes = await fetch(`${API_URL}/api/modulos/curso/${cursoId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       const modulosData = await modulosRes.json();
       setModulos(modulosData.data || []);
 
-      // Cargar datos del curso
       const cursosRes = await fetch(`${API_URL}/api/cursos/${cursoId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       const cursosData = await cursosRes.json();
       setCurso(cursosData.data);
 
-      // Cargar inscripción del usuario
       if (usuario.id) {
         const inscripcionesRes = await fetch(
           `${API_URL}/api/inscripciones/usuario/${usuario.id}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          }
+          { headers: { 'Authorization': `Bearer ${token}` } }
         );
         const inscripcionesData = await inscripcionesRes.json();
-        const miInscripcion = inscripcionesData.data?.find(i => i.curso_id === cursoId);
+        const miInscripcion = inscripcionesData.data?.find(i => i.curso_id === parseInt(cursoId));
         setInscripcion(miInscripcion);
+
+        // Si el estado es 'no iniciado', cambiar a 'en progreso' para registrar inicio_en
+        if (miInscripcion && miInscripcion.estado === 'no iniciado') {
+          try {
+            await fetch(`${API_URL}/api/inscripciones/${miInscripcion.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ estado: 'en progreso' })
+            });
+            miInscripcion.estado = 'en progreso';
+          } catch (err) {
+            console.error('Error al actualizar estado a en progreso:', err);
+          }
+        }
       }
     } catch (error) {
       console.error('Error:', error);
@@ -94,6 +93,40 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
     }
   };
 
+  const handleVolver = () => {
+    const token = localStorage.getItem("user_token");
+    const usuario = JSON.parse(localStorage.getItem("usuario_logueado") || '{}');
+    
+    if (!token || !usuario.id) {
+      navigate('/');
+      return;
+    }
+    
+    console.log('🔍 ===== VOLVIENDO =====');
+    console.log('📍 URL actual:', window.location.pathname);
+    
+    // Verificar si venimos de una página específica
+    const referrer = document.referrer;
+    console.log('🔗 Página anterior:', referrer);
+    
+    // Si venimos de una página de proceso (ej: /courses/tthh), volver allí
+    if (referrer && referrer.includes('/courses/')) {
+      try {
+        const url = new URL(referrer);
+        const path = url.pathname;
+        console.log(`✅ Volviendo a: ${path}`);
+        navigate(path);
+        return;
+      } catch (e) {
+        console.log('⚠️ Error procesando referrer:', e);
+      }
+    }
+    
+    // Si no, ir a /cursos-disponibles
+    console.log('✅ Volviendo a /cursos-disponibles');
+    navigate('/cursos-disponibles');
+  };
+
   const handleCompletarCurso = async () => {
     if (marcadosCompletar.size !== modulos.length) {
       Swal.fire(
@@ -111,7 +144,7 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ estado: 'completado' })
+        body: JSON.stringify({ estado: 'Completado' })
       });
 
       if (!response.ok) throw new Error('Error al completar curso');
@@ -150,15 +183,15 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
 
   const modulo = modulos[moduloActual];
   const progreso = (marcadosCompletar.size / modulos.length) * 100;
-  const estaCompletado = inscripcion?.estado === 'completado';
+  const estaCompletado = inscripcion?.estado === 'Completado';
 
   return (
     <div className="container-fluid py-4">
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <button className="btn btn-outline-primary" onClick={onBack}>
+        <button className="btn btn-outline-primary" onClick={handleVolver}>
           <ChevronLeft size={20} className="me-2" />
-          Volver
+          Volver a Cursos
         </button>
         <h2 className="mb-0">📖 {curso?.nombre}</h2>
         <div style={{ width: '100px' }}></div>
@@ -191,7 +224,6 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
 
       {/* Contenido del módulo */}
       <div className="row g-4">
-        {/* Panel de módulos */}
         <div className="col-lg-9">
           <div className="card">
             <div className="card-header d-flex justify-content-between align-items-center">
@@ -204,16 +236,10 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
             </div>
 
             <div className="card-body" style={{ minHeight: '400px' }}>
-              {/* Contenido según el tipo */}
               {modulo?.tipo === 'video' && (
                 <div className="embed-responsive" style={{ paddingBottom: '56.25%' }}>
                   <iframe
-                    style={{
-                      width: '100%',
-                      height: '400px',
-                      border: 'none',
-                      borderRadius: '8px'
-                    }}
+                    style={{ width: '100%', height: '400px', border: 'none', borderRadius: '8px' }}
                     src={modulo.url}
                     allowFullScreen
                     title={modulo.titulo}
@@ -226,12 +252,7 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
                   <img
                     src={modulo.url}
                     alt={modulo.titulo}
-                    style={{
-                      maxWidth: '100%',
-                      maxHeight: '500px',
-                      objectFit: 'cover',
-                      borderRadius: '8px'
-                    }}
+                    style={{ maxWidth: '100%', maxHeight: '500px', objectFit: 'cover', borderRadius: '8px' }}
                   />
                 </div>
               )}
@@ -240,12 +261,7 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
                 <div className="text-center">
                   <div className="mb-3" style={{ fontSize: '48px' }}>📄</div>
                   <p className="text-muted">Documento PDF disponible</p>
-                  <a
-                    href={modulo.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary"
-                  >
+                  <a href={modulo.url} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                     <DownloadCloud size={18} className="me-2" />
                     Abrir PDF
                   </a>
@@ -261,7 +277,6 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
               )}
             </div>
 
-            {/* Acciones del módulo */}
             <div className="card-footer d-flex justify-content-between align-items-center">
               <button
                 className="btn btn-outline-secondary"
@@ -298,7 +313,6 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
           </div>
         </div>
 
-        {/* Sidebar con lista de módulos */}
         <div className="col-lg-3">
           <div className="card">
             <div className="card-header">
@@ -327,7 +341,6 @@ export default function VisorModulos({ cursoId, onBack, onCourseComplete }) {
               ))}
             </div>
 
-            {/* Botones de acción */}
             <div className="card-body border-top">
               {estaCompletado ? (
                 <button

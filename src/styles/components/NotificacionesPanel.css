@@ -1,0 +1,371 @@
+.notificaciones-panel {
+  position: relative;
+}
+
+.campana-container {
+  position: relative;
+}
+
+.btn-campana {
+  background: none;
+  border: none;
+  color: rgb(15, 47, 102);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.btn-campana:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.btn-campana:active {
+  transform: scale(0.95);
+}
+
+/* Badge de notificaciones no leídas */
+.badge-notificaciones {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  border: 2px solid white;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(220, 53, 69, 0);
+  }
+}
+
+/* Dropdown de notificaciones */
+.dropdown-notificaciones {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  width: 420px;
+  max-height: 600px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: slideDown 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .dropdown-notificaciones {
+    width: calc(100vw - 20px);
+    right: -180px;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header del dropdown */
+.dropdown-header {
+  padding: 16px;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-header h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #212529;
+}
+
+.btn-marcar-leidas {
+  background-color: #e7f3ff;
+  border: 1px solid #b3d9ff;
+  color: #0066cc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.3s ease;
+}
+
+.btn-marcar-leidas:hover:not(:disabled) {
+  background-color: #b3d9ff;
+  border-color: #0066cc;
+}
+
+.btn-marcar-leidas:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Lista de notificaciones */
+.notificaciones-lista {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 440px;
+}
+
+.notificaciones-lista::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notificaciones-lista::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.notificaciones-lista::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 3px;
+}
+
+.notificaciones-lista::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Sin notificaciones */
+.sin-notificaciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #6c757d;
+  text-align: center;
+}
+
+.sin-notificaciones svg {
+  color: #dee2e6;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.sin-notificaciones p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Item de notificación */
+.notificacion-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.notificacion-item:hover {
+  background-color: #f8f9fa;
+}
+
+.notificacion-item.no-leida {
+  background-color: #f0f8ff;
+  border-left: 4px solid #0066cc;
+  padding-left: 12px;
+}
+
+.notificacion-item.aprobado.no-leida {
+  background-color: #f0fdf4;
+  border-left-color: #22c55e;
+}
+
+.notificacion-item.rechazado.no-leida {
+  background-color: #fef2f2;
+  border-left-color: #ef4444;
+}
+
+/* Icono de notificación */
+.notificacion-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2px;
+}
+
+.icon-aprobado {
+  color: #22c55e;
+}
+
+.icon-rechazado {
+  color: #ef4444;
+}
+
+/* Contenido de notificación */
+.notificacion-content {
+  flex: 1;
+}
+
+.notificacion-mensaje {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #212529;
+  line-height: 1.4;
+}
+
+.razon-rechazo {
+  margin-top: 6px;
+  padding: 8px;
+  background-color: #fff3cd;
+  border-left: 3px solid #ffc107;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #856404;
+  line-height: 1.4;
+}
+
+.notificacion-fecha {
+  display: block;
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* Acciones de notificación */
+.notificacion-acciones {
+  flex-shrink: 0;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.btn-accion {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #6c757d;
+}
+
+.btn-accion:hover {
+  background-color: #e9ecef;
+  color: #212529;
+}
+
+.btn-marcar:hover {
+  background-color: #d4edda;
+  color: #22c55e;
+}
+
+.btn-eliminar:hover {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+/* Footer del dropdown */
+.dropdown-footer {
+  padding: 12px 16px;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+}
+
+.btn-eliminar-todas {
+  width: 100%;
+  background-color: #ffe0e0;
+  border: 1px solid #ffb3b3;
+  color: #d63031;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-eliminar-todas:hover:not(:disabled) {
+  background-color: #ffb3b3;
+  border-color: #d63031;
+}
+
+.btn-eliminar-todas:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dropdown-notificaciones {
+    width: 380px;
+    max-height: 500px;
+  }
+
+  .notificacion-item {
+    padding: 10px 12px;
+  }
+
+  .notificacion-mensaje {
+    font-size: 12px;
+  }
+
+  .dropdown-header h4 {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-campana {
+    padding: 6px 10px;
+  }
+
+  .dropdown-notificaciones {
+    width: calc(100vw - 20px);
+    max-height: 70vh;
+  }
+
+  .notificaciones-lista {
+    max-height: calc(70vh - 120px);
+  }
+
+  .notificacion-acciones {
+    gap: 2px;
+  }
+
+  .btn-accion {
+    padding: 3px;
+  }
+}

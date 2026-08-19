@@ -1,0 +1,15 @@
+.table-responsive table{
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-responsive .col-id { width: 40px;}
+.table-responsive .col-usuario { width: 100px;}
+.table-responsive .col-cedula { width: 90px;}
+.table-responsive .col-nombre { width: 150px;}
+.table-responsive .col-curso { width: 170px;}
+.table-responsive .col-proceso { width: 100px;}
+.table-responsive .col-cargo { width: 150px;}
+.table-responsive .col-fecha-recepcion { width: 100px;}
+.table-responsive .col-fecha-envio { width: 150px;}
+.table-responsive .col-acciones{ width: 80px;}

@@ -1,0 +1,321 @@
+.aprobacion-cursos-container {
+    margin-top: 0px;
+    padding: 20px;
+    max-height: 100%;
+    background-color: #b4d5f7;
+    border-radius: 12px;
+}
+
+.aprobacion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.aprobacion-header h1 {
+  flex: 1;
+  text-align: left;
+  margin: 0;
+  color: #0a2752;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.estado-resumen {
+  display: flex;
+  gap: 10px;
+}
+
+.badge.bg-warning{
+    background-color: #2b81ac !important;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Lista de cursos */
+.lista-cursos {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.lista-cursos h3 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 2px solid #d7d1bd;
+  padding-bottom: 10px;
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+
+.cursos-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+
+.curso-item {
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.curso-item:hover {
+  border-color: #ffc107;
+  background-color: #fffbf0;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+}
+
+.curso-item.active {
+  border-color: #007bff;
+  background-color: #e7f3ff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.curso-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.curso-item-header h5 {
+  margin: 0;
+  color: #333;
+  flex: 1;
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+
+.curso-item-meta {
+  margin: 5px 0;
+  color: #666;
+  font-size: 0.9rem;
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+
+/* Panel de detalles */
+.curso-detalle {
+  background-color: white;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.curso-detalle h3 {
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+
+.detalle-section {
+  margin-bottom: 20px;
+}
+
+.detalle-section h6 {
+  color: #555;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.detalle-section p {
+  color: #333;
+  margin: 0;
+  line-height: 1.6;
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+
+.detalle-razon {
+  flex: 1;
+}
+
+.razon-box {
+  background-color: #f0f8ff;
+  border-left: 4px solid #ffc107;
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+.razon-box p {
+  margin: 0;
+  color: #333;
+  font-style: italic;
+  font-family: 'Playfair Display', 'Georgia', serif;
+  line-height: 1.7;
+}
+
+/* Acciones de aprobación */
+.acciones-aprobacion {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.acciones-aprobacion .btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  font-family: 'Playfair Display', 'Georgia', serif;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #218838;
+  border-color: #1e7e34;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #c82333;
+  border-color: #bd2130;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Sin selección */
+.sin-seleccion {
+  background-color: white;
+  border-radius: 8px;
+  padding: 60px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: #999;
+}
+
+.sin-seleccion p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .aprobacion-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .aprobacion-header h1 {
+    width: 100%;
+    order: 2;
+  }
+
+  .aprobacion-header > button {
+    order: 1;
+  }
+
+  .estado-resumen {
+    order: 3;
+    width: 100%;
+  }
+
+  .acciones-aprobacion {
+    flex-direction: column;
+  }
+
+  .acciones-aprobacion .btn {
+    min-height: 45px;
+  }
+}
+
+/* Animaciones */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.curso-item {
+  animation: slideIn 0.3s ease;
+}
+
+/* Scrollbar personalizado */
+.cursos-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cursos-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.cursos-scroll::-webkit-scrollbar-thumb {
+  background: #ffc107;
+  border-radius: 4px;
+}
+
+.cursos-scroll::-webkit-scrollbar-thumb:hover {
+  background: #e0a800;
+}
+
+.btn-volver3{
+    background-color: #61758a;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-volver3:hover:not(:disabled) {
+    background-color: #5a85b0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(97, 117, 138, 0.3);
+}
+

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit, GripVertical } from 'lucide-react';
 import Swal from 'sweetalert2';
+import SubirArchivoSupabase from './SubirArchivosSupabase';
+import '../styles/pages/modulosManager.css';
 
 /**
  * ModulosManager - Gestor de módulos de un curso
@@ -56,6 +58,17 @@ export default function ModulosManager({ cursoId, onClose }) {
 
     if (!formData.titulo.trim()) {
       Swal.fire('Error', 'El título es requerido', 'error');
+      return;
+    }
+
+    // Validar que haya contenido
+    if (formData.tipo !== 'texto' && !formData.url) {
+      Swal.fire('Error', 'Debes subir un archivo o proporcionar una URL', 'error');
+      return;
+    }
+
+    if (formData.tipo === 'texto' && !formData.contenido.trim()) {
+      Swal.fire('Error', 'El contenido de texto es requerido', 'error');
       return;
     }
 
@@ -151,6 +164,50 @@ export default function ModulosManager({ cursoId, onClose }) {
     setFormData({ titulo: '', tipo: 'video', url: '', contenido: '' });
   };
 
+  /**
+   * ✅ Manejador para cuando Supabase sube el archivo exitosamente
+   */
+  const handleSupabaseUploadSuccess = (fileData) => {
+    console.log('✅ Archivo subido a Supabase:', fileData);
+    
+    // Guardar el path en lugar de la URL completa
+    setFormData(prev => ({
+      ...prev,
+      url: fileData.url, // ✅ Guardamos el path, no la URL completa
+      tipo: fileData.type?.startsWith('video/') ? 'video' :
+          fileData.type === 'application/pdf' ? 'pdf' :
+          fileData.type?.startsWith('image/') ? 'imagen' :
+          prev.tipo
+    }));
+
+    if(fileData.type && fileData.type.startsWith('video/')) {
+      setFormData(prev => ({
+        ...prev,
+        tipo: 'video'
+      }));
+    } else if(fileData.type === 'application/pdf') {
+      setFormData(prev => ({
+        ...prev,
+        tipo: 'pdf'
+      }));
+    }
+
+    Swal.fire(
+      'Éxito',
+      `Archivo subido: ${fileData.name}`,
+      'success'
+    );
+  };
+
+  const handleSupabaseUploadError = (error) => {
+    console.error('❌ Error subiendo a Supabase:', error);
+    Swal.fire(
+      'Error',
+      'Error al subir el archivo a Supabase: ' + error.message,
+      'error'
+    );
+  };
+
   return (
     <div className="modal-backdrop d-flex align-items-center justify-content-center" style={{
       position: 'fixed',
@@ -161,7 +218,7 @@ export default function ModulosManager({ cursoId, onClose }) {
       backgroundColor: 'rgba(0,0,0,0.5)',
       zIndex: 9999
     }}>
-      <div className="card" style={{ maxWidth: '900px', width: '90%', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="card2">
         <div className="card-header d-flex justify-content-between align-items-center">
           <h5 className="mb-0">Gestionar Módulos</h5>
           <button className="btn-close" onClick={onClose}></button>
@@ -170,14 +227,6 @@ export default function ModulosManager({ cursoId, onClose }) {
         <div className="card-body">
           {!showForm ? (
             <>
-              <button
-                className="btn btn-primary mb-3"
-                onClick={() => setShowForm(true)}
-              >
-                <Plus size={18} className="me-1" />
-                Agregar Módulo
-              </button>
-
               {loading ? (
                 <div className="text-center py-5">
                   <div className="spinner-border text-primary" role="status">
@@ -186,7 +235,7 @@ export default function ModulosManager({ cursoId, onClose }) {
                 </div>
               ) : modulos.length === 0 ? (
                 <div className="alert alert-info">
-                  No hay módulos. Agrrega el primero.
+                  No hay módulos. Agrega el primero.
                 </div>
               ) : (
                 <div className="list-group">
@@ -196,10 +245,12 @@ export default function ModulosManager({ cursoId, onClose }) {
                         <GripVertical size={16} className="me-2 text-muted" />
                         <div>
                           <h6 className="mb-0 fw-semibold">{index + 1}. {modulo.titulo}</h6>
+                          
                           <small className="text-muted">
-                            Tipo: {modulo.tipo === 'texto' ? 'Texto' : modulo.tipo === 'video' ? 'Video' : 'PDF'}
-                            {modulo.url && ` • ${modulo.url.substring(0, 30)}...`}
+                            Tipo: {modulo.tipo === 'texto' ? 'Texto' : modulo.tipo === 'video' ? 'Video' : modulo.tipo === 'imagen' ? 'Imagen' : modulo.tipo === 'pdf' ? 'PDF' : modulo.tipo === 'excel' ? 'Excel' : modulo.tipo === 'word' ? 'Word' : modulo.tipo === 'powerpoint' ? 'PowerPoint' : 'Desconocido'}
+                            
                           </small>
+                        
                         </div>
                       </div>
                       <div>
@@ -220,6 +271,14 @@ export default function ModulosManager({ cursoId, onClose }) {
                   ))}
                 </div>
               )}
+
+              <button
+                className="btn btn-primary mb-3"
+                onClick={() => setShowForm(true)}
+              >
+                <Plus size={18} className="me-1" />
+                Agregar Módulo
+              </button>
             </>
           ) : (
             <>
@@ -246,27 +305,62 @@ export default function ModulosManager({ cursoId, onClose }) {
                     value={formData.tipo}
                     onChange={handleFormChange}
                   >
-                    <option value="video">Video (YouTube, Vimeo, Cloudinary)</option>
-                    <option value="imagen">Imagen (PNG, JPG, etc)</option>
+                    <option value="video">Video (MP4, WEBM, YouTube, Vimeo)</option>
+                    <option value="imagen">Imagen (PNG, JPG, WEBP)</option>
                     <option value="pdf">PDF</option>
+                    <option value="excel">Excel (XLS, XLSX)</option>
+                    <option value="word">Word (DOC, DOCX)</option>
+                    <option value="powerpoint">PowerPoint (PPT, PPTX)</option>
                     <option value="texto">Texto/Contenido directo</option>
                   </select>
                 </div>
 
                 {formData.tipo !== 'texto' && (
                   <div className="mb-3">
-                    <label className="form-label fw-semibold">URL del Contenido *</label>
-                    <input
-                      type="url"
-                      className="form-control"
-                      name="url"
-                      value={formData.url}
-                      onChange={handleFormChange}
-                      placeholder="https://example.com/archivo.mp4"
-                    />
-                    <small className="text-muted">
-                      Puede ser: YouTube, Vimeo, Cloudinary, o cualquier URL pública
-                    </small>
+                    <label className="form-label fw-semibold">Contenido del Módulo *</label>
+                    
+                    <div className="card bg-light mb-3">
+                      <div className="card-body">
+                        <h6 className="card-title mb-3">Aquí puedes subir tu archivo</h6>
+                        <p className="text-muted small mb-3">
+                          Haz clic en el botón para subir tu archivo. Para que los usuarios puedan acceder a él.
+                          <br />
+                          <strong>Límite:</strong> <strong>50 MB.</strong>
+                        </p>
+                        
+                        <SubirArchivoSupabase
+                          cursoId={cursoId}
+                          onUploadSuccess={handleSupabaseUploadSuccess}
+                          onUploadError={handleSupabaseUploadError}
+                          buttonLabel="☁️ Subir archivo"
+                          className="btn btn-primary"
+                        />
+
+                        {formData.url && (
+                          <div className="alert alert-success mt-3 mb-0">
+                            <i className="bi bi-check-circle me-2"></i>
+                            <strong>Archivo cargado correctamente</strong>
+                            <br />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {!formData.url && (
+                      <div className="alert alert-info">
+                        <small>
+                          💡 Alternativamente, puedes pegar una URL pública (YouTube, Vimeo, etc):
+                        </small>
+                        <input
+                          type="url"
+                          className="form-control form-control-sm mt-2"
+                          name="url"
+                          value={formData.url}
+                          onChange={handleFormChange}
+                          placeholder="https://example.com/archivo.mp4"
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -285,7 +379,7 @@ export default function ModulosManager({ cursoId, onClose }) {
                 )}
 
                 <div className="d-flex gap-2">
-                  <button type="submit" className="btn btn-success">
+                  <button type="submit" className="btn-actualizarM">
                     {editingModulo ? 'Actualizar' : 'Crear'} Módulo
                   </button>
                   <button

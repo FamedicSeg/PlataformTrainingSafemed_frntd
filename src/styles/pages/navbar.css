@@ -1,5 +1,5 @@
 .navbar {
-  background: linear-gradient(135deg, #a4c4ff, #0077c8) !important;
+  background: linear-gradient(135deg, #0069a7, #0069a7) !important;
   padding: 0.5rem 0 !important;
   height: 80px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -7,7 +7,7 @@
 
 @media (min-height: 60px) {
   .navbar {
-  height: 120px;
+  height: 135px;
 }
 }
 
@@ -80,7 +80,7 @@
 
 /* MENÚ DE NAVEGACIÓN */
 .navbar-collapse {
-  background: linear-gradient(135deg, #8ab4f8, #0066b3);
+  background: linear-gradient(135deg, #6699b7, #0069a7);
   border-radius: 0 0 8px 8px;
   margin-top: 5px;
   padding: 10px;

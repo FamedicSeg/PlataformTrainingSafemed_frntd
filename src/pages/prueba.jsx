@@ -264,11 +264,11 @@ export default function Prueba() {
       <div className="container py-5">
         <div className="alert alert-success text-center">
           <i className="bi bi-check-circle-fill me-2"></i>
-          Ya aprobaste la prueba final anteriormente.
+          Ya aprobaste la evaluación anteriormente.
         </div>
         <button 
           className="btn btn-primary mt-3" 
-          onClick={() => navigate("/courses")}
+          onClick={() => navigate("/courses/tthh")}
         >
           Volver a los cursos
         </button>
@@ -277,8 +277,8 @@ export default function Prueba() {
   }
 
   return (
-    <div className="quiz-container py-5">
-      <h2 className="quiz-title">Prueba Final</h2>
+    <div className="quiz-container">
+      <h2 className="quiz-title">Evaluación de Conocimientos</h2>
 
       {resultado === null && (
         <form>
@@ -302,7 +302,7 @@ export default function Prueba() {
           <button 
             type="button" 
             onClick={handleSubmit} 
-            className="btn-submit"
+            className="btn-enviar-respuestas"
           >
             Enviar respuestas
           </button>
@@ -310,43 +310,105 @@ export default function Prueba() {
       )}
 
       {resultado === "aprobado" && (
-        <div className="alert alert-success text-center mt-4">
-          <h4 className="mb-3">
-            <i className="bi bi-trophy-fill me-2"></i>
-            ¡Felicidades!
-          </h4>
-          <p className="mb-3">
-            Aprobaste la prueba final con una calificación de: 
-            <strong className="ms-1">{calcularPuntaje()}%</strong>
-          </p>
-          <button 
-            onClick={() => navigate("/courses")} 
-            className="btn btn-primary mt-3"
-          >
-            Volver a los cursos
-          </button>
+        <div className="mt-4">
+          <div className="alert alert-success text-center">
+            <h4 className="mb-3">
+              <i className="bi bi-trophy-fill me-2"></i>
+              ¡Felicidades!
+            </h4>
+            <p className="mb-3">
+              Aprobaste la evaluación con una calificación de: 
+              <strong className="ms-1">{calcularPuntaje()}%</strong>
+            </p>
+          </div>
+
+        {/*
+          <h5 className="mt-4 mb-3 fw-bold">Revisión de respuestas</h5>
+          {questions.map((q) => {
+            const seleccionada = answers[q.id];
+            const correcta = seleccionada === q.correct;
+            return (
+              <div key={q.id} className={`card mb-3 border-${correcta ? 'success' : 'danger'}`}>
+                <div className={`card-header bg-${correcta ? 'success' : 'danger'} bg-opacity-10 d-flex align-items-center gap-2`}>
+                  <i className={`bi bi-${correcta ? 'check-circle-fill text-success' : 'x-circle-fill text-danger'}`}></i>
+                  <span className="fw-semibold">{q.id}. {q.text}</span>
+                </div>
+                <div className="card-body">
+                  {q.options.map((op, idx) => (
+                    <div key={idx} className={`mb-1 px-2 py-1 rounded
+                      ${idx === q.correct ? 'bg-success bg-opacity-15 fw-semibold' : ''}
+                      ${idx === seleccionada && idx !== q.correct ? 'bg-danger bg-opacity-15 text-decoration-line-through' : ''}
+                    `}>
+                      {idx === q.correct && <i className="bi bi-check-lg text-success me-1"></i>}
+                      {idx === seleccionada && idx !== q.correct && <i className="bi bi-x-lg text-danger me-1"></i>}
+                      {op}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+
+          */}
+          <div className="text-center mt-4">
+            <button 
+              onClick={() => navigate("/courses/tthh")} 
+              className="btn btn-primary"
+            >
+              Volver a los cursos
+            </button>
+          </div>
         </div>
       )}
 
       {resultado === "reprobado" && (
-        <div className="alert alert-danger text-center mt-4">
-          <div className="reprobado-content">
-            <div className="reprobado-message mb-4">
-              <i className="bi bi-x-circle-fill text-danger me-2"></i>
-              No alcanzaste el 70%. Obtuviste <strong>{calcularPuntaje()}%</strong>
+        <div className="mt-4">
+          <div className="alert alert-danger text-center">
+            <div className="reprobado-content mb-3">
+              <div className="reprobado-message mb-3">
+                <i className="bi bi-x-circle-fill text-danger me-2"></i>
+                No alcanzaste el 70%. Obtuviste <strong>{calcularPuntaje()}%</strong>
+              </div>
+              <button
+                className="btn btn-warning btn-lg"
+                onClick={() => {
+                  setAnswers({});
+                  setResultado(null);
+                  setMostrandoResultado(false);
+                }}
+              >
+                <i className="bi bi-arrow-clockwise me-2"></i>
+                Reintentar
+              </button>
             </div>
-            <button
-              className="btn btn-warning btn-lg"
-              onClick={() => {
-                setAnswers({});
-                setResultado(null);
-                setMostrandoResultado(false);
-              }}
-            >
-              <i className="bi bi-arrow-clockwise me-2"></i>
-              Reintentar
-            </button>
           </div>
+
+          {/*
+          <h5 className="mt-4 mb-3 fw-bold">Revisión de respuestas</h5>
+          {questions.map((q) => {
+            const seleccionada = answers[q.id];
+            const correcta = seleccionada === q.correct;
+            return (
+              <div key={q.id} className={`card mb-3 border-${correcta ? 'success' : 'danger'}`}>
+                <div className={`card-header bg-${correcta ? 'success' : 'danger'} bg-opacity-10 d-flex align-items-center gap-2`}>
+                  <i className={`bi bi-${correcta ? 'check-circle-fill text-success' : 'x-circle-fill text-danger'}`}></i>
+                  <span className="fw-semibold">{q.id}. {q.text}</span>
+                </div>
+                <div className="card-body">
+                  {q.options.map((op, idx) => (
+                    <div key={idx} className={`mb-1 px-2 py-1 rounded
+                      ${idx === q.correct ? 'bg-success bg-opacity-15 fw-semibold' : ''}
+                      ${idx === seleccionada && idx !== q.correct ? 'bg-danger bg-opacity-15 text-decoration-line-through' : ''}
+                    `}>
+                      {idx === q.correct && <i className="bi bi-check-lg text-success me-1"></i>}
+                      {idx === seleccionada && idx !== q.correct && <i className="bi bi-x-lg text-danger me-1"></i>}
+                      {op}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })} */}
         </div>
       )}
     </div>

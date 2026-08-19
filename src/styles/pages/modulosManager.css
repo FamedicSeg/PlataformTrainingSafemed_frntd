@@ -1,0 +1,104 @@
+.card2{
+    max-width: 1500px; 
+    width: 90%; 
+    max-height: 90vh; 
+    overflow-y: auto;
+    border-radius: 12px;
+}
+/* Estilo corporativo con acentos */
+.list-group {
+    margin-top: 20px;
+    border: 1px solid #eef2f6;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.list-group-item {
+    border: none;
+    border-left: 3px solid transparent;
+    padding: 16px 20px 16px 24px;
+    transition: all 0.25s ease;
+}
+
+/* Acento de color en hover */
+.list-group-item:hover {
+    background-color: #f7f9fc;
+    border-left-color: #4f46e5; /* Color primario */
+}
+
+/* Primer item con borde superior más sutil */
+.list-group-item:first-child {
+    border-top: none;
+}
+
+/* Borde inferior suave */
+.list-group-item:not(:last-child) {
+    border-bottom: 1px solid #f0f2f5;
+}
+
+/* Layout interno mejorado */
+.d-flex.align-items-center.flex-grow-1 {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    gap: 12px;
+    min-height: 44px;
+}
+
+/* Para iconos o avatares */
+.d-flex.align-items-center.flex-grow-1 .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f4ff;
+    border-radius: 10px;
+    color: #4f46e5;
+}
+
+.mb-0.fw-semibold{
+    margin-bottom: 0;
+    font-weight: 600;
+    color: #000000;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+}
+
+.text-muted {
+    color: #787c83 !important;
+    font-size: 0.875rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn.btn-sm.btn-warning.me-1{
+    color: #ffffff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn.btn-sm.btn-warning.me-1:hover {
+    background-color: #868480 !important;
+}
+
+.text-muted.small.mb-3{
+    text-align: center;
+
+}
+
+.btn-actualizarM{
+    background-color: #38c98d;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-actualizarM:hover {
+    background-color: #2fa67a;
+}

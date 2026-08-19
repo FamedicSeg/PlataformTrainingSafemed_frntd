@@ -1,62 +1,75 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, ArrowRight } from 'lucide-react';
-import swal from 'sweetalert2';
-import CursoForm from '../cursos/CursoForm';
-import CursosTable from '../cursos/CursosTable';
-import ModulosManager from '../cursos/ModulosManager';
-import InscripcionesManager from '../cursos/InscripcionesManager';
-import AsignarUsuarioModla from '../cursos/AsignarUsuarioModal';
+import { Plus, ArrowLeft } from 'lucide-react';
+import Swal from 'sweetalert2';
+import CursoForm from '../components/CursoForm';
+import CursosTable from '../components/CursosTable';
+import ModulosManager from '../components/ModulosManager';
+import InscripcionesManager from '../components/InscripcionesManager';
+import AsignarUsuariosModal from '../components/AsignarUsuariosModal';
+import EvaluacionManager from '../components/EvaluacionManager';
+import VersionesModal from '../components/VersionesModal';
 import '../styles/pages/adminCursos.css';
 
-export default function AdminCursos(){
-    const navigate = useNavigate();
-    const API_URL = import.meta.env.VITE_API_URL;
-    const token = localStorage.getItem("admin_token");
-    const adminUser = JSON.parse(localStorage.getItem("admin_proceso_user") || '{}');
+export default function AdminCursos() {
+  const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("admin_token");
+  const adminUser = JSON.parse(localStorage.getItem("admin_proceso_user") || '{}');
 
-    const [cursos, setCursos] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false);
-    const [editingCurso, setEditingCurso] = useState(null);
-    const [modulosModalCurso, setModulosModalCurso] = useState(null);
-    const [inscripcionesModalCurso, setInscripcionesModalCurso] = useState(null);
-    const [asignarUsuariosCurso, setAsignarUsuariosCurso] = useState(null);
-    const [searchTerm, setSearchTerm] = useState("");
+  const [cursos, setCursos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [editingCurso, setEditingCurso] = useState(null);
+  const [modulosModalCurso, setModulosModalCurso] = useState(null);
+  const [inscripcionesModalCurso, setInscripcionesModalCurso] = useState(null);
+  const [asignarUsuariosCurso, setAsignarUsuariosCurso] = useState(null);
+  const [evaluacionModalCurso, setEvaluacionModalCurso] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [versionesModalCurso, setVersionesModalCurso] = useState(null);
+  const [filtroAnio, setFiltroAnio] = useState('');
+  const anioActual = new Date().getFullYear();
+  const aniosSelector = [anioActual - 1, anioActual, anioActual + 1];
 
-    useEffect(() => {
-        if(!token || !adminUser.id) {
-            navigate('/admin/login');
-        }
-    }, [navigate, token, adminUser]);
+  // Verificar autenticación
+  useEffect(() => {
+    if (!token || !adminUser.id) {
+      navigate('/admin/login');
+    }
+  }, [token, adminUser, navigate]);
 
-    useEffect(() => {
-        cargarCursos();
-    }, []);
+  // Cargar cursos
+  useEffect(() => {
+    cargarCursos();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtroAnio]);
 
-    const cargarCursos = async () => {
-        try{
-            setLoading(true);
-            const res = await fetch(`${API_URL}/api/cursos`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            const data = await res.json();
+  const cargarCursos = async () => {
+    try {
+      setLoading(true);
+      const url = filtroAnio
+        ? `${API_URL}/api/cursos?anio=${filtroAnio}`
+        : `${API_URL}/api/cursos`;
+      const response = await fetch(url, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
 
-            if(!res.ok){
-                throw new Error(data.message || 'Error al cargar cursos');
-            }
-            setCursos(data.data || []);
-        } catch (error) {
-            console.error("Error al cargar cursos:", error);
-            swal.fire('Error', error.message || 'Error al cargar cursos', 'error');
-        } finally {
-            setLoading(false);
-        }
-    };
+      const data = await response.json();
 
-    const handleCreateClick = () => {
+      if (!response.ok) {
+        throw new Error(data.message || 'Error al cargar cursos');
+      }
+
+      setCursos(data.data || []);
+    } catch (error) {
+      console.error('Error:', error);
+      Swal.fire('Error', error.message, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateClick = () => {
     setEditingCurso(null);
     setShowForm(true);
   };
@@ -81,15 +94,15 @@ export default function AdminCursos(){
         throw new Error(data.message);
       }
 
-      swal.fire('Éxito', 'Curso eliminado correctamente', 'success');
+      Swal.fire('Éxito', 'Curso eliminado correctamente', 'success');
       cargarCursos();
     } catch (error) {
       console.error('Error:', error);
-      swal.fire('Error', error.message, 'error');
+      Swal.fire('Error', error.message, 'error');
     }
   };
 
-  const handleSaveCurso = (nuevosCurso) => {
+  const handleSaveCurso = (nuevosCursos) => {
     setShowForm(false);
     setEditingCurso(null);
     cargarCursos();
@@ -115,13 +128,15 @@ export default function AdminCursos(){
             Proceso: <strong>{adminUser.proceso_name}</strong>
           </p>
         </div>
+        {/*
         <button
-          className="btn btn-outline-secondary"
-          onClick={() => navigate('/admin')}
+          className="btn-return"
+          onClick={() => navigate('/admin/home')}
         >
-          <ArrowLeft size={18} className="me-2" />
-          Volver al Dashboard
+          <ArrowLeft size={14} className="me-2" />
+          Volver
         </button>
+        */}
       </div>
 
       {/* Contenido principal */}
@@ -130,7 +145,7 @@ export default function AdminCursos(){
         <div className="card">
           <div className="card-header">
             <h5 className="mb-0">
-              {editingCurso ? '✏️ Editar Curso' : '➕ Crear Nuevo Curso'}
+              {editingCurso ? 'Editar Curso' : 'Crear Nuevo Curso'}
             </h5>
           </div>
           <div className="card-body">
@@ -153,7 +168,7 @@ export default function AdminCursos(){
                     <span className="input-group-text">🔍</span>
                     <input
                       type="text"
-                      className="form-control"
+                      className="label-search"
                       placeholder="Buscar curso por nombre..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
@@ -161,12 +176,25 @@ export default function AdminCursos(){
                   </div>
                 </div>
                 <div className="col-auto">
+                  <select
+                    className="form-select form-select-sm"
+                    value={filtroAnio}
+                    onChange={e => setFiltroAnio(e.target.value)}
+                    style={{ minWidth: 130 }}
+                  >
+                    <option value="">Todos los años</option>
+                    {aniosSelector.map(a => (
+                      <option key={a} value={a}>{a}{a === anioActual ? ' (actual)' : ''}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-auto">
                   <button
-                    className="btn btn-primary"
+                    className="btn-new-course"
                     onClick={handleCreateClick}
                   >
-                    <Plus size={18} className="me-2" />
-                    Nuevo Curso
+                    <Plus size={14} className="me-2" />
+                    Agregar Nuevo Curso
                   </button>
                 </div>
               </div>
@@ -186,7 +214,11 @@ export default function AdminCursos(){
                 onEdit={handleEditClick}
                 onDelete={handleDeleteClick}
                 onViewModulos={setModulosModalCurso}
-                onViewInscripciones={setInscripcionesModalCurso}                onAssignUsers={setAsignarUsuariosCurso}              />
+                onViewInscripciones={setInscripcionesModalCurso}                
+                onAssignUsers={setAsignarUsuariosCurso}
+                onViewEvaluacion={setEvaluacionModalCurso}
+                onViewVersiones={setVersionesModalCurso}
+                />
             </div>
           </div>
         </>
@@ -216,7 +248,22 @@ export default function AdminCursos(){
           onAssign={() => cargarCursos()}
         />
       )}
+
+      {/* Modal de Evaluación Final */}
+      {evaluacionModalCurso && (
+        <EvaluacionManager
+          cursoId={evaluacionModalCurso}
+          onClose={() => setEvaluacionModalCurso(null)}
+        />
+      )}
+
+      {/* Modal de Versiones anuales */}
+      {versionesModalCurso && (
+        <VersionesModal
+          curso={versionesModalCurso}
+          onClose={() => { setVersionesModalCurso(null); cargarCursos(); }}
+        />
+      )}
     </div>
   );
 }
-

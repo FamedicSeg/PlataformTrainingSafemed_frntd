@@ -1,0 +1,218 @@
+/* ── Contenedor principal ── */
+.res-eval-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.res-eval-header {
+  background: linear-gradient(135deg, #ecedee 0%, #d4e4ec 100%);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  font-weight: 600;
+}
+
+.mb-0{
+  color: #0a2752;
+  font-weight: 600;
+  font-size: 20px;
+  gap: 4px;
+}
+
+.mb-0.opacity-75.small{
+  color: #0a2752;
+  font-size: 12.5px;
+  gap: 4px;
+}
+
+.res-eval-header > div {
+  flex: 1;
+}
+
+.btn-back-eval {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #111b3c;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.btn-back-eval:hover {
+  background: rgb(75, 74, 74);
+}
+
+.btn-refresh-eval {
+  background: rgba(51, 51, 51, 0.15);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s;
+}
+.btn-refresh-eval:hover {
+  background: rgba(29, 26, 26, 0.28);
+}
+
+/* ── Resumen ── */
+.res-eval-resumen {
+  display: flex;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.resumen-item {
+  flex: 1;
+  padding: 1rem;
+  text-align: center;
+  border-right: 1px solid #e9ecef;
+}
+.resumen-item:last-child {
+  border-right: none;
+}
+
+.resumen-item .num {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.resumen-item .lbl {
+  display: block;
+  font-size: 0.72rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.resumen-item.total .num    { color: #1a3c5e; }
+.resumen-item.aprobados .num { color: #16a34a; }
+.resumen-item.reprobados .num { color: #d97706; }
+.resumen-item.bloqueados .num { color: #dc2626; }
+
+/* ── Alerta bloqueados ── */
+.res-eval-alerta-bloqueados {
+  background: #fef2f2;
+  border-left: 4px solid #dc2626;
+  color: #991b1b;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.88rem;
+}
+
+/* ── Filtros ── */
+.res-eval-filtros {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.res-eval-filtros .form-select {
+  max-width: 260px;
+}
+
+/* ── Tabla ── */
+.res-eval-tabla-wrapper {
+  overflow-x: auto;
+}
+
+.res-eval-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.res-eval-tabla thead th {
+  background: #1a3c5e;
+  color: #fff;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  border: none;
+}
+
+.res-eval-tabla tbody tr {
+  border-bottom: 1px solid #f1f4f9;
+  transition: background 0.15s;
+}
+
+.res-eval-tabla tbody tr:hover {
+  background: #f7faff;
+}
+
+.res-eval-tabla tbody td {
+  padding: 10px 14px;
+  vertical-align: middle;
+  color: #374151;
+}
+
+.res-eval-tabla tbody tr.fila-bloqueada {
+  background: #fff5f5;
+}
+.res-eval-tabla tbody tr.fila-bloqueada:hover {
+  background: #fee2e2;
+}
+
+/* ── Badge de intentos ── */
+.badge-intentos {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.intentos-0 { background: #e8f5e9; color: #2e7d32; }
+.intentos-1 { background: #fff8e1; color: #f57f17; }
+.intentos-2 { background: #fce4ec; color: #c62828; }
+
+/* ── Botón rehabilitar ── */
+.btn-rehabilitar {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn-rehabilitar:hover:not(:disabled) {
+  background: #1d4ed8;
+  color: #fff;
+  border-color: #1d4ed8;
+}
+
+.btn-rehabilitar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.badge.bg-warning.text-dark{
+  background-color: #facc15 !important;
+  color: #ffffff !important;
+}
