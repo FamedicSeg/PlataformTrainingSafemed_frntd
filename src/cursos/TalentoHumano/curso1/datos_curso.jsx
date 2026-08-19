@@ -62,7 +62,7 @@ export const cursoDerechosLaborales = {
       completado: false,
       descripcion: "Video informativo sobre los derechos básicos de los trabajadores en el Ecuador",
       autor: "Autor: In Solidum Abogados"
-    }
+    },
     {
       id: 7,
       titulo: "Derechos Laborales y Ley Orgánica para la Igualdad Salarial",
