@@ -1,4 +1,4 @@
-import {_useState, useEffect} from 'react';
+import { _useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import "../styles/pages/procesos.css"
 
@@ -20,7 +20,7 @@ export default function Procesos(){
         if(location.state && location.state.refrescar){
             navigate(location.pathname, { replace: true, state: {}});
         }
-    }, [navigate]);
+    }, [navigate, location]);
 
     return(
         <div className='container contenedor-principal py-5 mt-5'>
@@ -29,10 +29,10 @@ export default function Procesos(){
                     <h2> Bienvenido a la plataforma de Capacitación DHISVE</h2>
                     <p className='subtitulo-pagina'> SELECCIONA EL PROCESO QUE DESEAS INGRESAR</p>
                 </div>
-                <div className='row g.4 mb-5'>
+                <div className='row g-4 mb-5'>
                 {courses.map((c)=>(
                     <div key={c.id} className='col-md-3'>
-                        <div className='card card.curso shadow-sm h-100'>
+                        <div className={`card card-curso shadow-sm h-100 ${!c.enabled ? 'card-disabled' : ''}`}>
                             <div className='card-body d-flex flex-column'>
                                 <h5 className='titulo-curso'>
                                     {c.name}
@@ -41,14 +41,19 @@ export default function Procesos(){
                                     {c.desc}
                                 </p>
                                 <button 
-                                className='btn btn-continuar2 w-100 mt-3'
-                                onClick={()=>
-                                    navigate(c.link,{
-                                        state:{ courseId: c.id}
-                                    })
-                                }
+                                className={`btn w-100 mt-3 ${c.enabled ? 'btn-continuar2' : 'btn-disabled'}`}
+                                style={{
+        backgroundColor: !c.enabled ? '#eaeaea' : '',}}
+                                onClick={() => {
+                                    if(c.enabled) {
+                                        navigate(c.link,{
+                                            state:{ courseId: c.id}
+                                        })
+                                    }
+                                }}
+                                disabled={!c.enabled}
                                 >
-                                    Iniciar Curso
+                                    {c.enabled ? 'Iniciar Curso' : '🔒 Próximamente'}
                                 </button>
                             </div>
                         </div>
@@ -58,5 +63,4 @@ export default function Procesos(){
             </div>
         </div>
     );
-    
 }

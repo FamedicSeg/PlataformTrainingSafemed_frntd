@@ -7,17 +7,18 @@ import { useState, useEffect } from 'react';
 
 import Home from './pages/inicio';
 import Courses from './pages/cursos';
-import Admin from './pages/adminPrincipal';
+import AdminPrincipal from './pages/adminPrincipal';
 import Login from './pages/login';
 import LoginNombre from './pages/principal';
-import Curso from "./cursos/curso1/curso1";
-import Curso2 from './cursos/curso2/curso2';
-import Curso3 from './cursos/curso3/curso3';
-import Curso4 from './cursos/curso4/curso4';
+import Curso from './cursos/TalentoHumano/curso1/curso1';
+import Curso2 from './cursos/TalentoHumano/curso2/curso2';
+import Curso3 from './cursos/TalentoHumano/curso3/curso3';
+import Curso4 from './cursos/TalentoHumano/curso4/curso4';
+import Curso5 from './cursos/TalentoHumano/curso5/curso5';
 import Navbar from './pages/navbar';
 import Navbar2 from './pages/navbar2';
 import Procesos from './pages/procesos';
-import AdminTalentoHumano from './pages/adminTTHH';
+import AdminTalentoHumano from './procesos/adminTTHH';
 import LoginAdminProceso from './pages/adminProcesos';
 import ScrollToTop from './pages/scrollToTop';
 import Soporte from './pages/soporte';
@@ -25,10 +26,11 @@ import AdminDireccion from './procesos/adminDireccion';
 import DocumentoForm from './cursos/TalentoHumano/curso5/documentoForm';
 import Sidebar from './pages/sidebar';
 
-import { cursoDerechosLaborales } from "./cursos/curso1/datos_curso";
-import { cursoIgualdadGenero } from "./cursos/curso2/datos_curso2";
-import { cursoErradicacionViolencia } from "./cursos/curso3/datos_curso3";
-import { cursoOtrosRelacionados } from './cursos/curso4/datos_curso4';
+import { cursoDerechosLaborales } from "./cursos/TalentoHumano/curso1/datos_curso";
+import { cursoIgualdadGenero } from "./cursos/TalentoHumano/curso2/datos_curso2";
+import { cursoErradicacionViolencia } from "./cursos/TalentoHumano/curso3/datos_curso3";
+import { cursoOtrosRelacionados } from './cursos/TalentoHumano/curso4/datos_curso4';
+import {cursoReglamentoInterno} from './cursos/TalentoHumano/curso5/datos_curso5';
 
 import Prueba from './pages/prueba';
 
@@ -162,15 +164,14 @@ function Layout({ children }) {
   // Determinar qué navbar mostrar
   const renderNavbar = () => {
     // Rutas sin navbar
-    if (["/", "/admin", "/admin/procesos"].includes(location.pathname)) {
+    if (["/", "/admin", "/admin/procesos","/adminPrincipal", "/sidebar"].includes(location.pathname)) {
       return null;
     }
     
     // Ruta con Navbar2 (admin)
-    if (location.pathname === "/adminTTHH") {
+    if (location.pathname.startsWith("/admin")) {
       return <Navbar2 />;
     }
-    
     // Todas las demás rutas con Navbar normal
     return <Navbar />;
   };
@@ -205,8 +206,8 @@ function Layout({ children }) {
             className="mt-3 w-100"
             style={{ height: "200px", objectFit: "cover" }}
           />
-          <small className="text-muted">
-            Copyright © 2025, DHISVE | Sistema de Capacitación Interna | Todos los derechos reservados
+          <small className="footer-full">
+            Copyright © 2026, DHISVE | Sistema de Capacitación Interna | Todos los derechos reservados | Analista de Transformaciión Digital
           </small>
         </footer>
       )}
@@ -264,6 +265,9 @@ function App() {
           <Route path="/" element={<LoginNombre />} />
           <Route path="/admin" element={<Login />} />
           <Route path="/admin/procesos" element={<LoginAdminProceso />} />
+          <Route path="/adminPrincipal" element={<AdminPrincipal />} />
+          <Route path="/sidebar" element={<Sidebar />} />
+          
 
           {/* Rutas protegidas para usuarios logueados */}
           <Route path="/inicio" element={<ProtectedUserRoute><Home /></ProtectedUserRoute>} />
@@ -324,6 +328,15 @@ function App() {
             } 
           />
 
+          <Route 
+            path="/courses/reglamentointerno" 
+            element={
+              <ProtectedUserRoute>
+                <Curso5 curso={cursoReglamentoInterno} />
+              </ProtectedUserRoute>
+            } 
+          />
+
           {/* Prueba final protegida */}
           <Route 
             path="/prueba" 
@@ -352,10 +365,18 @@ function App() {
             }
           />
           <Route 
-            path="/adminTTHH" 
+            path="/admin/Talento Humano" 
             element={
               <PrivateRoute>
                 <AdminTalentoHumano />
+              </PrivateRoute>
+            }
+          />
+          <Route 
+            path="/admin/Dirección" 
+            element={
+              <PrivateRoute>
+                <AdminDireccion />
               </PrivateRoute>
             }
           />

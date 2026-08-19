@@ -27,7 +27,7 @@
 
 /* Grid de tarjetas */
 .row.g-4 {
-  gap: 2rem !important;
+  gap: 0rem !important;
   margin: 0 -15px;
 }
 

@@ -143,7 +143,7 @@ export default function LoginNombre() {
       {/* Bienvenida */}
       <div className="text-center mb-4">
         <h3 className="bienvenida-titulo">PLATAFORMA INTERNA - DHISVE</h3>
-        <h4 className="bienvenida-subtitulo">Bienvenido</h4>
+        <h3 className="bienvenida-subtitulo">Bienvenido</h3>
         <p className="instruccion-texto">Ingresa tu cédula de identidad para continuar.</p>
         <h5 className="instruccion-texto2">Nota: Tu cédula de identidad también es tu contraseña </h5>
       </div>
@@ -212,14 +212,14 @@ export default function LoginNombre() {
               className="btn-adminProceso"
               onClick={() => navigate("/admin/procesos")}
             >
-              ÁREA DEL ADMINISTRADOR DE PROCESOS
+              ADMIN. PROCESOS
             </button>
 
             <button
               className="btn-adminPrincipal"
               onClick={() => navigate("/admin")}
             >
-              ÁREA DE ADMINISTRADOR PRINCIPAL
+              ADMIN. PRINCIPAL
             </button>
           </div>
         </div>
