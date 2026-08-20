@@ -160,11 +160,11 @@ export default function Prueba() {
     },
     {
       id:7,
-      text: "¿Cuál de las siguientes opciones se puede considerar como: Principios de Inclusión?",
+      text: "¿Cuál de las siguientes opciones se puede considerar como Principios de Inclusión?",
       options:[
         "Contratación por méritos profesionales.",
         "Descriminar a un compañero por edad o discapacidad.",
-        "Contratar a un trabajador porque bebe cada semana."
+        "Contratar a un trabajador porque bebe cada fin de semana."
       ],
       correct: 0
     },
@@ -180,12 +180,13 @@ export default function Prueba() {
     },
     {
       id:9,
-      text: "Consideras qué: ¿Encargar organización o tareas de apoyo a mujeres asumiendo que son más ordenadas, es una asignaciòn de rol por género?",
+      text: "¿A qué hace referencia la Persecución y Represalia Discriminatoria?",
       options:[
-        "Sí",
-        "No"
+        "Un trabajador recibe malos tratos de manera clara y visible.",
+        "Una situación laboral aparenta ser neutral, pero oculta prácticas discriminatorias.",
+        "Un trabajador recibe un trato intimidante continuo, se busca humillarla y que abandone su puesto de trabajo."
       ],
-      correct: 0
+      correct: 2
     },
     {
       id:10,
