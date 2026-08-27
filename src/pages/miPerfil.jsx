@@ -58,7 +58,7 @@ export default function MiPerfil() {
       }
     } catch (error) {
       console.error('Error:', error);
-      Swal.fire('Error', 'No se pudieron cargar las capacitaciones', 'error');
+      //Swal.fire('Error', 'No se pudieron cargar las capacitaciones', 'error');
     } finally {
       setLoading(false);
     }
