@@ -21,12 +21,12 @@ export default function CoursesTTHH() {
       desc: "Duración: 2 horas", 
       link: "/courses/reglamentointerno",
       dbName: "reglamentoInterno",
-      bloqueado: false,
+      bloqueado: true,
       esEstatico: true
     },
     { 
       id: "estatico_2", 
-      name: "2. Derechos laborales de mujeres y hombres", 
+      name: "2. Derechos laborales de Mujeres y Hombres", 
       desc: "Duración: 10 horas", 
       link: "/courses/derechoslaborales",
       dbName: "derechos_laborales",
@@ -35,7 +35,7 @@ export default function CoursesTTHH() {
     },
     { 
       id: "estatico_3", 
-      name: "3. Igualdad de género", 
+      name: "3. Igualdad de Género", 
       desc: "Duración: 10 horas", 
       link: "/courses/igualdadgenero",
       dbName: "igualdad_genero",
@@ -44,7 +44,7 @@ export default function CoursesTTHH() {
     },
     { 
       id: "estatico_4", 
-      name: "4. Erradicación de violencia y no discriminación en un centro de trabajo", 
+      name: "4. Erradicación de Violencia y No Discriminación en un Centro de Trabajo", 
       desc: "Duración: 10 horas", 
       link: "/courses/erradicacionviolencia",
       dbName: "erradicacion_Violencia",
@@ -53,7 +53,7 @@ export default function CoursesTTHH() {
     },
     { 
       id: "estatico_5", 
-      name: "5. Otros relacionados para establecer el trabajo de igual valor", 
+      name: "5. Otros Relacionados para Establecer el Trabajo de igual valor", 
       desc: "Duración: 10 horas", 
       link: "/courses/otrosrelacionados",
       dbName: "otrosRelacionados",

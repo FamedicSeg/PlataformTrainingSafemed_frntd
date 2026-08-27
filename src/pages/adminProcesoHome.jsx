@@ -9,6 +9,7 @@ import NotificacionesPanel from '../components/NotificacionesPanel';
 import PanelControl from '../components/PanelControl';
 import ResultadosEvaluacionesProceso from '../components/ResultadosEvaluacionesProceso';
 import AsistenciaPanel from '../components/AsistenciaPanel';
+import AsistenciaPanelCursos4 from '../components/AsistenciaPanelCursos4';
 import AdminCursos from './adminCursos';
 import AprobacionCursos from './aprobacionCursos';
 import ReportesUsuario from '../components/ReportesUsuario';
@@ -172,7 +173,9 @@ export default function AdminProcesoHome() {
       case 'resultados':
         return <ResultadosEvaluacionesProceso onClose={() => setActiveTab('inicio')} />;
       case 'asistencia':
-        return <AsistenciaPanel onClose={() => setActiveTab('inicio')} />;
+        return esTalentoHumano
+          ? <AsistenciaPanelCursos4 onClose={() => setActiveTab('inicio')} />
+          : <AsistenciaPanel onClose={() => setActiveTab('inicio')} />;
       case 'panel-control':
         return esTalentoHumano
           ? <PanelControl onClose={() => setActiveTab('inicio')} />

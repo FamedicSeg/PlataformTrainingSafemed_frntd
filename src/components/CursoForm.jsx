@@ -12,6 +12,7 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
     descripcion: '',
     razon_curso: '',
     dirigido_a: '',
+    duracion: '',
     fecha_inicio: '',
     fecha_fin: ''
   });
@@ -28,6 +29,7 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
         descripcion: initialData.descripcion || '',
         razon_curso: initialData.razon_curso || '',
         dirigido_a: initialData.dirigido_a || '',
+        duracion: initialData.duracion || '',
         fecha_inicio: initialData.fecha_inicio ? new Date(initialData.fecha_inicio).toISOString().slice(0, 16) : '',
         fecha_fin: initialData.fecha_fin ? new Date(initialData.fecha_fin).toISOString().slice(0, 16) : ''
       });
@@ -127,7 +129,7 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
 
       <div className="mb-3">
         <label className="form-label fw-semibold">
-          Nombre del Curso:
+          Tema de la Formación:
         </label>
         <input
           type="text"
@@ -142,7 +144,7 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
 
       <div className="mb-3">
         <label className="form-label fw-semibold">
-          Descripción:
+          Detalle de Temas a Tratar:
         </label>
         <textarea
           className="form-control"
@@ -186,6 +188,25 @@ export default function CursoForm({ cursoId = null, onSave, onCancel, initialDat
           rows="4"
           disabled={loading}
         ></textarea>
+      </div>
+
+      <div className="mb-3 mt-3">
+        <label className="form-label fw-semibold">
+          Duración del curso:
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          name="duracion"
+          value={formData.duracion}
+          onChange={handleChange}
+          placeholder="Ejemplo: 10 horas o 40 minutos"
+          maxLength="100"
+          disabled={loading}
+        />
+        <small className="form-text text-muted">
+          Indica cuánto tiempo durará el curso, en horas o minutos.
+        </small>
       </div>
 
       <div className="row mt-3">

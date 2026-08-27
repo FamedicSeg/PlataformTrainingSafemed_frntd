@@ -7,12 +7,12 @@ import '../styles/components/AsistenciaPanel.css';
 /**
  * AsistenciaPanel
  * Tabla de asistencia para el admin de proceso.
- * Muestra nombre, cargo, fecha/hora de inicio y fin por curso.
+ * Muestra nombre, cargo y fechas de asistencia por curso.
  *
  * Props:
  *   onClose — callback para volver al inicio
  */
-export default function AsistenciaPanel() {
+export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/asistencia/proceso' }) {
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem('admin_token');
 
@@ -32,7 +32,7 @@ export default function AsistenciaPanel() {
   const cargarAsistencia = async () => {
     setCargando(true);
     try {
-      const res = await fetch(`${API_URL}/api/inscripciones/asistencia/proceso`, {
+      const res = await fetch(`${API_URL}${asistenciaUrl}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -62,9 +62,7 @@ export default function AsistenciaPanel() {
       const dia  = d.getDate().toString().padStart(2, '0');
       const mes  = (d.getMonth() + 1).toString().padStart(2, '0');
       const anio = d.getFullYear();
-      const hora = d.getHours().toString().padStart(2, '0');
-      const min  = d.getMinutes().toString().padStart(2, '0');
-      return `${dia}/${mes}/${anio} ${hora}:${min}`;
+      return `${dia}/${mes}/${anio}`;
     } catch {
       return fechaStr;
     }
@@ -87,7 +85,7 @@ export default function AsistenciaPanel() {
 
   // ── Exportar a CSV ────────────────────────────────────────────
   const exportarCSV = () => {
-    const cabecera = ['Nombre', 'Cédula', 'Proceso', 'Cargo', 'Curso', 'Fecha Inicio', 'Estado'];
+    const cabecera = ['Apellidos y Nombres', 'Cédula', 'Proceso', 'Cargo', 'Curso', 'Fecha Inicio', 'Estado'];
     const filas = registrosFiltrados.map(r => [
       r.usuario_nombre,
       r.cedula_identidad,
@@ -132,6 +130,19 @@ export default function AsistenciaPanel() {
       console.warn('No se pudo cargar el logo:', e);
     }
 
+    let firmaDataUrl = null;
+    try {
+      const resp = await fetch('/img/firma.png');
+      const blob = await resp.blob();
+      firmaDataUrl = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    } catch (e) {
+      console.warn('No se pudo cargar la firma:', e);
+    }
+
     // Datos del curso
     const primerRegistro   = registrosFiltrados[0] || {};
     const nombreCurso      = primerRegistro.curso_nombre        || '—';
@@ -146,10 +157,13 @@ export default function AsistenciaPanel() {
         : '—';
     const descripcionCurso = primerRegistro.curso_descripcion   || '—';
     const dirigidoA        = primerRegistro.curso_dirigido_a    || '—';
+    const duracion = primerRegistro.curso_duracion || '—';
+    const procesoCurso = (primerRegistro.curso_proceso || '—');
 
     // Nombre del admin desde localStorage
     const adminUser   = JSON.parse(localStorage.getItem('admin_proceso_user') || '{}');
     const responsable = adminUser.nombre || '—';
+
 
     const doc   = new jsPDF('portrait', 'mm', 'a4');
     const pageW = doc.internal.pageSize.getWidth();   // 210mm
@@ -233,7 +247,7 @@ export default function AsistenciaPanel() {
     const textoDerecha = [
       'Código: RG-GTH-04', 
       '',
-      'Fecha: 08-07-2026', 
+      'Fecha: 27-08-2026', 
       '',
       'Versión: 10'
     ];
@@ -254,8 +268,8 @@ export default function AsistenciaPanel() {
   y += tituloH;
 
     // ── Dimensiones de columnas ────────────────────────────────
-    const etqW  = 35;                         // columna etiqueta
-    const rowH  = 8;                          // altura fila estándar
+    const etqW  = 35;                       // columna etiqueta
+    const rowH  = 8;                       // altura fila estándar
     const valW  = useW - etqW;                // columna valor (fila simple)
 
     // ── Fila 1: TEMA ───────────────────────────────────────────
@@ -263,7 +277,7 @@ export default function AsistenciaPanel() {
     celda(mL + etqW, y, valW, rowH, nombreCurso);
     y += rowH;
 
-    // ── Fila 2: FECHA | RESPONSABLE ────────────────────────────
+    // ── Fila 2: FECHA | DURACIÓN ────────────────────────────
     // Dividimos el área de valores en dos mitades iguales
     const mitad     = (useW - etqW * 2) / 2;
     const xFechaVal = mL + etqW;
@@ -271,13 +285,29 @@ export default function AsistenciaPanel() {
     const xRespVal  = xRespEtq + etqW;
     const respValW  = useW - etqW * 2 - mitad;
 
-    celda(mL,        y, etqW,    rowH, 'FECHA:',        true, FONDO_SECUNDARIO);
+    celda(mL,        y, etqW,    rowH, 'FECHA (dd/mm/aa):',        true, FONDO_SECUNDARIO);
     celda(xFechaVal, y, mitad,   rowH, fechaInicioCurso);
-    celda(xRespEtq,  y, etqW,    rowH, 'RESPONSABLE:',  true, FONDO_SECUNDARIO);
-    celda(xRespVal,  y, respValW, rowH, responsable);
+  
+    celda(xRespEtq,  y, etqW,    rowH, 'DURACIÓN:',  true, FONDO_SECUNDARIO);
+    celda(xRespVal,  y, respValW, rowH, duracion);
     y += rowH;
 
-    // ── Fila 3: DIRIGIDO A ─────────────────────────────────────
+    // FILA 3: LUGAR + RESPONSABLE
+    const mitad2 = (useW - etqW * 2)/2;
+    const xLugar = mL + etqW;
+    const xResponsable = xLugar + mitad2;
+    const respValW2 = useW - etqW * 2 - mitad2;
+
+    celda(mL,   y, etqW,   rowH, 'LUGAR:', true, FONDO_SECUNDARIO);
+    celda(xLugar, y, mitad2, rowH, 'Plataforma Virtual');
+
+    celda(xResponsable, y, etqW, rowH, 'RESPONSABLE', true, FONDO_SECUNDARIO);
+    celda(xResponsable + etqW, y, respValW2, rowH, responsable);
+    y += rowH;
+
+
+
+    // ── Fila 4: DIRIGIDO A ─────────────────────────────────────
     celda(mL,        y, etqW, rowH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, rowH, dirigidoA);
     y += rowH;
@@ -285,18 +315,18 @@ export default function AsistenciaPanel() {
     // ── Fila 4: DESCRIPCIÓN (altura variable) ──────────────────
     const descLineas = doc.splitTextToSize(descripcionCurso, valW - 6);
     const descH      = Math.max(rowH, descLineas.length * 4.5 + 4);
-    celda(mL,        y, etqW, descH, 'DESCRIPCIÓN:', true, FONDO_SECUNDARIO);
+    celda(mL,        y, etqW, descH, 'DETALLE:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, descH, descripcionCurso);
     y += descH + 2;
 
     // ── Tabla de asistencia ────────────────────────────────────
-    const headers = ['N°', 'APELLIDOS Y NOMBRES', 'CÉDULA', 'CARGO', 'FECHA INICIO', 'ESTADO'];
+    const headers = ['N°', 'APELLIDOS Y NOMBRES', 'CÉDULA', 'CARGO', 'ESTADO / FIRMA'];
     const rows = registrosFiltrados.map((r, idx) => [
       idx + 1,
       r.usuario_nombre,
       r.cedula_identidad || '—',
       r.usuario_cargo,
-      r.inicio_en ? formatearFecha(r.inicio_en) : '—',
+      //r.inicio_en ? formatearFecha(r.inicio_en) : '—',
       r.estado || '—',
     ]);
 
@@ -323,11 +353,11 @@ export default function AsistenciaPanel() {
       alternateRowStyles: { fillColor: FONDO_SECUNDARIO },
       columnStyles: {
         0: { cellWidth: 9.5,  halign: 'center' },
-        1: { cellWidth: 55,  halign: 'center'   },
-        2: { cellWidth: 25,  halign: 'center' },
-        3: { cellWidth: 40,  halign: 'center'   },
-        4: { cellWidth: 30,  halign: 'center' },
-        5: { cellWidth: 25,  halign: 'center' },
+        1: { cellWidth: 60,  halign: 'center'   },
+        2: { cellWidth: 30,  halign: 'center' },
+        3: { cellWidth: 48,  halign: 'center'   },
+        4: { cellWidth: 35,  halign: 'center' },
+        //5: { cellWidth: 25,  halign: 'center' },
       },
     });
 
@@ -342,7 +372,7 @@ export default function AsistenciaPanel() {
     const ancho1 = 60;
     const ancho2 = 60;
     const ancho3 = useW - ancho1 - ancho2; 
-    const cuadroAlto = 22;
+    const cuadroAlto = 25;
     const espacioEntreCuadros = 0;
     const alturaTotalCuadros = cuadroAlto + 8;
 
@@ -358,19 +388,20 @@ export default function AsistenciaPanel() {
     const x2 = x1 + ancho1 + espacioEntreCuadros;
     const x3 = x2 + ancho2 + espacioEntreCuadros;
 
-    const ancho4 = useW - (x3 - mL); // Ancho total de los tres cuadros
+    //const ancho4 = useW - (x3 - mL); // Ancho total de los tres cuadros
 
     const dibujarCuadro = (x, y, w, h, textoSuperior, textoInferior = '') => {
       doc.setDrawColor(...BORDE);
       doc.setLineWidth(0.3);
-      doc.rect(x,y, w, h, 'S');
+      doc.rect(x,y-3, w, h, 'S');
 
-      //TEXTO SUPERIOR
+      // Texto superior e inferior del cuadro
       doc.setFontSize(9);
       doc.setTextColor(...TEXTO_OSCURO);
-      doc.setFont('helvetica', 'bold');
+      doc.setFont('helvetica', 'normal');
       const lineasSuperior = doc.splitTextToSize(textoSuperior, w - 6);
-      doc.text(lineasSuperior, x + (w / 2), y + 18, { align: 'center' });
+      doc.text(lineasSuperior, x + (w / 2), y + 7, { align: 'center' });
+      
 
       // LINEA SEPARADORA 
       //doc.setDrawColor(200, 200, 200);
@@ -380,18 +411,20 @@ export default function AsistenciaPanel() {
       if(textoInferior) {
         doc.setFontSize(9);
         doc.setTextColor(...TEXTO_OSCURO);
-        doc.setFont('helvetica', 'normal');
+        doc.setFont('helvetica', 'bold');
         const lineasInferior = doc.splitTextToSize(textoInferior, w - 6);
-        doc.text(lineasInferior, x + (w / 2), y + 18, { align: 'center' });
+        doc.text(lineasInferior, x + (w / 2), y + 18, { align: 'center'});
       }
     };
     
-    dibujarCuadro(x1, yCuadros, ancho1, cuadroAlto, 'CONDUCIDO POR');
+    dibujarCuadro(x1, yCuadros, ancho1, cuadroAlto, responsable, 'CONDUCIDO POR');
 
-    const textoSegundo = `DPTO. RESPONSABLE`;
-    dibujarCuadro(x2, yCuadros, ancho2, cuadroAlto, textoSegundo, '');
+    dibujarCuadro(x2, yCuadros, ancho2, cuadroAlto, procesoCurso, 'PROCESO RESPONSABLE');
 
-    dibujarCuadro(x3, yCuadros, ancho3, cuadroAlto, 'JEFE DE TALENTO HUMANO', '');
+    dibujarCuadro(x3 , yCuadros, ancho3, cuadroAlto, '', 'JEFE DE TALENTO HUMANO');
+    if (firmaDataUrl) {
+      doc.addImage(firmaDataUrl, 'PNG', x3 + ((ancho3 - 35) / 2), yCuadros - 2, 35, 15);
+    }
 
     y = finalY + cuadroAlto + 8;
     {/*
