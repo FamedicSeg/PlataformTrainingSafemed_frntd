@@ -121,20 +121,20 @@ export default function Prueba() {
       id: 3,
       text:"¿Cuál de las siguientes opciones es la base de la Justicia Laboral, Igualdad y Cero Discriminación?",
       options:[
+        "Transparencia Salarial",
         "Entorno libre de violencia.",
-        "Más trabajo laboral a las mujeres.",
-        "Aumento de sueldo a los hombres."
+        "Cumplimiento y Sanciones."
       ],
-      correct: 0
+      correct: 1
     },
     {
       id:4,
       text:"¿Cuál es el objetivo de la LOIS (LEY ORGÁNICA PARA LA IGUALDAD SALARIAL)?",
       options:
       [
-        "Los trabajadores deben tener puestos dependiendo del género.",
+        "Negar un puesto de trabajo, una capacitación o una oportunidad de ascenso por motivos de género.",
         "Garantizar que hombres y mujeres reciban la misma remuneración por un mismo trabajo o por un trabajo de igual valor.",
-        "Impulsar la guerra de género en los pagos a fin de mes."
+        "Impulsar la corresponsabilidad familiar para que las tareas del hogar y el cuidado no recaigan solo en las mujeres."
       ],
       correct: 1
     },
@@ -153,8 +153,8 @@ export default function Prueba() {
       text: "¿En qué consiste la Presión Social Laboral?",
       options:[
         "Aislamiento deliberado del equipo.",
-        "Comentarios con insinuaciones sexuales",
-        "Difusión de rumores falsos"
+        "Comentarios con insinuaciones sexuales.",
+        "Difusión de rumores falsos."
       ],
       correct: 0
     },
@@ -163,7 +163,7 @@ export default function Prueba() {
       text: "¿Cuál de las siguientes opciones se puede considerar como Principios de Inclusión?",
       options:[
         "Contratación por méritos profesionales.",
-        "Descriminar a un compañero por edad o discapacidad.",
+        "Valoración de diferentes perspectivas.",
         "Contratar a un trabajador porque bebe cada fin de semana."
       ],
       correct: 0
@@ -190,13 +190,13 @@ export default function Prueba() {
     },
     {
       id:10,
-      text: "¿Qué implica la correspondencia familiar?",
+      text: "¿Qué implica que una empresa tenga una Cultura Organizacional que respeta la vida familiar?",
       options: [
-        "Mayor satisfacción laboral.",
-        "Hombres y mujeres comparten roles domésticos.",
-        "Reingreso al trabajo sin penalizaciones."
+        "Promueve licencias que reducen la desigualdad y distribuye el rol de cuidado.",
+        "Comprende situaciones especiales como enfermedades familiares.",
+        "Concilia la carga y mejorar la concentración."
       ],
-      correct:1
+      correct: 1
     }
   ];
 

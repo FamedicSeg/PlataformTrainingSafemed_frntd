@@ -269,8 +269,8 @@ export default function Curso({ curso }) {
 
         {/* NIVELES */}
         <div className="niveles-contenedor">
-          {niveles.map((nivel, idx) => {
-            const puedeAcceder = idx === 0 || niveles[idx - 1].completado;
+          {niveles.map((nivel) => {
+            const puedeAcceder = true;
 
             return (
               <Nivel

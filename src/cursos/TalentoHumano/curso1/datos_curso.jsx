@@ -47,12 +47,12 @@ export const cursoDerechosLaborales = {
     },
     {
       id: 5,
-      titulo: " Principios del Derecho Laboral en el Ecuador",
+      titulo: "Contrato de Trabajo según código de trabajo en el Ecuador",
       tipo: "video",
-      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1787144933/PRINCIPIOS_DEL_DERECHO_LABORAL_EN_ECUADOR_wgkzet.mp4",
+      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1787838641/Contratos_de_Trabajo_seg%C3%BAn_c%C3%B3digo_de_trabajo_en_Ecuador_bkvexs.mp4",
       completado: false,
-      descripcion: "Video explicativo sobre los conceptos básicos del derecho laboral.",
-      autor: "Autor: Roselyn Gambarrotti"
+      descripcion: "Video explicativo sobre el contrato de Trabajo en el Ecuador.",
+      autor: "Autor: Maria Solis"
     },
     {
       id: 6,
