@@ -140,12 +140,13 @@ export default function MiPerfil() {
 
   const cursosEstaticosItems = cursosEstaticosConfig.map(c => {
     const completado = completadosEstaticos.includes(c.dbName);
+    const pruebaRealizada = Boolean(pruebaEstatica?.ultima_fecha);
     const puntaje = c.esReglamento
       ? (completado ? 100 : null)
-      : (pruebaEstatica ? pruebaEstatica.mejor_puntaje : null);
+      : (pruebaRealizada ? pruebaEstatica.mejor_puntaje : null);
     const aprobado = c.esReglamento
       ? (completado ? true : null)
-      : (pruebaEstatica ? pruebaEstatica.aprobado : null);
+      : (pruebaRealizada ? pruebaEstatica.aprobado : null);
     return { id: c.id, curso_nombre: c.curso_nombre, proceso: 'Talento Humano', mejor_puntaje: puntaje, evaluacion_aprobada: aprobado, es_estatico: true, excluir_de_stats: !!c.esReglamento };
   });
 
