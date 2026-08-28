@@ -122,7 +122,11 @@ export default function Nivel({ nivel, puedeAcceder, marcarCompletado }) {
         style={{
           cursor: puedeAcceder ? 'pointer' : 'not-allowed',
           transition: 'all 0.2s ease',
-          border: puedeAcceder && !nivel.completado ? '2px solid #007bff' : '2px solid #dee2e6'
+          border: nivel.completado
+          ? '2px solid #198754'
+          : puedeAcceder
+            ? '2px solid #007bff'
+            : '2px solid #dee2e6'
         }}
         onMouseEnter={(e) => {
           if (puedeAcceder) {
