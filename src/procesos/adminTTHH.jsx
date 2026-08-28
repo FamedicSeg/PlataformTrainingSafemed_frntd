@@ -319,7 +319,7 @@ export default function AdminTalentoHumano() {
 
     doc.setFontSize(15);
     doc.setTextColor("#000000");
-    doc.text("Fecha: Noviembre 2025", w / 2 + 105, 155, { align: "center" });
+    doc.text("Fecha: AGOSTO 2026", w / 2 + 105, 155, { align: "center" });
     doc.text("Duración: 40 horas", w / 2 - 35, 155, { align: "center" });
 
     doc.setDrawColor(line);
