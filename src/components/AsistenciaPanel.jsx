@@ -353,7 +353,7 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
       alternateRowStyles: { fillColor: FONDO_SECUNDARIO },
       columnStyles: {
         0: { cellWidth: 9.5,  halign: 'center' },
-        1: { cellWidth: 60,  halign: 'center'   },
+        1: { cellWidth: 60,  halign: 'left'   },
         2: { cellWidth: 30,  halign: 'center' },
         3: { cellWidth: 48,  halign: 'center'   },
         4: { cellWidth: 35,  halign: 'center' },
