@@ -58,7 +58,7 @@ export const cursoDerechosLaborales = {
       id: 6,
       titulo: "Derechos Básicos de los trabajadores en el Ecuador",
       tipo: "video",
-      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1787145768/Derechos_B%C3%A1sicos_de_los_Trabajadores_en_Ecuador_s2wmcn.mp4",
+      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1788189232/Derechos_B%C3%A1sicos_de_los_Trabajadores_en_Ecuador_v2_vqfqhh.mp4",
       completado: false,
       descripcion: "Video informativo sobre los derechos básicos de los trabajadores en el Ecuador",
       autor: "Autor: In Solidum Abogados"
