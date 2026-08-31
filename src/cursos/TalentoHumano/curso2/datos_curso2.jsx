@@ -52,7 +52,7 @@ export const cursoIgualdadGenero = {
     },
     {
         id: 206,
-        titulo: "Folleto Tríptico Servicios Acuarela Doodle Verde y Salmón",
+        titulo: "Prevención contra casos de Discriminación",
         tipo: "pdf",
         url: "/pdf/Folleto Tríptico Servicios Acuarela Doodle Verde y Salmón.pdf",
         completado: false,
