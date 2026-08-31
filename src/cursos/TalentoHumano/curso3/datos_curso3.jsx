@@ -76,14 +76,6 @@ export const cursoErradicacionViolencia = {
         url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831287/Como_prevenir_la_violencia_laboral_u8xnny.mp4",
         completado: false,
         descripcion: "En este video informativo aprenderás cómo prevenir la violencia laboral."
-    },
-    {
-      id: 309,
-        titulo: "La violencia en el trabajo, Discriminación Laboral",
-        tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831449/La_violencia_en_el_trabajo_Discriminacion_en_el_trabajo_usfolm.mp4",
-        completado: false,
-        descripcion: "En este video informativo aprenderás como actuar ante la violencia en el trabajo y la discriminación laboral con esta dramatización."
     }
   ],
 };
