@@ -56,7 +56,7 @@ export const cursoIgualdadGenero = {
         tipo: "pdf",
         url: "/pdf/Folleto Tríptico Servicios Acuarela Doodle Verde y Salmón.pdf",
         completado: false,
-        descripcion: "Lee el siguiente folleto para entender los servicios ofrecidos."
+        descripcion: "Lee atentamente el siguiente folleto."
     },
     {
         id: 207,
