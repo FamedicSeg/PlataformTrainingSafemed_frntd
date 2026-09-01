@@ -109,13 +109,13 @@ export default function Prueba() {
     },
     {
       id: 2,
-      text: "¿Qué acción constituye discriminación laboral por razón de género?",
+      text: "¿Qué procedimiento de prevención hace énfasis la Brecha salarial entre hombres y mujeres?",
       options: [
-        "Negar un empleo a una persona por ser hombre o mujer.",
-        "Implementar licencias de maternidad y paternidad.",
+        "Ambito de aplicación nacional y sectorial.",
+        "Reporte anual y certificación de cumplimiento como incentivos.",
         "Ofrecer capacitaciones para todo el personal."
       ],
-      correct: 0
+      correct: 1
     },
     {
       id: 3,
@@ -140,13 +140,13 @@ export default function Prueba() {
     },
     {
       id:5,
-      text: "¿Cuál de las siguientes opciones corresponden a los beneficios de la igualdad?",
+      text: "¿Qué es la violencia laboral?",
       options:[
-        "Economía Fuerte - Paz y Salud.",
-        "Mayor Feminismo - Menos Machismo.",
-        "Economía Débil - Labores suaves para las mujeres."
+        "Cualquier desacuerdo o conflicto de intereses salariales entre el sindicato y la gerencia durante la negociación colectiva.",
+        "La exigencia estricta de cumplir con los estándares de productividad y los plazos de entrega.",
+        "Toda acción o comportamiento que transgrede la integridad emocional o física en el trabajo."
       ],
-      correct: 0
+      correct: 2
     },
     {
       id:6,
@@ -160,13 +160,13 @@ export default function Prueba() {
     },
     {
       id:7,
-      text: "¿Cuál de las siguientes opciones se puede considerar como Principios de Inclusión?",
+      text: "¿Qué son los estereotipos de género laborales?",
       options:[
-        "Contratación por méritos profesionales.",
-        "Valoración de diferentes perspectivas.",
+        "Los hombres manejan mejor situaciones de presión.",
+        "Son creencias que asignan capacidades, comportamientos o funciones a una persona únicamente por su género.",
         "Contratar a un trabajador porque bebe cada fin de semana."
       ],
-      correct: 0
+      correct: 1
     },
     {
       id:8,
