@@ -148,7 +148,7 @@ export default function ResultadosPruebaTTHH() {
     doc.setLineWidth(0.8);
     doc.line(W / 2, H - 25, W / 2 + 85, H - 25);
 
-    doc.addImage(firmaBase64, "PNG", W / 2 + 10, H - 58, 65, 32);
+    doc.addImage(firmaBase64, "PNG", W / 2 + 10, H - 58, 60, 29);
     doc.setFont("times", "italic");
     doc.text("Abigail Cisneros", W / 2 + 40, H - 15, { align: "center" });
     doc.text("JEFE DE TALENTO HUMANO", W / 2 + 40, H - 7, { align: "center" });
