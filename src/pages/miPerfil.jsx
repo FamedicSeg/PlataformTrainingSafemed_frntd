@@ -261,7 +261,7 @@ export default function MiPerfil() {
     doc.setLineWidth(0.8);
     doc.line(W / 2, H - 25, W / 2 + 85, H - 25);
 
-    if (firmaBase64) doc.addImage(firmaBase64, 'PNG', W / 2 + 5, H - 58, 59, 28);
+    if (firmaBase64) doc.addImage(firmaBase64, 'PNG', W / 2 + 5, H - 58, 60, 29);
     doc.setFont('times', 'italic');
     doc.setFontSize(11);
     doc.setTextColor('#000000');
