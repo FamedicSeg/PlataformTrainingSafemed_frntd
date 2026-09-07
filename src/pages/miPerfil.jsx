@@ -336,7 +336,7 @@ export default function MiPerfil() {
     doc.setFontSize(15);
     doc.setTextColor('#000000');
     const fechaMostrar = pruebaEstatica?.ultima_fecha
-      ? new Date(pruebaEstatica.ultima_fecha).toLocaleDateString('es-EC', { month: 'long', year: 'numeric' })
+      ? new Date(pruebaEstatica.ultima_fecha).toLocaleDateString('es-EC', { month: 'long', year: 'numeric' }).replace(' de ', '')
       : 'AGOSTO 2026';
     doc.text(`Fecha: ${fechaMostrar}`, W / 2 + 105, 155, { align: 'center' });
     doc.text('Duración: 40 horas', W / 2 - 35, 155, { align: 'center' });

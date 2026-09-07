@@ -141,7 +141,7 @@ export default function ResultadosPruebaTTHH() {
 
     doc.setFontSize(15);
     doc.setTextColor("#000000");
-    doc.text("Fecha: Agosto 2026", W / 2 + 105, 155, { align: "center" });
+    doc.text("Fecha: septiembre 2026", W / 2 + 105, 155, { align: "center" });
     doc.text("Duración: 40 horas", W / 2 - 35, 155, { align: "center" });
 
     doc.setDrawColor(line);
