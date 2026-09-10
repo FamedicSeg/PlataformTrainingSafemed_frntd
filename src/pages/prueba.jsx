@@ -119,13 +119,13 @@ export default function Prueba() {
     },
     {
       id: 3,
-      text:"¿Cuál de las siguientes opciones es la base de la Justicia Laboral, Igualdad y Cero Discriminación?",
+      text:"Un ejemplo de Sesgo Inconsistente es:",
       options:[
-        "Transparencia Salarial",
-        "Entorno libre de violencia.",
-        "Cumplimiento y Sanciones."
+        "Utilizar un lenguaje inclusivo en la comunicación interna.",
+        "Crear perfiles de puesto basados en habilidades y no en estereotipos.",
+        "Suponer que una mujer no puede viajar o asumir un puesto de responsabilidad por tener hijos."
       ],
-      correct: 1
+      correct: 2
     },
     {
       id:4,
@@ -150,13 +150,13 @@ export default function Prueba() {
     },
     {
       id:6,
-      text: "¿En qué consiste la Presión Social Laboral?",
+      text: "Una organización detecta que sus evaluaciones de desempeño no se realizan bajo criterios objetivos y que algunos colaboradores reciben valoraciones superiores debido a preferencias personales. ¿Cuál sería la principal consecuencia de esta práctica y qué medida contribuiría a corregirla?",
       options:[
-        "Aislamiento deliberado del equipo.",
-        "Comentarios con insinuaciones sexuales.",
-        "Difusión de rumores falsos."
+        "Fortalece la competitividad interna, manteniendo las diferencias de valoración para incentivar a los colaboradores con mejor desempeño",
+        "Genera desigualdades y debilita la confianza organizacional, por lo que se deben aplicar criterios de evaluación objetivos, transparentes y consistentes para todos.",
+        "Incrementa la productividad automáticamente, ya que las diferencias en las evaluaciones permiten identificar con mayor facilidad a los colaboradores más competitivos."
       ],
-      correct: 0
+      correct: 1
     },
     {
       id:7,

@@ -53,9 +53,9 @@ export const cursoOtrosRelacionados = {
       id: 406,
       titulo: "Evaluación justa del desempeño",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830125/Infografia_12_ufbska.png",
+      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1789072651/Infograf%C3%ADa_consejos_para_emprender_dibujo_ilustrado_rojo_nwj0bt.png",
       completado: false,
-      descripcion: "Revisa la siguiente infroamción."
+      descripcion: "Revisa la siguiente información."
     },
     {
       id: 407,
