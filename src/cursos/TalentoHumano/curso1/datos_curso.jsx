@@ -49,7 +49,7 @@ export const cursoDerechosLaborales = {
       id: 5,
       titulo: "Contrato de Trabajo según código de trabajo en el Ecuador",
       tipo: "video",
-      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1787838641/Contratos_de_Trabajo_seg%C3%BAn_c%C3%B3digo_de_trabajo_en_Ecuador_bkvexs.mp4",
+      url: "https://www.youtube.com/watch?v=8SEF12cAL3U",
       completado: false,
       descripcion: "Video explicativo sobre el contrato de Trabajo en el Ecuador.",
       autor: "Autor: Maria Solis"
@@ -58,7 +58,7 @@ export const cursoDerechosLaborales = {
       id: 6,
       titulo: "Derechos Básicos de los trabajadores en el Ecuador",
       tipo: "video",
-      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1788189232/Derechos_B%C3%A1sicos_de_los_Trabajadores_en_Ecuador_v2_vqfqhh.mp4",
+      url: "https://www.youtube.com/watch?v=2MrEKGvsEdg&t=479s",
       completado: false,
       descripcion: "Video informativo sobre los derechos básicos de los trabajadores en el Ecuador",
       autor: "Autor: In Solidum Abogados"
@@ -75,7 +75,7 @@ export const cursoDerechosLaborales = {
       id: 8,
       titulo: "Derechos laborales específicos de las mujeres",
       tipo:"video",
-      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831024/Derechos_laborales_especificos_de_las_mujeres_stfejr.mp4",
+      url: "https://www.youtube.com/watch?v=o9mvHtRNQyA",
       completado: false,
       descripcion: "Video explicativo sobre los derechos laborales específicos de las mujeres.",
       autor: "FES Ecuador"
@@ -84,7 +84,7 @@ export const cursoDerechosLaborales = {
       id: 9,
       titulo:"¿Por qué los Hombres ganan más que las Mujeres?", 
       tipo: "video",
-      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1787145940/Inequidad_salarial_entre_hombres_y_mujeres_FRANCE_24_Espa%C3%B1ol_qfdyob.mp4",
+      url: "https://www.youtube.com/watch?v=iOAirOHr-Rs",
       completado: false,
       width: "200",
       height: "215",

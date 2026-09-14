@@ -10,7 +10,7 @@ export const cursoOtrosRelacionados = {
         id: 401,
         titulo: "Principios de Igualdad de Remuneración",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831524/Principio_de_igualdad_de_remuneracion_y47kdr.mp4", 
+        url: "https://www.youtube.com/watch?v=dQClIVFiNzM", 
         completado: false,
         width: "200",
         height: "215",
@@ -85,7 +85,7 @@ export const cursoOtrosRelacionados = {
       id: 410,
       titulo: "Conciliación laboral, familiar y personal.",
       tipo: "video",
-      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831539/Conciliacion_laboral_familiar_y_personal_aueynl.mp4",
+      url: "https://www.youtube.com/watch?v=QQVxAZqhkzw&t=7s",
       completado: false,
       descripcion: "Mira el siguiente video informativo."
     }

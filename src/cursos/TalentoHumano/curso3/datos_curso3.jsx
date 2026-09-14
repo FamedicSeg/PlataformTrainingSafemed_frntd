@@ -10,7 +10,7 @@ export const cursoErradicacionViolencia = {
         id: 301,
         titulo: "Acoso Laboral y Violencia en el Ecuador",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831246/Acoso_Laboral_y_Violencia_en_Ecuador_g1bedx.mp4", 
+        url: "https://www.youtube.com/watch?v=61P3JNA2qiw", 
         completado: false,
         width: "200",
         height: "215",
@@ -38,7 +38,7 @@ export const cursoErradicacionViolencia = {
         id: 304,
         titulo: "Discriminación Laboral",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1787146236/Brechas_laborales_que_a%C3%BAn_enfrentan_las_mujeres_en_Ecuador_idcqo7.mp4",
+        url: "https://www.youtube.com/watch?v=KbUVkRbTzzI",
         completado: false,
         descripcion: "Revisa el siguiente reportaje sobre las Brechas laborales entre hombres y mujeres en el Ecuador.",
         autor: "Autor: Teleamazonas"
@@ -73,7 +73,7 @@ export const cursoErradicacionViolencia = {
         id: 308,
         titulo: "Cómo prevenir la Violencia Laboral",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831287/Como_prevenir_la_violencia_laboral_u8xnny.mp4",
+        url: "https://www.youtube.com/watch?v=a2MS3tjmd8g&t=1s",
         completado: false,
         descripcion: "En este video informativo aprenderás cómo prevenir la violencia laboral."
     }
