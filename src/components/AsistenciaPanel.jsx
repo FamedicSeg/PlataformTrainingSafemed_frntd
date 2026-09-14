@@ -21,6 +21,7 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
   const [filtroCurso, setFiltroCurso] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('');
   const [cursosUnicos, setCursosUnicos] = useState([]);
+  const [ordenAscendente, setOrdenAscendente] = useState(true);  // 🆕 Control de orden
 
   useEffect(() => {
     cargarAsistencia();
@@ -77,11 +78,16 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
   };
 
   // ── Filtros ───────────────────────────────────────────────────
-  const registrosFiltrados = asistencia.filter(r => {
-    const coincideCurso  = !filtroCurso || String(r.curso_id) === filtroCurso;
-    const coincideEstado = filtroEstado === '' || r.estado === filtroEstado;
-    return coincideCurso && coincideEstado;
-  });
+  const registrosFiltrados = asistencia
+    .filter(r => {
+      const coincideCurso  = !filtroCurso || String(r.curso_id) === filtroCurso;
+      const coincideEstado = filtroEstado === '' || r.estado === filtroEstado;
+      return coincideCurso && coincideEstado;
+    })
+    .sort((a, b) => {
+      const comparacion = a.usuario_nombre.localeCompare(b.usuario_nombre, 'es');
+      return ordenAscendente ? comparacion : -comparacion;
+    });
 
   // ── Exportar a CSV ────────────────────────────────────────────
   const exportarCSV = () => {
@@ -485,6 +491,14 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
 
           <button className="btn btn-outline-secondary btn-sm" onClick={cargarAsistencia} title="Actualizar">
             <RefreshCw size={15} />
+          </button>
+
+          <button 
+            className="btn btn-outline-secondary btn-sm" 
+            onClick={() => setOrdenAscendente(!ordenAscendente)}
+            title={ordenAscendente ? 'A → Z' : 'Z → A'}
+          >
+            {ordenAscendente ? '↑ A-Z' : '↓ Z-A'}
           </button>
 
           <button className="btn btn-outline-success btn-sm" onClick={exportarCSV} title="Exportar CSV">
