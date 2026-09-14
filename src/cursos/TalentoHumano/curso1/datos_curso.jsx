@@ -32,7 +32,7 @@ export const cursoDerechosLaborales = {
       id: 3,
       titulo: "La base de la Justicia Laboral Igualdad y Cero Discriminación",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1787082745/LA_BASE_DE_LA_JUSTICIA_LABORAL_IGUALDAD_Y_CERO_DISCRIMINACION_gz0tvd.png",
+      url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/28/Infografia_Tecnicas_de_Aprendizaje.png",
       completado: false,
       descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -40,7 +40,7 @@ export const cursoDerechosLaborales = {
       id: 4,
       titulo: "Equidad por Ley: Lo que debes saber de la ley orgánica para la igualdad salarial (LOIS)",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1787082498/Equidad_de_la_Ley_yjgx7q.png",
+      url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/28/curso1_2.png",
       completado: false,
       descripcion: "Revisa el contenido de la siguiente infografía."
 
