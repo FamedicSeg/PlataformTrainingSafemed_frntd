@@ -20,7 +20,7 @@ export const cursoOtrosRelacionados = {
         id: 402,
         titulo: "Estructura Salarial Transparente y Equitativa",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830065/Infografia_9_asxd5f.png",
+        url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/28/curso4_1.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -28,7 +28,7 @@ export const cursoOtrosRelacionados = {
         id: 403,
         titulo: "Auditoría Retribuida y Corrección de brechas",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830091/Infografia_10_tgg3c4.png",
+        url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/28/curso4_2.png",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
 
@@ -37,7 +37,7 @@ export const cursoOtrosRelacionados = {
       id: 404,
       titulo: "Eliminación de Estereotipos y Roles de Género",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830100/Infografia_11_fjwqin.png",
+      url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/28/curso4_3.png",
       completado: false,
       descripcion: "Revisa el siguiente contenido"
     },
@@ -53,7 +53,7 @@ export const cursoOtrosRelacionados = {
       id: 406,
       titulo: "Evaluación justa del desempeño",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1789072651/Infograf%C3%ADa_consejos_para_emprender_dibujo_ilustrado_rojo_nwj0bt.png",
+      url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/28/curso4_4.png",
       completado: false,
       descripcion: "Revisa la siguiente información."
     },
@@ -69,7 +69,7 @@ export const cursoOtrosRelacionados = {
       id: 408,
       titulo: "Conciliación Laboral y Correspondencia Familiar",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830143/Infografia_14_zh6rs8.png",
+      url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/28/curso4_5.png",
       completado: false,
       descripcion: "Revisa la siguiente información."
     },
