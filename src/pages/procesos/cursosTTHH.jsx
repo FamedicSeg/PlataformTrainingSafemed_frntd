@@ -281,7 +281,7 @@ export default function CoursesTTHH() {
                     <div className="mt-auto">
                       <div className="mb-2">
                         <small className={`badge ${noDisponible ? 'bg-warning text-dark' : completado ? 'bg-success' : 'bg-secondary'}`}>
-                          {noDisponible ? 'Próximamente' : completado ? 'Completado' : 'Por comenzar'}
+                          {noDisponible ? 'No Disponible' : completado ? 'Completado' : 'Por comenzar'}
                         </small>
                         {!noDisponible && completado && (
                           <small className="ms-2 text-success">
@@ -298,7 +298,7 @@ export default function CoursesTTHH() {
                         {noDisponible ? (
                           <>
                             <i className="bi bi-clock me-2"></i>
-                            PRÓXIMAMENTE
+                            No Disponible
                           </>
                         ) : completado ? (
                           <>
