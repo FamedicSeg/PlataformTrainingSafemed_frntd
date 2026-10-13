@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Video, Clock } from "lucide-react";
 import SalaJitsiMeet from "../../components/SalaJitsiMeet";
+import { esCursoExpiradoSeguro, esCursoProximoSeguro } from "../../utils/dateUtils";
 import "../../styles/pages/cursos.css";
 
 export default function CoursesMarketing() {
@@ -106,14 +107,12 @@ export default function CoursesMarketing() {
 
   // DETECTAR SI CURSO HA EXPIRADO
   const esCursoExpirado = (curso) => {
-    if (!curso.fecha_fin_curso) return false;
-    return new Date() > new Date(curso.fecha_fin_curso);
+    return esCursoExpiradoSeguro(curso.fecha_fin_curso);
   };
 
   // DETECTAR SI CURSO AÃšN NO HA LLEGADO
   const esCursoProximo = (curso) => {
-    if (!curso.fecha_inicio_curso) return false;
-    return now < new Date(curso.fecha_inicio_curso);
+    return esCursoProximoSeguro(curso.fecha_inicio_curso);
   };
 
   // CERRAR JITSI
@@ -422,3 +421,4 @@ export default function CoursesMarketing() {
     </>
   );
 }
+

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Nivel from '../cursos/TalentoHumano/curso1/nivel';
 import { supabase } from '../lib/supabase';
+import { esCursoExpiradoSeguro } from '../utils/dateUtils';
 import '../styles/cursos/curso1.css';
 
 // VisorCurso - Página para ver el contenido de un curso dinámico
@@ -90,7 +91,7 @@ export default function VisorCurso() {
       }
 
       // Bloquear acceso si el curso ha expirado y el usuario no lo completó
-      if (inscripcionCurso?.fecha_fin_curso && new Date() > new Date(inscripcionCurso.fecha_fin_curso) && inscripcionCurso.estado !== 'completado') {
+      if (inscripcionCurso?.fecha_fin_curso && esCursoExpiradoSeguro(inscripcionCurso.fecha_fin_curso) && inscripcionCurso.estado !== 'completado') {
         setLoading(false);
         await Swal.fire({
           icon: 'error',

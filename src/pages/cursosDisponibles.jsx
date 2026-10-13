@@ -2,6 +2,7 @@
 import { BookOpen, Award, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { esCursoExpiradoSeguro, esCursoProximoSeguro, formatearFecha } from '../utils/dateUtils';
 
 /**
  * CursosDisponibles - Página de cursos asignados al estudiante
@@ -111,23 +112,17 @@ export default function CursosDisponibles() {
 
   // Detectar si una capacitación ha expirado
   const esCursoExpirado = (cap) => {
-    if (!cap.fecha_fin_curso) return false;
-    return new Date() > new Date(cap.fecha_fin_curso);
+    return esCursoExpiradoSeguro(cap.fecha_fin_curso);
   };
 
   // Detectar si el curso aún no ha llegado a su fecha de inicio programada
   const esCursoProximo = (cap) => {
-    if (!cap.fecha_inicio_curso) return false;
-    return now < new Date(cap.fecha_inicio_curso);
+    return esCursoProximoSeguro(cap.fecha_inicio_curso);
   };
 
   // Formatear fecha/hora de inicio para mostrar al usuario
   const formatFechaInicio = (fechaStr) => {
-    if (!fechaStr) return '';
-    return new Date(fechaStr).toLocaleString('es-EC', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit'
-    });
+    return formatearFecha(fechaStr, true);
   };
 
   // Filtrar por búsqueda
