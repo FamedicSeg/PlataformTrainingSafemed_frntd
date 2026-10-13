@@ -114,6 +114,15 @@ export default function CursoFormAsincronico({ cursoId = null, onSave, onCancel,
         setFirmasSeleccionadas(firmasSeleccionadas.filter(f => f.id !== idFirma));
     };
 
+    // Convertir fecha del input (formato local) a ISO string con zona horaria correcta
+    const convertirFechaAlBackend = (fechaInput) => {
+        if (!fechaInput) return null;
+        // El input datetime-local devuelve "2026-10-13T14:45" (formato local sin zona)
+        // Convertir a Date y enviar como ISO string (JavaScript lo interpreta como local)
+        const fecha = new Date(fechaInput);
+        return fecha.toISOString();
+    };
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({
@@ -183,6 +192,8 @@ export default function CursoFormAsincronico({ cursoId = null, onSave, onCancel,
 
                 const bodyData = {
                     ...formData,
+                    fecha_inicio: formData.fecha_inicio ? convertirFechaAlBackend(formData.fecha_inicio) : null,
+                    fecha_fin: formData.fecha_fin ? convertirFechaAlBackend(formData.fecha_fin) : null,
                     firmas_seleccionadas: formData.habilitar_certificado ? firmasSeleccionadas.map(f => f.id) : []
                 };
                 

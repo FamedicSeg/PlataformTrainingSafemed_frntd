@@ -52,6 +52,15 @@ export default function CursoFormSincronico({ cursoId = null, onSave, onCancel, 
         setError('');
     };
 
+    // Convertir fecha del input (formato local) a ISO string con zona horaria correcta
+    const convertirFechaAlBackend = (fechaInput) => {
+        if (!fechaInput) return null;
+        // El input datetime-local devuelve "2026-10-13T14:45" (formato local sin zona)
+        // Convertir a Date y enviar como ISO string (JavaScript lo interpreta como local)
+        const fecha = new Date(fechaInput);
+        return fecha.toISOString();
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -130,7 +139,11 @@ export default function CursoFormSincronico({ cursoId = null, onSave, onCancel, 
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    ...formData,
+                    fecha_inicio: formData.fecha_inicio ? convertirFechaAlBackend(formData.fecha_inicio) : null,
+                    fecha_fin: formData.fecha_fin ? convertirFechaAlBackend(formData.fecha_fin) : null
+                })
             });
 
             const data = await response.json();
