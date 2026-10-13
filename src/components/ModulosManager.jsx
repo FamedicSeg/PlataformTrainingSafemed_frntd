@@ -172,9 +172,20 @@ export default function ModulosManager({ cursoId, onClose }) {
     });
   };
 
-  // ISO (UTC) -> "YYYY-MM-DDTHH:mm:ss" en hora local para datetime-local
+  // Convertir timestamp a formato datetime-local
+  // Si el timestamp no tiene zona horaria explícita, asumir que es hora local (Guayaquil)
+  // Si tiene zona horaria, convertir a hora local del navegador
   const aInputLocal = (valor) => {
     if (!valor) return '';
+    
+    // Si NO tiene indicador de zona horaria (Z o ±HH:MM), es hora local sin convertir
+    // Devolver tal cual para datetime-local input
+    if (!valor.includes('Z') && !valor.includes('+') && !valor.match(/-\d{2}:\d{2}$/)) {
+      // Es hora local del servidor (Guayaquil), devolver sin conversión
+      return valor.substring(0, 19); // "YYYY-MM-DDTHH:mm:ss"
+    }
+    
+    // Si tiene zona horaria explícita, convertir a hora local del navegador
     const d = new Date(valor);
     if (isNaN(d.getTime())) return '';
     const p = (n) => String(n).padStart(2, '0');
