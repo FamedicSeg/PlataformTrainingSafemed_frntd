@@ -205,13 +205,13 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
 
     const result = await Swal.fire({
-      title: 'Â¿Eliminar asignaciones?',
-      text: `EstÃ¡s a punto de eliminar ${selectedAssigned.length} asignaciones. Esta acciÃ³n no se puede deshacer.`,
+      title: '¿Eliminar asignaciones?',
+      text: `Estás a punto de eliminar ${selectedAssigned.length} asignaciones. Esta acción no se puede deshacer.`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'SÃ­, eliminar',
+      confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar'
     });
 
@@ -234,7 +234,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
         throw new Error(`Error al eliminar ${errores.length} asignaciones`);
       }
 
-      Swal.fire('Ã‰xito', `${selectedAssigned.length} asignaciones eliminadas`, 'success');
+      Swal.fire('Éxito', `${selectedAssigned.length} asignaciones eliminadas`, 'success');
       setSelectedAssigned([]);
       cargarDatos();
 
@@ -252,13 +252,13 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
 
     const result = await Swal.fire({
-      title: 'Â¿Eliminar TODAS las asignaciones?',
-      text: `EstÃ¡s a punto de eliminar ${usuariosAsignados.length} asignaciones. Esta acciÃ³n no se puede deshacer.`,
+      title: '¿Eliminar TODAS las asignaciones?',
+      text: `Estás a punto de eliminar ${usuariosAsignados.length} asignaciones. Esta acción no se puede deshacer.`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'SÃ­, eliminar todas',
+      confirmButtonText: 'Sí, eliminar todas',
       cancelButtonText: 'Cancelar'
     });
 
@@ -281,7 +281,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
         throw new Error(`Error al eliminar ${errores.length} asignaciones`);
       }
 
-      Swal.fire('Ã‰xito', `Todas las asignaciones (${usuariosAsignados.length}) fueron eliminadas`, 'success');
+      Swal.fire('Éxito', `Todas las asignaciones (${usuariosAsignados.length}) fueron eliminadas`, 'success');
       setSelectedAssigned([]);
       cargarDatos();
 
@@ -393,12 +393,12 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
   // Eliminar un solo usuario asignado
   const handleEliminar = async (inscripcionId) => {
     const result = await Swal.fire({
-      title: 'Â¿Eliminar asignaciÃ³n?',
+      title: '¿Eliminar asignación?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'SÃ­, eliminar',
+      confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar'
     });
 
@@ -413,7 +413,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
 
         if (!response.ok) throw new Error('Error al eliminar');
 
-        Swal.fire('Eliminado', 'InscripciÃ³n eliminada', 'success');
+        Swal.fire('Eliminado', 'Inscripción eliminada', 'success');
         setSelectedAssigned([]);
         cargarDatos();
 
@@ -450,13 +450,13 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
             </div>
           ) : (
             <div className="row g-3">
-              {/* Panel de asignaciÃ³n */}
+              {/* Panel de asignación */}
               <div className="columna-asignar-usuarios">
                 <h6 className="mb-3">ASIGNAR NUEVO USUARIO</h6>
                 
-                {/* BÃºsqueda */}
+                {/* Búsqueda */}
                 <div className="input-group mb-3">
-                  <span className="input-group-text">ðŸ”</span>
+                  <span className="input-group-text">🔍</span>
                   <input
                     type="text"
                     className="form-control"
@@ -473,7 +473,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                   </button>
                 </div>
 
-                {/* Botones de selecciÃ³n masiva */}
+                {/* Botones de selección masiva */}
                 <div className="d-flex gap-2 mb-3">
                   <button
                     className="btn btn-outline-secondary btn-sm flex-grow-1"
