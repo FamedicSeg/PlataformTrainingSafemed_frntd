@@ -497,7 +497,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                 <div className="list-group mb-3">
                   {usuariosDisponibles.length === 0 ? (
                     <div className="alert alert-info mb-0">
-                      No hay usuarios disponibles o todos estÃ¡n asignados
+                      No hay usuarios disponibles o todos están asignados
                     </div>
                   ) : (
                     usuariosDisponibles.map(usuario => {
@@ -512,7 +512,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                         >
                           <div className="d-flex align-items-center">
                             <span className="me-2">
-                              {isSelected ? 'âœ…' : 'â˜'}
+                              {isSelected ? '✔️' : '⭕'}
                             </span>
                             <div>
                               <div>
@@ -522,7 +522,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                                 </span>
                               </div>
                               <p className="mb-0 small text-muted" style={{ fontSize: '12px' }}>
-                                CÃ©dula de Identidad: {usuario.cedula_identidad || 'N/A'}
+                                Cédula de Identidad: {usuario.cedula_identidad || 'N/A'}
                               </p>
                             </div>
                           </div>
@@ -547,9 +547,9 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                     value={estado}
                     onChange={(e) => setEstado(e.target.value)}
                   >
-                    <option value="no iniciado">â­• No iniciado</option>
-                    <option value="en progreso">ðŸ”„ En progreso</option>
-                    <option value="completado">âœ… Completado</option>
+                    <option value="no iniciado">🛑 No iniciado</option>
+                    <option value="en progreso">⏳ En progreso</option>
+                    <option value="completado">✔️ Completado</option>
                   </select>
                 </div>
 
@@ -567,7 +567,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
               {/* Panel de usuarios asignados */}
               <div className="columna-asignar-usuarios">
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h6 className="mb-0">ðŸ‘¥ Usuarios Asignados ({usuariosAsignados.length})</h6>
+                  <h6 className="mb-0">👥 Usuarios Asignados ({usuariosAsignados.length})</h6>
                   
                   {/* Botones para eliminar */}
                   {usuariosAsignados.length > 0 && (
@@ -577,7 +577,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                         onClick={handleSelectAllAssigned}
                         title="Seleccionar todos"
                       >
-                        {todosAsignadosSeleccionados() ? 'âœ…' : 'ðŸ—¹'}
+                        {todosAsignadosSeleccionados() ? '✔️' : '🗑️'}
                       </button>
                       
                       {selectedAssigned.length > 0 && (
@@ -606,7 +606,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                 <div className="list-group" style={{ maxHeight: '400px', overflowY: 'auto', fontSize: '14px' }}>
                   {usuariosAsignados.length === 0 ? (
                     <div className="alert alert-info mb-0">
-                      No hay usuarios asignados aÃºn
+                      No hay usuarios asignados 👥
                     </div>
                   ) : (
                     usuariosAsignados.map(inscripcion => {
@@ -622,7 +622,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                         >
                           <div className="d-flex align-items-start">
                             <span className="me-2 mt-1">
-                              {isSelected ? 'âœ…' : 'â˜'}
+                              {isSelected ? '✔️' : '⭕'}
                             </span>
                             <div>
                               <strong>{inscripcion.usuario_nombre}</strong>
@@ -632,7 +632,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                                 </span>
                               )}
                               <p className="mb-0 small text-muted" style={{ fontSize: '12px' }}>
-                                CÃ©dula: {inscripcion.cedula_identidad || 'N/A'}
+                                Cédula: {inscripcion.cedula_identidad || 'N/A'}
                               </p>
                               <small>
                                 Estado:
