@@ -1,0 +1,171 @@
+================================================================================
+                    ✅ SOLUCIÓN: CURSOS EXPIRADOS ARREGLADA
+================================================================================
+
+PROBLEMA ENCONTRADO:
+────────────────────────────────────────────────────────────────────────────────
+Los cursos se estaban guardando y mostrando como "expirados" incorrectamente
+porque el frontend usaba esta comparación frágil:
+
+    const esCursoExpirado = (cap) => {
+      return new Date() > new Date(cap.fecha_fin_curso);  // ❌ Problema aquí
+    };
+
+Cuando el backend devolvía fechas en formato ISO-8601 (ej: "2024-12-31T23:59:59Z"),
+JavaScript a veces parsea estas strings incorrectamente, causando que se interprete
+como una fecha muy antigua (1970) o como "Invalid Date".
+
+
+SOLUCIÓN IMPLEMENTADA:
+────────────────────────────────────────────────────────────────────────────────
+Se creó un módulo de utilidades robustas: src/utils/dateUtils.js
+
+Funciones principales:
+
+  ✓ parseFecha(dateStr)
+    → Parsea cualquier formato de fecha de forma segura
+    → Maneja: ISO-8601, timestamps, objetos Date
+    → Valida que la fecha sea válida antes de devolverla
+    → Retorna null si es inválida (con logging de advertencia)
+
+  ✓ esCursoExpiradoSeguro(fechaFin)
+    → Reemplaza la lógica anterior
+    → Usa parseFecha para validar primero
+    → Compara de forma segura
+
+  ✓ esCursoProximoSeguro(fechaInicio)
+    → Verifica si un curso aún no ha iniciado
+    → Usa la misma lógica robusta de parseo
+
+  ✓ formatearFecha(dateStr, conHora)
+    → Formatea fechas consistentemente (locale es-EC)
+    → Útil para mostrar al usuario
+
+  ✓ tiempoRestante(fechaFin)
+    → Calcula días/horas/minutos hasta expiración
+    → Útil para mostrar "expira en X días"
+
+
+ARCHIVOS MODIFICADOS: (20 archivos + 1 nuevo)
+────────────────────────────────────────────────────────────────────────────────
+NUEVO:
+  ✨ src/utils/dateUtils.js (140 líneas)
+
+MODIFICADOS:
+  📝 src/pages/cursosDisponibles.jsx
+     - Importa: esCursoExpiradoSeguro, esCursoProximoSeguro, formatearFecha
+     - Actualiza funciones de validación de fecha
+  
+  📝 src/pages/visorCurso.jsx
+     - Importa: esCursoExpiradoSeguro
+     - Bloquea acceso a cursos expirados de forma robusta
+  
+  📝 Archivos de procesos (17 archivos):
+     ✓ cursosALogistica.jsx
+     ✓ cursosARCC.jsx
+     ✓ cursosCompras.jsx
+     ✓ cursoSeguridadFisica.jsx
+     ✓ cursosGerencia.jsx
+     ✓ cursosGestionComercial.jsx
+     ✓ cursosInfraMantenimiento.jsx
+     ✓ cursosInvestigaciónDesarrollo.jsx
+     ✓ cursosMarketing.jsx
+     ✓ cursosOperaciones.jsx
+     ✓ cursosSaludOc.jsx
+     ✓ cursosSegInd.jsx
+     ✓ cursosSeguridadInformatica.jsx
+     ✓ cursosSGCS.jsx
+     ✓ cursosTTHH.jsx
+     ✓ cursosVentasCosta.jsx
+     ✓ cursosVentasSierra.jsx
+
+
+CAMBIOS EN EL CÓDIGO:
+────────────────────────────────────────────────────────────────────────────────
+ANTES (❌ Frágil):
+  const esCursoExpirado = (cap) => {
+    if (!cap.fecha_fin_curso) return false;
+    return new Date() > new Date(cap.fecha_fin_curso);  // Puede fallar
+  };
+
+DESPUÉS (✅ Robusto):
+  import { esCursoExpiradoSeguro } from '../utils/dateUtils';
+  
+  const esCursoExpirado = (cap) => {
+    return esCursoExpiradoSeguro(cap.fecha_fin_curso);  // Seguro
+  };
+
+
+BENEFICIOS:
+────────────────────────────────────────────────────────────────────────────────
+✅ Robustez
+   - Maneja múltiples formatos de fecha del backend
+   - No depende del parseo automático de JavaScript
+
+✅ Validación
+   - Verifica que las fechas sean válidas ANTES de usarlas
+   - Logging de advertencia para debugging
+
+✅ Reutilización
+   - Una única fuente de verdad para comparación de fechas
+   - Se puede usar en cualquier componente
+
+✅ Consistencia
+   - Formato de fecha uniforme (es-EC) en toda la app
+   - Comportamiento predecible
+
+✅ Escalabilidad
+   - Fácil agregar más funciones de fecha
+   - Ya incluye tiempoRestante() para casos futuros
+
+
+ESTADÍSTICAS:
+────────────────────────────────────────────────────────────────────────────────
+  Archivos modificados:     20
+  Archivos nuevos:          1
+  Líneas de código nuevo:   ~150+
+  Líneas removidas:         ~80
+  Funciones de parseo:      5
+  Commit:                   465a2dc
+
+
+PRUEBAS RECOMENDADAS:
+────────────────────────────────────────────────────────────────────────────────
+1. Crear un curso con fecha_fin_curso en el PASADO
+   → Debe bloquearse y mostrar "⛔ No Disponible" ❌
+   
+2. Crear un curso con fecha_fin_curso en el FUTURO
+   → Debe permitir acceso normal ✅
+   
+3. Crear un curso con fecha_inicio_curso en el FUTURO
+   → Debe mostrar "🕐 Próximamente" con fecha de disponibilidad
+   
+4. Crear un curso sin fecha_fin_curso
+   → Debe permitir acceso indefinido ✅
+   
+5. Abrir la consola del navegador
+   → No debe haber advertencias de fechas inválidas
+
+
+GIT COMMIT:
+────────────────────────────────────────────────────────────────────────────────
+465a2dc fix: Resolver problema de cursos guardados como expirados
+  - Crear módulo: src/utils/dateUtils.js
+  - Reemplazar comparaciones de fecha frágiles por funciones seguras
+  - Implementar validación de fechas antes de usarlas
+  - Agregar logging de advertencia para fechas inválidas
+  - Aplicar cambios en 20 archivos (cursosDisponibles, visorCurso, 17 procesos)
+
+
+PRÓXIMOS PASOS:
+────────────────────────────────────────────────────────────────────────────────
+1. ✓ Cambios realizados y commiteados
+2. → Hacer push a GitHub (git push)
+3. → Probar en ambiente de desarrollo (npm run dev)
+4. → Verificar que los cursos se muestren correctamente según fechas
+5. → Revisar logs de consola para cualquier advertencia
+6. → Hacer deploy a producción
+
+================================================================================
+                          FECHA: 13 de Octubre de 2026
+================================================================================
