@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { Search, Shield, Users, LogOut, Key, RefreshCw } from "lucide-react";
+import { Search, Shield, Users, LogOut, Key, RefreshCw, Award, UserPlus, Pencil } from "lucide-react";
+import EmpleadosManager from '../components/EmpleadosManager';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
+import PanelFirmas from '../components/PanelFirmas';
+import EmitirCertificadoPanel from '../components/EmitirCertificadoPanel';
 import '../styles/pages/adminPrincipal.css';
 
 
@@ -30,7 +33,7 @@ export default function AdminPrincipal() {
         setLoadingUsers(true);
         setErrorMsg("");
         const res = await fetch(`${API_URL}/api/usuarios/load`, {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(`Error ${res.status}`);
         const data = await res.json();
@@ -106,6 +109,127 @@ export default function AdminPrincipal() {
     }
   };
 
+  const editarAdmin = async (admin) => {
+    let procesos = [];
+    try {
+      const r = await fetch(`${API_URL}/api/auth/procesos`);
+      const d = await r.json();
+      if (d.success && Array.isArray(d.data)) procesos = d.data;
+    } catch { /* se usa el proceso actual como única opción */ }
+    if (!procesos.includes(admin.proceso_name)) procesos.unshift(admin.proceso_name);
+
+    const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    const opciones = procesos
+      .map(p => `<option value="${esc(p)}"${p === admin.proceso_name ? ' selected' : ''}>${esc(p)}</option>`)
+      .join('');
+
+    const { value: form } = await Swal.fire({
+      title: 'Editar administrador',
+      html:
+        `<input id="ea-nombre" class="swal2-input" placeholder="Nombre" value="${esc(admin.nombre)}">` +
+        `<input id="ea-cedula" class="swal2-input" placeholder="Cédula" value="${esc(admin.cedula)}">` +
+        `<select id="ea-proceso" class="swal2-select" style="display:flex;width:auto;margin:1em auto">${opciones}</select>` +
+        `<label style="display:flex;gap:8px;justify-content:center;align-items:center">` +
+        `<input type="checkbox" id="ea-activo"${admin.activo ? ' checked' : ''}> Activo</label>`,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'Cancelar',
+      preConfirm: () => {
+        const nombre = document.getElementById('ea-nombre').value.trim();
+        const cedula = document.getElementById('ea-cedula').value.trim();
+        const proceso_name = document.getElementById('ea-proceso').value;
+        const activo = document.getElementById('ea-activo').checked;
+        if (!nombre || !cedula || !proceso_name) {
+          Swal.showValidationMessage('Nombre, cédula y proceso son obligatorios');
+          return false;
+        }
+        return { nombre, cedula, proceso_name, activo };
+      },
+    });
+    if (!form) return;
+
+    try {
+      const res = await fetch(`${API_URL}/api/auth/admin/admin-procesos/${admin.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        Swal.fire({ icon: 'success', title: 'Administrador actualizado', timer: 1500, showConfirmButton: false });
+        cargarAdminProcesos();
+      } else {
+        Swal.fire('Error', data.message || 'No se pudo actualizar', 'error');
+      }
+    } catch {
+      Swal.fire('Error', 'Error de conexión', 'error');
+    }
+  };
+
+  const agregarAdmin = async () => {
+    let procesos = [];
+    try {
+      const r = await fetch(`${API_URL}/api/auth/procesos`);
+      const d = await r.json();
+      if (d.success && Array.isArray(d.data)) procesos = d.data;
+    } catch { /* sin lista */ }
+    if (procesos.length === 0) {
+      Swal.fire('Error', 'No se pudo cargar la lista de procesos', 'error');
+      return;
+    }
+
+    const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    const opciones = procesos.map(p => `<option value="${esc(p)}">${esc(p)}</option>`).join('');
+
+    const { value: form } = await Swal.fire({
+      title: 'Nuevo administrador de proceso',
+      html:
+        `<input id="na-nombre" class="swal2-input" placeholder="Nombre completo">` +
+        `<input id="na-cedula" class="swal2-input" placeholder="Cédula / usuario">` +
+        `<select id="na-proceso" class="swal2-select" style="display:flex;width:auto;margin:1em auto">` +
+        `<option value="">-- Proceso --</option>${opciones}</select>` +
+        `<input id="na-password" type="password" class="swal2-input" placeholder="Contraseña provisional (mín. 6)">`,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Crear',
+      cancelButtonText: 'Cancelar',
+      preConfirm: () => {
+        const nombre = document.getElementById('na-nombre').value.trim();
+        const cedula = document.getElementById('na-cedula').value.trim();
+        const proceso_name = document.getElementById('na-proceso').value;
+        const password = document.getElementById('na-password').value;
+        if (!nombre || !cedula || !proceso_name) {
+          Swal.showValidationMessage('Nombre, cédula y proceso son obligatorios');
+          return false;
+        }
+        if (password.length < 6) {
+          Swal.showValidationMessage('La contraseña debe tener al menos 6 caracteres');
+          return false;
+        }
+        return { nombre, cedula, proceso_name, password };
+      },
+    });
+    if (!form) return;
+
+    try {
+      const res = await fetch(`${API_URL}/api/auth/procesos/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        Swal.fire('✅ Listo', `Administrador creado. Deberá cambiar la contraseña provisional en su primer ingreso.`, 'success');
+        cargarAdminProcesos();
+      } else {
+        Swal.fire('Error', data.message || 'No se pudo crear', 'error');
+      }
+    } catch {
+      Swal.fire('Error', 'Error de conexión', 'error');
+    }
+  };
+
   const handleLogout = () => {
     Swal.fire({
       title: '¿Cerrar sesión?',
@@ -143,12 +267,18 @@ export default function AdminPrincipal() {
   }, [adminProcesos, searchAdmin]);
   const navItems = [
     { id: 'usuarios',       label: 'Empleados',        icon: Users  },
+    { id: 'gestion-empleados', label: 'Ingreso y Salida de Empleados',  icon: UserPlus },
     { id: 'admin-procesos', label: 'Admin Procesos',   icon: Shield },
+    { id: 'firmas',          label: 'Firmas',           icon: Key    },
+    { id: 'emitir-cert',    label: 'Emitir Certificados', icon: Award },
   ];
 
   const tabTitles = {
     'usuarios':       'Empleados DHISVE',
+    'gestion-empleados': 'Ingreso y Salida de Empleados',
     'admin-procesos': 'Administradores de Proceso',
+    'firmas':          'Gestionar Firmas',
+    'emitir-cert':    'Emitir Certificados',
   };
 
   return (
@@ -281,6 +411,9 @@ export default function AdminPrincipal() {
                     style={{ width: '100%', paddingLeft: 32, paddingRight: 10, paddingTop: 7, paddingBottom: 7, border: '1.5px solid #e2e8f0', borderRadius: 8, fontSize: '0.9rem', outline: 'none', background: '#f8fafc', color: '#1e293b' }}
                   />
                 </div>
+                <button className="btn btn-primary btn-sm" onClick={agregarAdmin} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <UserPlus size={14} /> Agregar admin
+                </button>
                 <button className="btn btn-outline-secondary btn-sm" onClick={cargarAdminProcesos} title="Refrescar">
                   <RefreshCw size={14} />
                 </button>
@@ -333,6 +466,14 @@ export default function AdminPrincipal() {
                             }
                           </td>
                           <td>
+                           <div style={{ display: 'flex', gap: 6 }}>
+                            <button
+                              className="btn btn-sm btn-outline-primary"
+                              onClick={() => editarAdmin(admin)}
+                              style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.78rem' }}
+                            >
+                              <Pencil size={13} /> Editar
+                            </button>
                             <button
                               className="btn btn-sm btn-outline-warning"
                               onClick={() => resetearPassword(admin)}
@@ -345,6 +486,7 @@ export default function AdminPrincipal() {
                               }
                               Resetear contraseña
                             </button>
+                           </div>
                           </td>
                         </tr>
                       ))}
@@ -354,6 +496,14 @@ export default function AdminPrincipal() {
               )}
             </div>
           )}
+
+          {/* ── Firmas ── */}
+          {activeTab === 'gestion-empleados' && <EmpleadosManager />}
+
+          {activeTab === 'firmas' && <PanelFirmas />}
+
+          {/* ── Emitir Certificados ── */}
+          {activeTab === 'emitir-cert' && <EmitirCertificadoPanel />}
 
         </main>
       </div>

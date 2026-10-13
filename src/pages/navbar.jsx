@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react"; 
 import Swal from "sweetalert2";
 import "../styles/pages/navbar.css";
+import NotificacionesPanel from "../components/NotificacionesPanel";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -116,9 +117,6 @@ export default function Navbar() {
             <span className="navbar-title d-none d-md-inline">
               PLATAFORMA INTERNA - DHISVE
             </span>
-            <span className="navbar-title-mobile d-md-none">
-              DHISVE
-            </span>
             <div className="navbar-subtitle d-none d-lg-block">
               Capacitador - Talento Humano
             </div>
@@ -145,16 +143,7 @@ export default function Navbar() {
           id="navbarNav"
         >
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link 
-                className="nav-link" 
-                to="/inicio"
-                onClick={handleNavLinkClick} // ⬅️ CIERRA AL HACER CLIC
-              >
-                <i className="bi bi-house-door d-lg-none me-2"></i>
-                Inicio
-              </Link>
-            </li>
+            
             <li className="nav-item">
               <Link 
                 className="nav-link" 
@@ -204,6 +193,11 @@ export default function Navbar() {
                 <i className="bi bi-box-arrow-right me-1"></i>
                 Salir
               </Link>
+            </li>
+
+            {/* NOTIFICACIONES - NUEVO */}
+            <li className="nav-item d-none d-lg-block ms-3">
+              <NotificacionesPanel tipo="usuario" />
             </li>
           </ul>
         </div>

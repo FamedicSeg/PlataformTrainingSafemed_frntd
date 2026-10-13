@@ -1,55 +1,84 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Video, Clock } from "lucide-react";
+import SalaJitsiMeet from "../../components/SalaJitsiMeet";
 import "../../styles/pages/cursos.css";
 
-export default function CoursesAlmacenamientoLogistica() {
+export default function CoursesALogistica() {
   const navigate = useNavigate();
   const location = useLocation();
   const nombre = localStorage.getItem("usuario");
   const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("user_token");
 
   const [courses, setCourses] = useState([]);
   const [progress, setProgress] = useState(0);
-  const [cursosCompletados, setCursosCompletados] = useState({});
+  const [_cursosCompletados, _setCursosCompletados] = useState({});
+  const [_cursosAsignados, _setCursosAsignados] = useState(new Set());
   const [cargandoCursos, setCargandoCursos] = useState(true);
+  const [now, setNow] = useState(new Date());
+  const intervalRef = useRef(null);
+  const [jitsiActivo, setJitsiActivo] = useState(false);
+  const [cursoJitsiActual, setCursoJitsiActual] = useState(null);
 
 
-  // CARGAR CURSOS DESDE LA API Y COMBINAR CON ESTÁTICOS
+  // Actualizar "now" cada segundo (para timer en vivo)
+  useEffect(() => {
+    intervalRef.current = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  // CARGAR CURSOS DEL USUARIO (inscripciones con proceso filtrado)
   const cargarCursosDelAPI = async () => {
     try {
       setCargandoCursos(true);
-      const response = await fetch(`${API_URL}/api/cursos/disponibles`);
+      const response = await fetch(`${API_URL}/api/inscripciones/mis-capacitaciones`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       const data = await response.json();
       
-      // Filtrar solo cursos de "Almacenamiento y Logística" que estén activos
-      const cursosDinamicos = (data.data || [])
-        .filter(c => c.proceso_name === "Almacenamiento y Logística" && c.activo)
-        .map((c) => ({
-          id: c.id,
-          name: c.nombre,
-          desc: c.descripcion,
-          link: `/curso/${c.id}`, // Usa el visor dinámico
-          dbName: `curso_${c.id}`, // Identificador único
-          bloqueado: false,
-          esEstatico: false,
-          fecha_inicio: c.fecha_inicio || null
-        }));
-      
-      // ✅ ESTABLECER LOS CURSOS EN EL ESTADO
-      setCourses(cursosDinamicos);
-      console.log('✅ Cursos cargados del API:', cursosDinamicos.length);
-
+      if (data.success && data.data) {
+        // Filtrar solo cursos del proceso "Almacenamiento y Logística"
+        const cursosDinamicos = data.data
+          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'almacenamiento y logística')
+          .map((c) => ({
+            id: c.curso_id,
+            inscripcion_id: c.id,
+            name: c.curso_nombre,
+            desc: c.descripcion,
+            tipo: c.tipo, // 'Sincrónico' o 'Asincrónico'
+            proceso: c.proceso_nombre,
+            fecha_inicio_curso: c.fecha_inicio_curso || null,
+            fecha_fin_curso: c.fecha_fin_curso || null,
+            estado: c.estado,
+            mejor_puntaje: c.mejor_puntaje,
+            evaluacion_aprobada: c.evaluacion_aprobada,
+            link: c.tipo === 'Sincrónico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
+            dbName: `curso_${c.curso_id}`,
+            bloqueado: false,
+            esEstatico: false
+          }));
+        
+        const completadosObj = {};
+        cursosDinamicos.forEach(c => {
+          if (c.mejor_puntaje !== null && c.mejor_puntaje !== undefined) {
+            completadosObj[c.dbName] = true;
+          }
+        });
+        _setCursosCompletados(completadosObj);
+        setCourses(cursosDinamicos);
+        console.log('✓ Cursos de Almacenamiento y Logística cargados:', cursosDinamicos.length);
+      }
     } catch (error) {
-      console.error('❌ Error cargando cursos:', error);
-      // Si hay error, mostrar lista vacía
+      console.error('✖ Error cargando cursos:', error);
       setCourses([]);
     } finally {
       setCargandoCursos(false);
     }
   };
 
-  // FUNCIÓN PARA CARGAR PROGRESO DESDE BACKEND
+  // FUNCIÃ“N PARA CARGAR PROGRESO DESDE BACKEND
   const cargarProgreso = async () => {
     try {
       const res = await fetch(`${API_URL}/api/progreso/get`, {
@@ -69,42 +98,40 @@ export default function CoursesAlmacenamientoLogistica() {
     }
   };
 
-  // FUNCIÓN PARA CARGAR CURSOS COMPLETADOS
-  const cargarCursosCompletados = async () => {
-    if (!nombre) return;
-    
-    try {
-      // Para los cursos dinámicos, verificamos por inscripción completada
-      const token = localStorage.getItem("user_token");
-      const response = await fetch(`${API_URL}/api/inscripciones/mis-capacitaciones`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
-      const data = await response.json();
-      
-      if (data.success && data.data) {
-        const completadosObj = {};
-        data.data.forEach(inscripcion => {
-          if (inscripcion.mejor_puntaje !== null && inscripcion.mejor_puntaje !== undefined) {
-            completadosObj[`curso_${inscripcion.curso_id}`] = true;
-          }
-        });
-        setCursosCompletados(completadosObj);
-        console.log('✅ Cursos completados:', Object.keys(completadosObj).length);
-      }
-    } catch (error) {
-      console.error("⚠ Error cargando cursos completados:", error);
-    }
+  // DETECTAR SI ES CURSO SINCRÃ“NICO
+  const esCursoSincronico = (curso) => {
+    return curso?.tipo === 'Sincrónico';
   };
 
-  // Cargar progreso al entrar por primera vez
-  useEffect(() => {
-    // Cargar cursos desde API
-    cargarCursosDelAPI();
 
-    if (nombre) {
+  // DETECTAR SI CURSO HA EXPIRADO
+  const esCursoExpirado = (curso) => {
+    if (!curso.fecha_fin_curso) return false;
+    return new Date() > new Date(curso.fecha_fin_curso);
+  };
+
+  // DETECTAR SI CURSO AÃšN NO HA LLEGADO
+  const esCursoProximo = (curso) => {
+    if (!curso.fecha_inicio_curso) return false;
+    return now < new Date(curso.fecha_inicio_curso);
+  };
+
+  // CERRAR JITSI
+  const handleCerrarJitsi = () => {
+    setJitsiActivo(false);
+    setCursoJitsiActual(null);
+  };
+
+  // VERIFICAR SI CURSO ESTÃ COMPLETADO
+  const estaCursoCompletado = (cursoDbName) => {
+    return _cursosCompletados[cursoDbName] || false;
+  };
+
+  // CARGAR DATOS AL INICIAR
+  useEffect(() => {
+    if (token) {
+      cargarCursosDelAPI();
       cargarProgreso();
-      cargarCursosCompletados();
       
       // Verificar progreso cada 5 segundos
       const interval = setInterval(() => {
@@ -113,22 +140,29 @@ export default function CoursesAlmacenamientoLogistica() {
 
       return () => clearInterval(interval);
     }
-  }, [nombre]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
-  // Refrescar cuando se regresa desde un curso
+  // REFRESCAR CUANDO SE REGRESA DESDE UN CURSO
   useEffect(() => {
     if (location.state && location.state.refrescar) {
       cargarProgreso();
-      cargarCursosCompletados();
       cargarCursosDelAPI();
-      
       navigate(location.pathname, { replace: true, state: {} });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location, navigate]);
 
-  // Verificar si un curso específico está completado
-  const estaCursoCompletado = (cursoDbName) => {
-    return cursosCompletados[cursoDbName] || false;
+  // MANEJAR CLIC EN CURSO
+  const manejarClicCurso = (curso) => {
+    if (esCursoExpirado(curso)) return;
+    if (estaCursoCompletado(curso.dbName)) {
+      if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
+        navigate(curso.link);
+      }
+    } else {
+      navigate(curso.link);
+    }
   };
 
   // Calcular progreso manualmente basado en cursos completados
@@ -138,36 +172,51 @@ export default function CoursesAlmacenamientoLogistica() {
     return Math.round((cursosCompletadosCount / totalCursos) * 100);
   };
 
-  // Manejar clic en botón de curso
-  const manejarClicCurso = (curso) => {
-    if (curso.bloqueado) return;
-    if (estaCursoCompletado(curso.dbName)) {
-      // Si el curso ya está completado, preguntar si quiere repasar
-      if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
-        navigate(curso.link);
-      }
-    } else {
-      // Si no está completado, iniciar normalmente
-      navigate(curso.link);
-    }
-  };
-
   return (
-    <div className="container-fluid py-5 mt-5">
-      
-      <div className="container-wide">
-        
-        <div className="text-center mb-5">
-          <h2 className="titulo-pagina">
-            Plataforma de Capacitación Laboral
-          </h2>
-          <h3 className="titulo-pagina">
-            Cursos de Almacenamiento y Logística
-          </h3>
-          <p className="subtitulo-pagina">
-            Completa los cursos paso a paso y adquiere nuevas habilidades.
-          </p>
+    <>
+      {/* SI ESTÃ ACTIVO JITSI, MOSTRAR SOLO JITSI */}
+      {jitsiActivo && cursoJitsiActual ? (
+        <div style={{ width: '100%', height: '100vh' }}>
+          <SalaJitsiMeet
+            cursoId={cursoJitsiActual.id}
+            nombreCurso={cursoJitsiActual.name}
+            fechaInicio={cursoJitsiActual.fecha_inicio}
+            userName={(() => {
+              try {
+                const usuario = JSON.parse(localStorage.getItem('usuario_logueado') || '{}');
+                return usuario.nombre || usuario.email || 'Participante';
+              } catch {
+                return 'Participante';
+              }
+            })()}
+            userEmail={(() => {
+              try {
+                const usuario = JSON.parse(localStorage.getItem('usuario_logueado') || '{}');
+                return usuario.email || 'participante@safemedec.com';
+              } catch {
+                return 'participante@safemedec.com';
+              }
+            })()}
+            onCerrar={handleCerrarJitsi}
+          />
         </div>
+      ) : (
+        // VISTA NORMAL: LISTA DE CURSOS
+        <div className="contenedor-lista-cursos">
+      
+          <div className="container-wide">
+        
+            <div className="text-center mb-5">
+              <h2 className="titulo-pagina">
+                Plataforma de Capacitación Laboral
+              </h2>
+              <h3 className="titulo-pagina">
+                Cursos de Almacenamiento y Logística
+              </h3>
+              <p className="subtitulo-pagina">
+                Completa los cursos paso a paso y adquiere nuevas habilidades.
+              </p>
+            </div>
 
         {/* PROGRESO GENERAL 
         <div className="progreso-contenedor mb-5">
@@ -188,7 +237,7 @@ export default function CoursesAlmacenamientoLogistica() {
           </div>
           <div className="text-end mt-1">
             <small className="text-muted">
-              Progreso calculado automáticamente
+              Progreso calculado automÃ¡ticamente
             </small>
           </div>
         </div>
@@ -206,14 +255,14 @@ export default function CoursesAlmacenamientoLogistica() {
           )}
         </h4>
 
-        <div className="row g-4 mb-5">
+        <div className="columna-cursos-disponibles-tarjeta">
           {courses.map((curso) => {
             const completado = estaCursoCompletado(curso.dbName);
-            const proximo = !curso.bloqueado && !!curso.fecha_inicio && new Date(curso.fecha_inicio) > new Date();
+            const proximo = !curso.bloqueado && !!curso.fecha_inicio_curso && new Date(curso.fecha_inicio_curso) > new Date();
             const noDisponible = curso.bloqueado || proximo;
             
             return (
-              <div key={curso.id} className="col-md-3">
+              <div key={curso.id} className="tarjeta-curso">
                 <div className={`card card-curso shadow-sm h-100 ${completado ? 'curso-completado' : ''} ${noDisponible ? 'curso-bloqueado' : ''}`}>
                   <div className="card-body d-flex flex-column">
                     <div className="d-flex justify-content-between align-items-start mb-2">
@@ -222,7 +271,7 @@ export default function CoursesAlmacenamientoLogistica() {
                       </h5>
                       {noDisponible ? (
                         <span className="badge bg-warning text-dark">
-                          🕐
+                          
                         </span>
                       ) : completado && (
                         <span className="badge bg-success">
@@ -237,7 +286,7 @@ export default function CoursesAlmacenamientoLogistica() {
                     {/* Aviso de disponibilidad futura */}
                     {proximo && (
                       <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#fff3cd', border: '1px solid #ffc107', fontSize: '0.8rem', color: '#856404' }}>
-                        🕐 Disponible el {new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                         Disponible el {new Date(curso.fecha_inicio_curso).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </div>
                     )}
                     
@@ -245,34 +294,38 @@ export default function CoursesAlmacenamientoLogistica() {
                     <div className="mt-auto">
                       <div className="mb-2">
                         <small className={`badge ${noDisponible ? 'bg-warning text-dark' : completado ? 'bg-success' : 'bg-secondary'}`}>
-                          {noDisponible ? 'Próximamente' : completado ? 'Completado' : 'Por comenzar'}
+                          {noDisponible ? 'Próximamente' : completado ? '✅ Curso realizado' : 'Por comenzar'}
                         </small>
-                        {!noDisponible && completado && (
-                          <small className="ms-2 text-success">
-                            <i className="bi bi-check-circle"></i> Realizado
-                          </small>
+                        {esCursoSincronico(curso) && (
+                          <span className="badge bg-info ms-2"></span>
                         )}
                       </div>
                       
-                      <button
-                        className={`btn w-100 ${noDisponible ? 'btn-warning' : completado ? 'btn-success' : 'btn-iniciar'}`}
-                        onClick={() => manejarClicCurso(curso)}
-                        disabled={noDisponible}
-                      >
-                        {noDisponible ? (
-                          <>
-                            <i className="bi bi-clock me-2"></i>
-                            PRÓXIMAMENTE
-                          </>
-                        ) : completado ? (
-                          <>
-                            <i className="bi bi-check-circle me-2"></i>
-                            Curso realizado
-                          </>
-                        ) : (
-                          'Iniciar curso'
-                        )}
-                      </button>
+                      {/* BOTONES POR TIPO DE CURSO */}
+                      {esCursoExpirado(curso) ? (
+                        // Curso expirado
+                        <button className="btn-no-disponible-curso" disabled>
+                          ⛔ No Disponible
+                        </button>
+                      )  : (
+                        // CURSOS ASINCRONICOS
+                        <>
+                          {esCursoProximo(curso) ? (
+                            <button className="btn btn-warning text-dark w-100" disabled>
+                              <Clock size={16} className="me-2" />
+                              Próximamente
+                            </button>
+                          ) : (
+                            <button
+                              className={`btn-${completado ? 'iniciar' : 'primero'} w-100`}
+                              onClick={() => manejarClicCurso(curso)}
+                              disabled={cargandoCursos}
+                            >
+                              {completado ? '✅ Curso realizado' : 'Iniciar curso'}
+                            </button>
+                          )}
+                        </>
+                      )}
                       
                       {/* Botón para repasar incluso si está completado */}
                       {!noDisponible && completado && (
@@ -330,7 +383,7 @@ export default function CoursesAlmacenamientoLogistica() {
         </div>
         */}
 
-        {/* PRUEBA FINAL */}
+        {/* PRUEBA FINAL 
         <div className="text-center mt-5">
           {progress === 100 ? (
             localStorage.getItem("pruebaAprobada") === "true" ? (
@@ -343,19 +396,29 @@ export default function CoursesAlmacenamientoLogistica() {
                 className="btn btn-final"
                 onClick={() => navigate("/prueba")}
               >
-                Ir a la prueba final 📝
+                Ir a la prueba final
               </button>
             )
-          ) : (
-            <div className="alert alert-info">
-              <i className="bi bi-info-circle me-2"></i>
-              La prueba final se habilitará cuando completes todos los cursos ({courses.filter(c => estaCursoCompletado(c.dbName)).length}/{courses.length} completados).
-            </div>
-          )}
-        </div>
+          ) : null}
+        </div> */}
 
       </div>
 
-    </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(27, 177, 167, 0.7);
+            transform: scale(1);
+          }
+          50% {
+            box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+            transform: scale(1.02);
+          }
+        }
+      `}</style>
+    </>
   );
 }

@@ -21,9 +21,9 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
   const [filtroCurso, setFiltroCurso] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('');
   const [cursosUnicos, setCursosUnicos] = useState([]);
-  const [ordenAscendente, setOrdenAscendente] = useState(true);  // 🆕 Control de orden
 
   useEffect(() => {
+    console.log('🔄 [AsistenciaPanel] Componente montado');
     cargarAsistencia();
     const intervalo = setInterval(cargarAsistencia, 30000);
     return () => clearInterval(intervalo);
@@ -33,23 +33,37 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
   const cargarAsistencia = async () => {
     setCargando(true);
     try {
+      console.log('📊 [AsistenciaPanel] Iniciando carga de asistencia...');
+      console.log('   URL:', `${API_URL}${asistenciaUrl}`);
+      console.log('   Token disponible:', !!token);
+      
       const res = await fetch(`${API_URL}${asistenciaUrl}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      
+      console.log('   Response status:', res.status);
+      console.log('   Response ok:', res.ok);
+      
       const data = await res.json();
+      console.log('   Response data:', data);
+      console.log('   Data.success:', data.success);
+      console.log('   Registros recibidos:', data.data?.length || 0);
+      
       if (res.ok && data.success) {
         const registros = data.data || [];
+        console.log('✅ Asistencia cargada correctamente:', registros.length, 'registros');
         setAsistencia(registros);
 
-        // Extraer cursos únicos para el filtro
+        // Extraer cursos únicos para el filtro y ordenar alfabéticamente
         const cursos = [...new Map(registros.map(r => [r.curso_id, r.curso_nombre])).entries()]
-          .map(([id, nombre]) => ({ id, nombre }));
+          .map(([id, nombre]) => ({ id, nombre }))
+          .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
         setCursosUnicos(cursos);
       } else {
-        console.error('Error:', data.message);
+        console.error('❌ Error en respuesta:', data.message);
       }
     } catch (err) {
-      console.error('Error cargando asistencia:', err);
+      console.error('❌ Error en cargarAsistencia:', err);
     } finally {
       setCargando(false);
     }
@@ -69,6 +83,12 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
     }
   };
 
+  // Capitaliza la primera letra
+  const capitalizarEstado = (estado) => {
+    if (!estado) return estado;
+    return estado.charAt(0).toUpperCase() + estado.slice(1);
+  };
+
   const etiquetaEstado = (estado) => {
     switch (estado) {
       case 'completado':  return { label: '✅ Completado',  cls: 'badge-completado'  };
@@ -78,16 +98,11 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
   };
 
   // ── Filtros ───────────────────────────────────────────────────
-  const registrosFiltrados = asistencia
-    .filter(r => {
-      const coincideCurso  = !filtroCurso || String(r.curso_id) === filtroCurso;
-      const coincideEstado = filtroEstado === '' || r.estado === filtroEstado;
-      return coincideCurso && coincideEstado;
-    })
-    .sort((a, b) => {
-      const comparacion = a.usuario_nombre.localeCompare(b.usuario_nombre, 'es');
-      return ordenAscendente ? comparacion : -comparacion;
-    });
+  const registrosFiltrados = asistencia.filter(r => {
+    const coincideCurso  = !filtroCurso || String(r.curso_id) === filtroCurso;
+    const coincideEstado = filtroEstado === '' || r.estado === filtroEstado;
+    return coincideCurso && coincideEstado;
+  });
 
   // ── Exportar a CSV ────────────────────────────────────────────
   const exportarCSV = () => {
@@ -99,7 +114,7 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
       r.usuario_cargo,
       r.curso_nombre,
       formatearFecha(r.inicio_en),
-      r.estado
+      capitalizarEstado(r.estado)
     ]);
 
     const contenido = [cabecera, ...filas]
@@ -314,9 +329,11 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
 
 
     // ── Fila 4: DIRIGIDO A ─────────────────────────────────────
+    const dirigidoLineas = doc.splitTextToSize(dirigidoA, valW - 6);
+    const dirigidoH = Math.max(rowH, dirigidoLineas.length * 3 + 5); 
     celda(mL,        y, etqW, rowH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
-    celda(mL + etqW, y, valW, rowH, dirigidoA);
-    y += rowH;
+    celda(mL + etqW, y, valW, dirigidoH, dirigidoA);
+    y += dirigidoH;
 
     // ── Fila 4: DESCRIPCIÓN (altura variable) ──────────────────
     const descLineas = doc.splitTextToSize(descripcionCurso, valW - 6);
@@ -333,7 +350,7 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
       r.cedula_identidad || '—',
       r.usuario_cargo,
       //r.inicio_en ? formatearFecha(r.inicio_en) : '—',
-      r.estado || '—',
+      capitalizarEstado(r.estado) || '—',
     ]);
 
     autoTable(doc, {
@@ -359,7 +376,7 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
       alternateRowStyles: { fillColor: FONDO_SECUNDARIO },
       columnStyles: {
         0: { cellWidth: 9.5,  halign: 'center' },
-        1: { cellWidth: 60,  halign: 'left'   },
+        1: { cellWidth: 60,  halign: 'center'   },
         2: { cellWidth: 30,  halign: 'center' },
         3: { cellWidth: 48,  halign: 'center'   },
         4: { cellWidth: 35,  halign: 'center' },
@@ -489,16 +506,8 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
             <option value="completado">Completado</option>
           </select>
 
-          <button className="btn btn-outline-secondary btn-sm" onClick={cargarAsistencia} title="Actualizar">
+          <button className="btn-actualizar-asistencia" onClick={cargarAsistencia} title="Actualizar">
             <RefreshCw size={15} />
-          </button>
-
-          <button 
-            className="btn btn-outline-secondary btn-sm" 
-            onClick={() => setOrdenAscendente(!ordenAscendente)}
-            title={ordenAscendente ? 'A → Z' : 'Z → A'}
-          >
-            {ordenAscendente ? '↑ A-Z' : '↓ Z-A'}
           </button>
 
           <button className="btn btn-outline-success btn-sm" onClick={exportarCSV} title="Exportar CSV">
@@ -545,7 +554,7 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
                 <th>Cargo</th>
                 <th>Cédula</th>
                 <th>Curso</th>
-                <th>Fecha / Hora Inicio</th>
+                <th>Fecha</th>
                 <th>Estado</th>
               </tr>
             </thead>
@@ -558,7 +567,7 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
                     <td className="fw-semibold">{r.usuario_nombre}</td>
                     <td className="fw-semibold">{r.usuario_proceso}</td>
                     <td>{r.usuario_cargo}</td>
-                    <td className="text-muted">{r.cedula_identidad}</td>
+                    <td>{r.cedula_identidad}</td>
                     <td>{r.curso_nombre}</td>
                     <td className="asistencia-fecha">{formatearFecha(r.inicio_en)}</td>
                     <td><span className={`asistencia-badge ${cls}`}>{label}</span></td>

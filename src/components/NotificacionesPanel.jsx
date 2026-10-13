@@ -1,25 +1,31 @@
 import { useState, useEffect } from 'react';
-import { Bell, CheckCircle, AlertCircle, Trash2, Check, X } from 'lucide-react';
+import { Bell, CheckCircle, AlertCircle, Trash2, Check, UserCheck } from 'lucide-react';
 import Swal from 'sweetalert2';
 import '../styles/components/NotificacionesPanel.css';
 
-export default function NotificacionesPanel() {
+export default function NotificacionesPanel({ tipo }) {
   const API_URL = import.meta.env.VITE_API_URL;
-  const token = localStorage.getItem("admin_token");
+  
+  // El tipo viene del contexto donde se muestra el panel, para no mezclar sesiones
+  const adminToken = localStorage.getItem("admin_token");
+  const userToken = localStorage.getItem("user_token");
+  const isAdmin = tipo ? tipo === 'admin' : !!adminToken;
+  const token = isAdmin ? adminToken : userToken;
 
   const [notificaciones, setNotificaciones] = useState([]);
   const [noLeidas, setNoLeidas] = useState(0);
   const [mostrarDropdown, setMostrarDropdown] = useState(false);
   const [cargando, setCargando] = useState(false);
 
-  // Cargar notificaciones al montar el componente
   useEffect(() => {
+    if (!token) return;
     cargarNotificaciones();
-    const intervalo = setInterval(cargarNotificaciones, 2000);
+    const intervalo = setInterval(cargarNotificaciones, 30000);
     return () => clearInterval(intervalo);
-  }, []);
+  }, [token]);
 
   const cargarNotificaciones = async () => {
+    if (!token) return;
     try {
       const response = await fetch(`${API_URL}/api/notificaciones`, {
         headers: {
@@ -28,11 +34,8 @@ export default function NotificacionesPanel() {
       });
 
       const data = await response.json();
-
       if (data.success) {
         setNotificaciones(data.data || []);
-        
-        // Contar notificaciones no leídas
         const noLeidas = (data.data || []).filter(n => !n.leida).length;
         setNoLeidas(noLeidas);
       }
@@ -42,6 +45,7 @@ export default function NotificacionesPanel() {
   };
 
   const marcarComoLeida = async (notificacionId) => {
+    if (!token) return;
     try {
       const response = await fetch(
         `${API_URL}/api/notificaciones/${notificacionId}/marcar-leida`,
@@ -62,6 +66,7 @@ export default function NotificacionesPanel() {
   };
 
   const eliminarNotificacion = async (notificacionId) => {
+    if (!token) return;
     try {
       const response = await fetch(
         `${API_URL}/api/notificaciones/${notificacionId}`,
@@ -82,6 +87,7 @@ export default function NotificacionesPanel() {
   };
 
   const marcarTodasLeidas = async () => {
+    if (!token) return;
     try {
       setCargando(true);
       const response = await fetch(
@@ -156,9 +162,23 @@ export default function NotificacionesPanel() {
     return notifDate.toLocaleDateString('es-ES');
   };
 
+  const getIconoTipo = (tipo) => {
+    switch (tipo) {
+      case 'aprobado':
+        return <CheckCircle size={20} className="icon-aprobado" />;
+      case 'rechazado':
+        return <AlertCircle size={20} className="icon-rechazado" />;
+      case 'asignado':
+        return <UserCheck size={20} className="icon-asignado" />;
+      default:
+        return <Bell size={20} />;
+    }
+  };
+
+  if (!token) return null;
+
   return (
     <div className="notificaciones-panel">
-      {/* Botón campana */}
       <div className="campana-container">
         <button
           className="btn-campana"
@@ -173,11 +193,10 @@ export default function NotificacionesPanel() {
           )}
         </button>
 
-        {/* Dropdown de notificaciones */}
         {mostrarDropdown && (
           <div className="dropdown-notificaciones">
             <div className="dropdown-header">
-              <h4> 🔔 Notificaciones</h4>
+              <h4>🔔 Notificaciones</h4>
               {noLeidas > 0 && (
                 <button
                   className="btn-marcar-leidas"
@@ -189,7 +208,6 @@ export default function NotificacionesPanel() {
               )}
             </div>
 
-            {/* Lista de notificaciones */}
             <div className="notificaciones-lista">
               {notificaciones.length === 0 ? (
                 <div className="sin-notificaciones">
@@ -203,11 +221,7 @@ export default function NotificacionesPanel() {
                     className={`notificacion-item ${notif.tipo} ${!notif.leida ? 'no-leida' : ''}`}
                   >
                     <div className="notificacion-icon">
-                      {notif.tipo === 'aprobado' ? (
-                        <CheckCircle size={20} className="icon-aprobado" />
-                      ) : (
-                        <AlertCircle size={20} className="icon-rechazado" />
-                      )}
+                      {getIconoTipo(notif.tipo)}
                     </div>
 
                     <div className="notificacion-content">
@@ -215,19 +229,20 @@ export default function NotificacionesPanel() {
                       
                       {notif.razon_rechazo && (
                         <div className="razon-rechazo">
-                          <strong>Razón:</strong> {notif.razon_rechazo}
+                          <strong>Razón del rechazo:</strong>
+                          <p>{notif.razon_rechazo}</p>
                         </div>
                       )}
-
-                      <span className="notificacion-fecha">
+                      
+                      <small className="notificacion-fecha">
                         {formatearFecha(notif.creada_en)}
-                      </span>
+                      </small>
                     </div>
 
                     <div className="notificacion-acciones">
                       {!notif.leida && (
                         <button
-                          className="btn-accion btn-marcar"
+                          className="btn-marcar"
                           onClick={() => marcarComoLeida(notif.id)}
                           title="Marcar como leída"
                         >
@@ -235,7 +250,7 @@ export default function NotificacionesPanel() {
                         </button>
                       )}
                       <button
-                        className="btn-accion btn-eliminar"
+                        className="btn-eliminar"
                         onClick={() => eliminarNotificacion(notif.id)}
                         title="Eliminar"
                       >
@@ -247,7 +262,6 @@ export default function NotificacionesPanel() {
               )}
             </div>
 
-            {/* Footer */}
             {notificaciones.length > 0 && (
               <div className="dropdown-footer">
                 <button
@@ -255,7 +269,7 @@ export default function NotificacionesPanel() {
                   onClick={eliminarTodasNotificaciones}
                   disabled={cargando}
                 >
-                  <Trash2 size={14} /> Eliminar todas
+                  Eliminar todas
                 </button>
               </div>
             )}

@@ -263,18 +263,18 @@ export default function Pruebas({ cursoId: cursoIdProp, onClose }){
                             <div className="evisor-info-grid">
                                 <div className="evisor-info-item">
                                     <span className="label">
-                                        {evaluacion?.tipo === 'crucigrama' ? 'Palabras' : 'Preguntas'}
+                                        {evaluacion?.tipo === 'crucigrama' ? 'Palabras: ' : 'Preguntas: '}
                                     </span>
                                     <span className="valor">
                                         {evaluacion?.tipo === 'crucigrama' ? pistas.length : totalPreguntas}
                                     </span>
                                 </div>
                                 <div className="evisor-info-item">
-                                    <span className="label">Nota mínima</span>
+                                    <span className="label">Nota mínima: </span>
                                     <span className="valor">{evaluacion?.calificacion_minima}</span>
                                 </div>
                                 <div className="evisor-info-item">
-                                    <span className="label">Intentos restantes</span>
+                                    <span className="label">Intentos restantes: </span>
                                     <span className="valor">{intentosRestantes} de 2</span>
                                 </div>
                             </div>
@@ -289,6 +289,7 @@ export default function Pruebas({ cursoId: cursoIdProp, onClose }){
                                     </span>
                                 </div>
                             )}
+                            <br></br>
                             <p className="evisor-instrucciones">
                                 {evaluacion?.tipo === 'crucigrama'
                                     ? <>Completa el crucigrama y envíalo. Necesitas acertar al menos{' '}
@@ -299,7 +300,7 @@ export default function Pruebas({ cursoId: cursoIdProp, onClose }){
                                       Si no alcanzas el mínimo tienes un intento adicional.</>
                                 }
                             </p>
-                            <button className="btn btn-primary btn-lg w-100 mt-2" onClick={iniciarPrueba}>
+                            <button className="btn-reintentar-crucigrama-evalaucion" onClick={iniciarPrueba}>
                                 {evaluacion?.tipo === 'crucigrama'
                                     ? (estado.intentos_usados === 0 ? 'Iniciar crucigrama' : 'Reintentar crucigrama')
                                     : (estado.intentos_usados === 0 ? 'Iniciar evaluación' : 'Reintentar evaluación')

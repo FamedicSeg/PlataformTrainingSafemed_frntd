@@ -209,6 +209,11 @@
   border-left-color: #ef4444;
 }
 
+.notificacion-item.asignado.no-leida {
+  background-color: #eff6ff;
+  border-left-color: #3b82f6;
+}
+
 /* Icono de notificación */
 .notificacion-icon {
   flex-shrink: 0;
@@ -223,6 +228,10 @@
 
 .icon-rechazado {
   color: #ef4444;
+}
+
+.icon-asignado {
+  color: #3b82f6;
 }
 
 /* Contenido de notificación */

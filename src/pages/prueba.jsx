@@ -109,64 +109,64 @@ export default function Prueba() {
     },
     {
       id: 2,
-      text: "¿Qué procedimiento de prevención hace énfasis la Brecha salarial entre hombres y mujeres?",
+      text: "¿Qué acción constituye discriminación laboral por razón de género?",
       options: [
-        "Ambito de aplicación nacional y sectorial.",
-        "Reporte anual y certificación de cumplimiento como incentivos.",
+        "Negar un empleo a una persona por ser hombre o mujer.",
+        "Implementar licencias de maternidad y paternidad.",
         "Ofrecer capacitaciones para todo el personal."
       ],
-      correct: 1
+      correct: 0
     },
     {
       id: 3,
-      text:"Un ejemplo de Sesgo Inconsistente es:",
+      text:"¿Cuál de las siguientes opciones es la base de la Justicia Laboral, Igualdad y Cero Discriminación?",
       options:[
-        "Utilizar un lenguaje inclusivo en la comunicación interna.",
-        "Crear perfiles de puesto basados en habilidades y no en estereotipos.",
-        "Suponer que una mujer no puede viajar o asumir un puesto de responsabilidad por tener hijos."
+        "Entorno libre de violencia.",
+        "Más trabajo laboral a las mujeres.",
+        "Aumento de sueldo a los hombres."
       ],
-      correct: 2
+      correct: 0
     },
     {
       id:4,
       text:"¿Cuál es el objetivo de la LOIS (LEY ORGÁNICA PARA LA IGUALDAD SALARIAL)?",
       options:
       [
-        "Negar un puesto de trabajo, una capacitación o una oportunidad de ascenso por motivos de género.",
+        "Los trabajadores deben tener puestos dependiendo del género.",
         "Garantizar que hombres y mujeres reciban la misma remuneración por un mismo trabajo o por un trabajo de igual valor.",
-        "Impulsar la corresponsabilidad familiar para que las tareas del hogar y el cuidado no recaigan solo en las mujeres."
+        "Impulsar la guerra de género en los pagos a fin de mes."
       ],
       correct: 1
     },
     {
       id:5,
-      text: "¿Qué es la violencia laboral?",
+      text: "¿Cuál de las siguientes opciones corresponden a los beneficios de la igualdad?",
       options:[
-        "Cualquier desacuerdo o conflicto de intereses salariales entre el sindicato y la gerencia durante la negociación colectiva.",
-        "La exigencia estricta de cumplir con los estándares de productividad y los plazos de entrega.",
-        "Toda acción o comportamiento que transgrede la integridad emocional o física en el trabajo."
+        "Economía Fuerte - Paz y Salud.",
+        "Mayor Feminismo - Menos Machismo.",
+        "Economía Débil - Labores suaves para las mujeres."
       ],
-      correct: 2
+      correct: 0
     },
     {
       id:6,
-      text: "Una organización detecta que sus evaluaciones de desempeño no se realizan bajo criterios objetivos y que algunos colaboradores reciben valoraciones superiores debido a preferencias personales. ¿Cuál sería la principal consecuencia de esta práctica y qué medida contribuiría a corregirla?",
+      text: "¿En qué consiste la Presión Social Laboral?",
       options:[
-        "Fortalece la competitividad interna, manteniendo las diferencias de valoración para incentivar a los colaboradores con mejor desempeño",
-        "Genera desigualdades y debilita la confianza organizacional, por lo que se deben aplicar criterios de evaluación objetivos, transparentes y consistentes para todos.",
-        "Incrementa la productividad automáticamente, ya que las diferencias en las evaluaciones permiten identificar con mayor facilidad a los colaboradores más competitivos."
+        "Aislamiento deliberado del equipo.",
+        "Comentarios con insinuaciones sexuales",
+        "Difusión de rumores falsos"
       ],
-      correct: 1
+      correct: 0
     },
     {
       id:7,
-      text: "¿Qué son los estereotipos de género laborales?",
+      text: "¿Cuál de las siguientes opciones se puede considerar como: Principios de Inclusión?",
       options:[
-        "Los hombres manejan mejor situaciones de presión.",
-        "Son creencias que asignan capacidades, comportamientos o funciones a una persona únicamente por su género.",
-        "Contratar a un trabajador porque bebe cada fin de semana."
+        "Contratación por méritos profesionales.",
+        "Descriminar a un compañero por edad o discapacidad.",
+        "Contratar a un trabajador porque bebe cada semana."
       ],
-      correct: 1
+      correct: 0
     },
     {
       id:8,
@@ -180,23 +180,22 @@ export default function Prueba() {
     },
     {
       id:9,
-      text: "¿A qué hace referencia la Persecución y Represalia Discriminatoria?",
+      text: "Consideras qué: ¿Encargar organización o tareas de apoyo a mujeres asumiendo que son más ordenadas, es una asignaciòn de rol por género?",
       options:[
-        "Un trabajador recibe malos tratos de manera clara y visible.",
-        "Una situación laboral aparenta ser neutral, pero oculta prácticas discriminatorias.",
-        "Un trabajador recibe un trato intimidante continuo, se busca humillarla y que abandone su puesto de trabajo."
+        "Sí",
+        "No"
       ],
-      correct: 2
+      correct: 0
     },
     {
       id:10,
-      text: "¿Qué implica que una empresa tenga una Cultura Organizacional que respeta la vida familiar?",
+      text: "¿Qué implica la correspondencia familiar?",
       options: [
-        "Promueve licencias que reducen la desigualdad y distribuye el rol de cuidado.",
-        "Comprende situaciones especiales como enfermedades familiares.",
-        "Concilia la carga y mejorar la concentración."
+        "Mayor satisfacción laboral.",
+        "Hombres y mujeres comparten roles domésticos.",
+        "Reingreso al trabajo sin penalizaciones."
       ],
-      correct: 1
+      correct:1
     }
   ];
 
@@ -265,7 +264,7 @@ export default function Prueba() {
       <div className="container py-5">
         <div className="alert alert-success text-center">
           <i className="bi bi-check-circle-fill me-2"></i>
-          Ya aprobaste la evaluación anteriormente.
+          Ya aprobaste la prueba final anteriormente.
         </div>
         <button 
           className="btn btn-primary mt-3" 
@@ -279,7 +278,7 @@ export default function Prueba() {
 
   return (
     <div className="quiz-container">
-      <h2 className="quiz-title">Evaluación de Conocimientos</h2>
+      <h2 className="quiz-title">Prueba Final</h2>
 
       {resultado === null && (
         <form>
@@ -318,12 +317,11 @@ export default function Prueba() {
               ¡Felicidades!
             </h4>
             <p className="mb-3">
-              Aprobaste la evaluación con una calificación de: 
+              Aprobaste la prueba final con una calificación de: 
               <strong className="ms-1">{calcularPuntaje()}%</strong>
             </p>
           </div>
 
-        {/*
           <h5 className="mt-4 mb-3 fw-bold">Revisión de respuestas</h5>
           {questions.map((q) => {
             const seleccionada = answers[q.id];
@@ -350,7 +348,6 @@ export default function Prueba() {
             );
           })}
 
-          */}
           <div className="text-center mt-4">
             <button 
               onClick={() => navigate("/courses/tthh")} 
@@ -384,7 +381,6 @@ export default function Prueba() {
             </div>
           </div>
 
-          {/*
           <h5 className="mt-4 mb-3 fw-bold">Revisión de respuestas</h5>
           {questions.map((q) => {
             const seleccionada = answers[q.id];
@@ -409,7 +405,7 @@ export default function Prueba() {
                 </div>
               </div>
             );
-          })} */}
+          })}
         </div>
       )}
     </div>

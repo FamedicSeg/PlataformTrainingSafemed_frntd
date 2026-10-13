@@ -1,0 +1,129 @@
+.floating-jitsi-container {
+  position: fixed;
+  min-width: 400px;
+  min-height: 300px;
+  background: white;
+  border: 2px solid #0066cc;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.floating-jitsi-container.minimized {
+  min-width: 300px;
+  min-height: auto;
+  max-height: 60px;
+}
+
+.floating-header {
+  background: linear-gradient(135deg, #0066cc, #0052a3);
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+  user-select: none;
+  border-bottom: 2px solid #004080;
+}
+
+.floating-header:active {
+  cursor: grabbing;
+}
+
+.header-title {
+  font-weight: 600;
+  font-size: 14px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.btn-action:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.05);
+}
+
+.btn-action.btn-close:hover {
+  background: rgba(255, 59, 48, 0.8);
+}
+
+.floating-content {
+  flex: 1;
+  overflow: auto;
+  background: #f5f5f5;
+}
+
+.minimized-indicator {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.pulse {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #00cc66;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 204, 102, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 204, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 204, 102, 0);
+  }
+}
+
+/* Responsivo para pantallas pequeñas */
+@media (max-width: 768px) {
+  .floating-jitsi-container {
+    min-width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+    min-height: 250px;
+    bottom: 10px !important;
+    top: auto !important;
+    left: 10px !important;
+    right: auto !important;
+  }
+
+  .floating-jitsi-container.minimized {
+    min-height: auto;
+    max-height: 60px;
+  }
+}

@@ -73,3 +73,16 @@
     color: #4caf50;
     border-color: #4caf50;
 }
+
+.btn-quitar-fecha{
+    background-color: #ffffff;
+    color: #d74e3e;
+    border-color: #d74e3e;
+    border-radius: 10px;
+}
+
+.btn-quitar-fecha:hover {
+    background-color: #d74e3e;
+    color: #ffffff;
+    border-color: #d74e3e;
+}

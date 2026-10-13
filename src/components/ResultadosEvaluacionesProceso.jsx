@@ -14,6 +14,8 @@ import '../styles/components/resultadosEvaluaciones.css';
 export default function ResultadosEvaluacionesProceso() {
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem('admin_token');
+  const adminUser = JSON.parse(localStorage.getItem('admin_proceso_user') || '{}');
+  const esCapacitador = adminUser.role === 'capacitador';
 
   const [resultados, setResultados] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -174,7 +176,9 @@ export default function ResultadosEvaluacionesProceso() {
         */}
         <div>
           <h4 className="mb-0"> Resultados de Evaluaciones</h4>
-          <p className="mb-0 opacity-75 small">Resultados de los cursos de tu proceso</p>
+          <p className="mb-0 opacity-75 small">
+            {esCapacitador ? 'Resultados de tus cursos' : 'Resultados de los cursos de tu proceso'}
+          </p>
         </div>
         <div className="d-flex align-items-center gap-2">
           <div className="btn-group btn-group-sm">
@@ -184,12 +188,14 @@ export default function ResultadosEvaluacionesProceso() {
             >
               Evaluaciones
             </button>
-            <button
-              className={`btn ${vistaActiva === 'reporte' ? 'btn-primary' : 'btn-outline-primary'}`}
-              onClick={() => handleCambiarVista('reporte')}
-            >
-              Reporte por Año
-            </button>
+            {!esCapacitador && (
+              <button
+                className={`btn ${vistaActiva === 'reporte' ? 'btn-primary' : 'btn-outline-primary'}`}
+                onClick={() => handleCambiarVista('reporte')}
+              >
+                Reporte por Año
+              </button>
+            )}
           </div>
           <button className="btn-refresh-eval" onClick={vistaActiva === 'reporte' ? () => cargarReporteAnio(anioReporte) : cargarResultados} title="Actualizar">
             <RefreshCw size={16} />

@@ -1,0 +1,353 @@
+/* CursoFormAsincronico.css */
+
+.curso-form-asincronico-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.curso-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.btn-volver {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 80px;
+}
+
+.btn-volver:hover {
+  background: #e8e8e8;
+  border-color: #bbb;
+}
+
+.curso-form-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+/* Alertas */
+.alert {
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert-warning {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.alert strong {
+  font-weight: 600;
+}
+
+.rechazo-razon {
+  margin-top: 8px;
+  font-size: 13px;
+  color: inherit;
+}
+
+/* Formulario */
+form {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  border: 1px solid #f0f0f0;
+}
+
+.mb-3 {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-control,
+.form-control-descripcion {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.form-control:focus,
+.form-control-descripcion:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-control:disabled,
+.form-control-descripcion:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+  color: #999;
+}
+
+textarea.form-control,
+textarea.form-control-descripcion {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-text {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #999;
+}
+
+/* Row para columnas */
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.col-md-6 {
+  width: 100%;
+}
+
+.input-fecha {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.input-fecha:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Checkbox */
+.form-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.form-check-input {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #00b8c6;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.form-check-input:checked {
+  background: #00b8c6;
+  color: white;
+}
+
+.form-check-label {
+  cursor: pointer;
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Panel de certificados */
+.certificados-panel {
+  background: #f0f8ff;
+  border-radius: 8px;
+  border: 1px solid #00b8c6;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.certificados-panel p {
+  font-size: 13px;
+  color: #666;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.ingreso-nombre-curso {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd !important;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+  color: black;
+}
+
+/* Cambiar color del icono del calendario a negro */
+.ingreso-nombre-curso[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+  cursor: pointer;
+}
+
+/* Botones formulario */
+.d-flex {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-crear-actualizar {
+  flex: 1;
+  padding: 12px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-crear-actualizar:hover:not(:disabled) {
+  background: #5568d3;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-crear-actualizar:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-cancelar2 {
+  flex: 1;
+  padding: 12px 20px;
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancelar2:hover:not(:disabled) {
+  background: #e0e0e0;
+  border-color: #ccc;
+}
+
+.btn-cancelar2:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  form {
+    padding: 15px;
+  }
+
+  .curso-form-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .curso-form-header h3 {
+    font-size: 18px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .d-flex {
+    flex-direction: column;
+  }
+
+  .btn-crear-actualizar,
+  .btn-cancelar2 {
+    width: 100%;
+  }
+
+  .alert {
+    flex-direction: column;
+  }
+
+  .alert-icon {
+    flex-shrink: 0;
+  }
+}
+
+.form-check-input.custom-check {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  outline: none;
+}
+
+/* Cuando está marcado, muestra el ✓ */
+.custom-check:checked::after {
+  content: '✓' !important;
+  color: #016f77;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Si prefieres una X cuando está marcado */
+/* .custom-check:checked::after {
+  content: '✕';
+  color: #00b8c6;
+  font-size: 12px;
+  font-weight: bold;
+} */

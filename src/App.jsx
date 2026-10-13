@@ -4,6 +4,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { JitsiProvider } from './context/JitsiContext';
+import FloatingJitsi from './components/FloatingJitsi';
 
 import Home from './pages/inicio';
 import CoursesTTHH from './pages/procesos/cursosTTHH';
@@ -14,12 +16,14 @@ import CoursesAsuntosRegulatorios from './pages/procesos/cursosARCC';
 import CoursesSGCS from './pages/procesos/cursosSGCS';
 import CoursesAlmacenamientoLogistica from './pages/procesos/cursosALogistica';
 import CoursesSeguridadInformatica from './pages/procesos/cursosSeguridadInformatica';
+import CoursesSeguridadFisica from './pages/procesos/cursoSeguridadFisica';
 import CoursesGerencia from './pages/procesos/cursosGerencia';
-import CoursesGestionComercial from './pages/procesos/cursosGestionComercial';
 import CoursesCompras from './pages/procesos/cursosCompras';
 import CoursesInfraMantenimiento from './pages/procesos/cursosInfraMantenimiento';
 import CoursesInvestigacionDesarrollo from './pages/procesos/cursosInvestigaciónDesarrollo';
 import CoursesMarketing from './pages/procesos/cursosMarketing';
+import CoursesVentasCosta from './pages/procesos/cursosVentasCosta';
+import CoursesVentasSierra from './pages/procesos/cursosVentasSierra';
 
 import AdminPrincipal from './pages/adminPrincipal';
 import Login from './pages/login';
@@ -52,6 +56,7 @@ import { cursoIgualdadGenero } from "./cursos/TalentoHumano/curso2/datos_curso2"
 import { cursoErradicacionViolencia } from "./cursos/TalentoHumano/curso3/datos_curso3";
 import { cursoOtrosRelacionados } from './cursos/TalentoHumano/curso4/datos_curso4';
 import {cursoReglamentoInterno} from './cursos/TalentoHumano/curso5/datos_curso5';
+import { RotateCcwKey } from 'lucide-react';
 
 
 
@@ -215,6 +220,10 @@ function Layout({ children }) {
         {children}
       </main>
 
+      {/* Componente Flotante para Jitsi */}
+      <FloatingJitsi />
+
+{/*
       {!hideFooter && (
         <footer className="bg-light py-3 text-center border-top footer-full" style={{ 
           width: '100%',
@@ -232,6 +241,7 @@ function Layout({ children }) {
           </small>
         </footer>
       )}
+        */}
     </>
   );
 }
@@ -279,9 +289,10 @@ function App() {
   console.log("App renderizado (versión auth:", authVersion, ")");
 
   return (
-    <Router>
-      <Layout>
-        <Routes>
+    <JitsiProvider>
+      <Router>
+        <Layout>
+          <Routes>
           {/* Rutas públicas (acceso sin login) */}
           <Route path="/" element={<LoginNombre />} />
           <Route path="/admin" element={<Login />} />
@@ -294,7 +305,7 @@ function App() {
           {/* Rutas protegidas para usuarios logueados */}
           <Route path="/inicio" element={<ProtectedUserRoute><Home /></ProtectedUserRoute>} />
           <Route path="/soporte" element={<ProtectedUserRoute><Soporte /></ProtectedUserRoute>} />
-          <Route path="/cursos-disponibles" element={<ProtectedUserRoute><CursosDisponibles /></ProtectedUserRoute>} />
+          {/*<Route path="/cursos-disponibles" element={<ProtectedUserRoute><CursosDisponibles /></ProtectedUserRoute>} />*/}
           <Route path="/mi-perfil" element={<ProtectedUserRoute><MiPerfil /></ProtectedUserRoute>} />
           <Route path="/curso/:cursoId" element={<ProtectedUserRoute><VisorCurso /></ProtectedUserRoute>} />
           <Route path="/documento-form" element={<DocumentoForm />} />
@@ -311,6 +322,14 @@ function App() {
             element={
               <ProtectedUserRoute>
                 <CoursesSegInd />
+              </ProtectedUserRoute>
+            } 
+          />
+          <Route 
+            path="/courses/seguridad-fisica" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesSeguridadFisica />
               </ProtectedUserRoute>
             } 
           />
@@ -371,10 +390,18 @@ function App() {
             } 
           />
           <Route 
-            path="/courses/ventas" 
+            path="/courses/ventasCosta" 
             element={
               <ProtectedUserRoute>
-                <CoursesGestionComercial />
+                <CoursesVentasCosta />
+              </ProtectedUserRoute>
+            } 
+          />
+          <Route 
+            path="/courses/ventasSierra" 
+            element={
+              <ProtectedUserRoute>
+                <CoursesVentasSierra />
               </ProtectedUserRoute>
             } 
           />
@@ -521,6 +548,7 @@ function App() {
         </Routes>
       </Layout>
     </Router>
+    </JitsiProvider>
   );
 }
 

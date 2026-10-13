@@ -12,11 +12,12 @@
 }
 
 .contenedor-principal{
-  max-width: 1000 px !important;
+  width: 100% !important;
 }
-.container-fluid.py-5.mt-5 {
+.contenedor-vista-curso-principal {
   margin-top: 70px !important; 
   padding-top: 30px !important;
+  width: 80% !important;
 }
 .course-wrapper {
   max-width: 900px !important;

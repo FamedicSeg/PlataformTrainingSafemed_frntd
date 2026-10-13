@@ -15,24 +15,24 @@ export default function Procesos(){
 
     const processes =[
         {id:1, name: "Talento Humano", desc: "Capacitación de Talento Humano" ,link: "/courses/tthh", enabled: true},
-        {id:2, name: "Seguridad Industrial", desc: "Capacitación de Seguridad Industrial", link:"/courses/seguridad-industrial", enabled: false},
-        {id:3, name: "Salud Ocupacional", desc: "Capacitación de Salud Ocupacional", link:"/courses/salud-ocupacional", enabled: false},
-        {id:4, name: "Operaciones - Producción", desc: "Capacitación de Producción", link: "/courses/operaciones", enabled: false},
+        {id:2, name: "Seguridad Industrial", desc: "Capacitación de Seguridad Industrial", link:"/courses/seguridad-industrial", enabled: true},
+        {id:3, name: "Salud Ocupacional", desc: "Capacitación de Salud Ocupacional", link:"/courses/salud-ocupacional", enabled: true},
+        {id:4, name: "Operaciones - Producción", desc: "Capacitación de Producción", link: "/courses/operaciones", enabled: true},
          //Segunda Fila
-        {id:5, name: "Asuntos Regulatorios y Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/courses/asuntosRegulatorios", enabled: false},
-        {id:6, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capcitación de SGCS" , link: "/courses/sgcs", enabled: false},
-        {id:7, name: "Almacenamiento y Logística", desc: "Capacitación de Almacenamiento y Logística", link:"/courses/almacenamientoLogistica", enabled: false},
-        {id:8, name: "Seguridad Informática", desc: "Capacitación de la Seguridad en la Información", link:"/courses/seguridadInformatica", enabled: false},        
+        {id:5, name: "Asuntos Regulatorios y Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/courses/asuntosRegulatorios", enabled: true},
+        {id:6, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capcitación de SGCS" , link: "/courses/sgcs", enabled: true},
+        {id:7, name: "Almacenamiento y Logística", desc: "Capacitación de Almacenamiento y Logística", link:"/courses/almacenamientoLogistica", enabled: true},
+        {id:8, name: "Seguridad Informática", desc: "Capacitación de la Seguridad en la Información", link:"/courses/seguridadInformatica", enabled: true},        
         //Tercera Fila
-        {id:9, name: "Gerencia", desc: "Capacitación de Dirección", link:"/courses/gerencia", enabled: false},
-        {id:10, name: "Gestión Comercial", desc: "Capacitación de Gestión Comercial", link:"/courses/ventas", enabled: false},
-        {id:11, name: "Desarrollo e Investigación", desc: "Capacitación de Desarrollo e Investigación", link:"/soporte", enabled: false},
-        {id:12, name: "Compras e Importaciones", desc: "Capacitación de Compras", link:"/courses/compras", enabled: false},
+        {id:9, name: "Gerencia", desc: "Capacitación de Dirección", link:"/courses/gerencia", enabled: true},
+        {id:10, name: "Gestión Comercial Sierra", desc: "Capacitación de Gestión Comercial", link:"/courses/ventasSierra", enabled: true},
+        {id:11, name: "Gestión Comercial Costa", desc: "Capacitación de Gestión Comercial", link:"/courses/ventasCosta", enabled: true},
+        {id:12, name: "Desarrollo e Investigación", desc: "Capacitación de Desarrollo e Investigación", link:"/courses/investigacionDesarrollo", enabled: true},
+        {id:13, name: "Compras e Importaciones", desc: "Capacitación de Compras", link:"/courses/compras", enabled: true},
         //Cuarta Fila
-        {id:13, name: "Marketing", desc: "Capacitación de Marketing", link:"/courses/marketing", enabled: false},
-        {id:14, name: "Seguridad Física", desc: "Capacitación de la Seguridad Física", link:"/soporte", enabled: false},
-        {id:15, name: "Infraestructura y Mantenimiento", desc: "Capacitación de Infraestructura y Mantenimiento", link:"/courses/mantenimiento", enabled: false},
-        {id:16, name: "Investigación y Desarrollo", desc: "Capacitación de Investigación y Desarrollo", link:"/courses/investigacionDesarrollo", enabled: false}
+        {id:14, name: "Marketing", desc: "Capacitación de Marketing", link:"/courses/marketing", enabled: true},
+        {id:15, name: "Seguridad Física", desc: "Capacitación de la Seguridad Física", link:"/courses/seguridad-fisica", enabled: true},
+        {id:16, name: "Infraestructura y Mantenimiento", desc: "Capacitación de Infraestructura y Mantenimiento", link:"/courses/mantenimiento", enabled: true},
     ];
 
     // Cargar cursos de la API
@@ -72,18 +72,18 @@ export default function Procesos(){
 
     return(
         <div className='container contenedor-principal py-5 mt-5'>
-            <div className='container-wide'>
+            <div className='contenedor-procesos-princ'>
                 <div className='text-center mb-5'>
                     <h2> Bienvenido a la plataforma de Capacitación DHISVE</h2>
                     <p className='subtitulo-pagina'> SELECCIONA EL PROCESO QUE DESEAS INGRESAR</p>
                 </div>
-                <div className='row g-4 mb-5'>
+                <div className='tarjetas-row-procesos'>
                 {processes.map((proceso)=>{
                     const _cursosDelProceso = obtenerCursosProceso(proceso.name);
                     const estaExpandido = expandido === proceso.id;
                     
                     return (
-                    <div key={proceso.id} className='col-md-3'>
+                    <div key={proceso.id} className='columna-proceso'>
                         <div className={`card card-curso shadow-sm h-100 ${!proceso.enabled ? 'card-disabled' : ''}`} style={{
                             cursor: proceso.enabled ? 'pointer' : 'default',
                             transition: 'all 0.3s ease',

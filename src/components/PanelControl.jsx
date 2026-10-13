@@ -9,7 +9,7 @@ export default function PanelControl() {
   const [cursos, setCursos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [cursoProgramando, setCursoProgramando] = useState(null);
-  const [formProgramacion, setFormProgramacion] = useState({ fecha_inicio: '', fecha_fin: '' });
+  const [formProgramacion, setFormProgramacion] = useState({ fecha_inicio_curso: '', fecha_fin_curso: '' });
   const [guardando, setGuardando] = useState(false);
   const [filtroProceso, setFiltroProceso] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('todos');
@@ -40,8 +40,8 @@ export default function PanelControl() {
 
   const calcularEstado = (curso) => {
     const ahora = new Date();
-    const inicio = curso.fecha_inicio ? new Date(curso.fecha_inicio) : null;
-    const fin = curso.fecha_fin ? new Date(curso.fecha_fin) : null;
+    const inicio = curso.fecha_inicio_curso? new Date(curso.fecha_inicio_curso) : null;
+    const fin = curso.fecha_fin_curso ? new Date(curso.fecha_fin_curso) : null;
 
     if (!curso.habilitado_manual) return { texto: 'Deshabilitado', clase: 'bg-secondary' };
     if (inicio && ahora < inicio) return { texto: 'Programado', clase: 'bg-warning text-dark' };
@@ -105,8 +105,8 @@ export default function PanelControl() {
   const abrirProgramar = (curso) => {
     setCursoProgramando(curso);
     setFormProgramacion({
-      fecha_inicio: curso.fecha_inicio ? new Date(curso.fecha_inicio).toISOString().slice(0, 16) : '',
-      fecha_fin: curso.fecha_fin ? new Date(curso.fecha_fin).toISOString().slice(0, 16) : ''
+      fecha_inicio_curso: curso.fecha_inicio_curso ? new Date(curso.fecha_inicio_curso).toISOString().slice(0, 16) : '',
+      fecha_fin_curso: curso.fecha_fin_curso ? new Date(curso.fecha_fin_curso).toISOString().slice(0, 16) : ''
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -115,11 +115,11 @@ export default function PanelControl() {
     const body = overrideDates !== undefined
       ? overrideDates
       : {
-          fecha_inicio: formProgramacion.fecha_inicio || null,
-          fecha_fin: formProgramacion.fecha_fin || null
+          fecha_inicio_curso: formProgramacion.fecha_inicio_curso || null,
+          fecha_fin_curso: formProgramacion.fecha_fin_curso || null
         };
 
-    if (body.fecha_inicio && body.fecha_fin && new Date(body.fecha_fin) <= new Date(body.fecha_inicio)) {
+    if (body.fecha_inicio_curso && body.fecha_fin_curso && new Date(body.fecha_fin_curso) <= new Date(body.fecha_inicio_curso)) {
       Swal.fire('Error', 'La fecha de fin debe ser posterior a la fecha de inicio', 'error');
       return;
     }
@@ -198,9 +198,9 @@ export default function PanelControl() {
                 <label className="form-label fw-semibold">📅 Fecha y Hora de Inicio:</label>
                 <input
                   type="datetime-local"
-                  className="form-control"
-                  value={formProgramacion.fecha_inicio}
-                  onChange={e => setFormProgramacion(p => ({ ...p, fecha_inicio: e.target.value }))}
+                  className="form-control input-fecha"
+                  value={formProgramacion.fecha_inicio_curso}
+                  onChange={e => setFormProgramacion(p => ({ ...p, fecha_inicio_curso: e.target.value }))}
                 />
                 <small className="text-muted">El curso se habilitará automáticamente en esta fecha/hora.</small>
               </div>
@@ -208,9 +208,9 @@ export default function PanelControl() {
                 <label className="form-label fw-semibold">🔒 Fecha y Hora de Fin:</label>
                 <input
                   type="datetime-local"
-                  className="form-control"
-                  value={formProgramacion.fecha_fin}
-                  onChange={e => setFormProgramacion(p => ({ ...p, fecha_fin: e.target.value }))}
+                  className="form-control input-fecha"
+                  value={formProgramacion.fecha_fin_curso}
+                  onChange={e => setFormProgramacion(p => ({ ...p, fecha_fin_curso: e.target.value }))}
                 />
                 <small className="text-muted">El curso se bloqueará automáticamente en esta fecha/hora.</small>
               </div>
@@ -224,8 +224,8 @@ export default function PanelControl() {
                 {guardando ? 'Guardando...' : '💾 Guardar Programación'}
               </button>
               <button
-                className="btn btn-outline-danger"
-                onClick={() => guardarProgramacion({ fecha_inicio: null, fecha_fin: null })}
+                className="btn-quitar-fecha"
+                onClick={() => guardarProgramacion({ fecha_inicio_curso: null, fecha_fin_curso: null })}
                 disabled={guardando}
                 title="Eliminar restricción de tiempo — el curso siempre estará disponible"
               >
@@ -323,8 +323,8 @@ export default function PanelControl() {
                       <td>
                         <span className="badge bg-secondary bg-opacity-75">{curso.proceso_name}</span>
                       </td>
-                      <td className="text-nowrap">{formatearFecha(curso.fecha_inicio)}</td>
-                      <td className="text-nowrap">{formatearFecha(curso.fecha_fin)}</td>
+                      <td className="text-nowrap">{formatearFecha(curso.fecha_inicio_curso)}</td>
+                      <td className="text-nowrap">{formatearFecha(curso.fecha_fin_curso)}</td>
                       <td className="text-center">
                         <span className={`badge ${estado.clase}`}>{estado.texto}</span>
                       </td>

@@ -2,19 +2,24 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   BookOpen, LogOut, Home, BarChart2,
-  CheckCircle, ClipboardList, Layout, PieChart, FileText, Award
+  CheckCircle, ClipboardList, Layout, PieChart, FileText, Award, Video, Users, UserPlus
 } from 'lucide-react';
+import EmpleadosManager from '../components/EmpleadosManager';
+import CertificadosProcesoPanel from '../components/CertificadosProcesoPanel';
 import Swal from 'sweetalert2';
 import NotificacionesPanel from '../components/NotificacionesPanel';
 import PanelControl from '../components/PanelControl';
 import ResultadosEvaluacionesProceso from '../components/ResultadosEvaluacionesProceso';
 import AsistenciaPanel from '../components/AsistenciaPanel';
 import AsistenciaPanelCursos4 from '../components/AsistenciaPanelCursos4';
+import AsistenciaDinamicos from '../components/AsistenciaDinamicos';
+import MisReunionesPanel from '../components/MisReunionesPanel';
 import AdminCursos from './adminCursos';
 import AprobacionCursos from './aprobacionCursos';
 import ReportesUsuario from '../components/ReportesUsuario';
 import DocumentosConformidad from '../components/documentosConformidad';
 import ResultadosPruebaTTHH from '../components/ResultadosPruebaTTHH';
+import CapacitadoresManager from '../components/CapacitadoresManager';
 import '../styles/pages/adminProcesoHome.css';
 
 export default function AdminProcesoHome() {
@@ -25,6 +30,7 @@ export default function AdminProcesoHome() {
   const [loading, setLoading] = useState(true);
   const [cursosPendientes, setCursosPendientes] = useState(0);
   const [activeTab, setActiveTab] = useState('inicio');
+  const [asistenciaSubTab, setAsistenciaSubTab] = useState('estaticos'); // 'estaticos' o 'dinamicos'
 
   useEffect(() => {
     const userData = localStorage.getItem("admin_proceso_user");
@@ -45,6 +51,7 @@ export default function AdminProcesoHome() {
   }, [navigate]);
 
   const esTalentoHumano = adminUser?.proceso_name?.trim().toUpperCase() === 'TALENTO HUMANO';
+  const esCapacitador = adminUser?.role === 'capacitador';
 
   // Cargar cursos pendientes + polling cada 30s (solo para TALENTO HUMANO)
   useEffect(() => {
@@ -99,28 +106,36 @@ export default function AdminProcesoHome() {
   const navItems = [
     { id: 'inicio', label: 'Inicio', icon: Home },
     { id: 'gestionar-cursos', label: 'Gestionar Cursos', icon: BookOpen },
+    { id: 'mis-reuniones', label: 'Mis Reuniones', icon: Video },
+    ...(!esCapacitador ? [{ id: 'capacitadores', label: 'Capacitadores', icon: Users }] : []),
     ...(esTalentoHumano ? [{
       id: 'aprobacion', label: 'Aprobación de Cursos', icon: CheckCircle,
       badge: cursosPendientes
     }] : []),
     { id: 'resultados', label: 'Resultados de Evaluaciones', icon: BarChart2 },
     { id: 'asistencia', label: 'Asistencia', icon: ClipboardList },
-    ...(esTalentoHumano ? [{ id: 'panel-control', label: 'Panel de Control', icon: Layout }] : []),
-    ...(esTalentoHumano ? [{ id: 'reportes', label: 'Reportes', icon: PieChart }] : []),
-    ...(esTalentoHumano ? [{ id: 'documentos-conformidad', label: 'Documentos de Conformidad', icon: FileText }] : []),
-    ...(esTalentoHumano ? [{ id: 'prueba-tthh', label: 'Prueba Final TTHH', icon: Award }] : []),
+    { id: 'certificados-emitidos', label: 'Certificados Emitidos', icon: Award },
+    ...(!esCapacitador && esTalentoHumano ? [{ id: 'panel-control', label: 'Panel de Control', icon: Layout }] : []),
+    ...(!esCapacitador && esTalentoHumano ? [{ id: 'reportes', label: 'Reportes', icon: PieChart }] : []),
+    ...(!esCapacitador && esTalentoHumano ? [{ id: 'documentos-conformidad', label: 'Documentos de Conformidad', icon: FileText }] : []),
+    ...(!esCapacitador && esTalentoHumano ? [{ id: 'prueba-tthh', label: 'Prueba Final TTHH', icon: Award }] : []),
+    ...(!esCapacitador && esTalentoHumano ? [{ id: 'gestion-empleados', label: 'Ingreso y Salida de Empleados', icon: UserPlus }] : []),
   ];
 
   const tabTitles = {
     inicio: `Bienvenido, ${adminUser?.nombre}`,
     'gestionar-cursos': 'Gestionar Cursos',
+    'mis-reuniones': 'Mis Reuniones',
+    capacitadores: 'Capacitadores',
     aprobacion: 'Aprobación de Cursos',
     resultados: 'Resultados de Evaluaciones',
     asistencia: 'Registro de Asistencia',
+    'certificados-emitidos': 'Certificados Emitidos',
     'panel-control': 'Panel de Control',
     reportes: 'Reportes',
     'documentos-conformidad': 'Documentos de Conformidad',
     'prueba-tthh': 'Resultados Prueba Final – Talento Humano',
+    'gestion-empleados': 'Ingreso y Salida de Empleados',
   };
 
   const handleNavClick = (item) => {
@@ -168,14 +183,45 @@ export default function AdminProcesoHome() {
         );
       case 'gestionar-cursos':
         return <AdminCursos />;
+      case 'mis-reuniones':
+        return <MisReunionesPanel />;
+      case 'capacitadores':
+        return !esCapacitador ? <CapacitadoresManager /> : null;
       case 'aprobacion':
         return <AprobacionCursos />;
       case 'resultados':
         return <ResultadosEvaluacionesProceso onClose={() => setActiveTab('inicio')} />;
       case 'asistencia':
-        return esTalentoHumano
-          ? <AsistenciaPanelCursos4 onClose={() => setActiveTab('inicio')} />
-          : <AsistenciaPanel onClose={() => setActiveTab('inicio')} />;
+        return esTalentoHumano ? (
+          <div>
+            {/* Sub-tabs para asistencia de TTHH */}
+            <div className="aph-subtabs" style={{ marginBottom: '20px', borderBottom: '2px solid #dee2e6'}}>
+              <button
+                className={`btn-cursos-dine ${asistenciaSubTab === 'estaticos' ? 'btn-primary5' : 'btn-outline-secondary5'}`}
+                onClick={() => setAsistenciaSubTab('estaticos')}
+                style={{ marginRight: '10px' }}
+              >
+                Asistencia Igualdad, Equidad y Derechos Laborales
+              </button>
+              <button
+                className={`btn-cursos-dine ${asistenciaSubTab === 'dinamicos' ? 'btn-primary5' : 'btn-outline-secondary5'}`}
+                onClick={() => setAsistenciaSubTab('dinamicos')}
+              >
+                Otros Cursos
+              </button>
+            </div>
+            {/* Contenido del sub-tab */}
+            {asistenciaSubTab === 'estaticos' ? (
+              <AsistenciaPanelCursos4 onClose={() => setActiveTab('inicio')} />
+            ) : (
+              <AsistenciaDinamicos onClose={() => setActiveTab('inicio')} />
+            )}
+          </div>
+        ) : (
+          <AsistenciaPanel onClose={() => setActiveTab('inicio')} />
+        );
+      case 'certificados-emitidos':
+        return <CertificadosProcesoPanel />;
       case 'panel-control':
         return esTalentoHumano
           ? <PanelControl onClose={() => setActiveTab('inicio')} />
@@ -186,6 +232,8 @@ export default function AdminProcesoHome() {
         return esTalentoHumano ? <DocumentosConformidad /> : null;
       case 'prueba-tthh':
         return esTalentoHumano ? <ResultadosPruebaTTHH /> : null;
+      case 'gestion-empleados':
+        return esTalentoHumano && !esCapacitador ? <EmpleadosManager /> : null;
       default:
         return null;
     }
@@ -231,7 +279,7 @@ export default function AdminProcesoHome() {
             <div className="aph-user-avatar">{userInitial}</div>
             <div className="aph-user-info">
               <div className="aph-user-name">{adminUser?.nombre}</div>
-              <div className="aph-user-role">Admin Proceso</div>
+              <div className="aph-user-role">{esCapacitador ? 'Capacitador' : 'Admin Proceso'}</div>
             </div>
           </div>
           <button className="aph-logout-btn" onClick={handleLogout} title="Cerrar sesión">
@@ -252,7 +300,7 @@ export default function AdminProcesoHome() {
             <h1 className="aph-header-title">{tabTitles[activeTab] || 'Inicio'}</h1>
           </div>
           <div className="aph-header-right">
-            <NotificacionesPanel />
+            <NotificacionesPanel tipo="admin" />
           </div>
         </header>
 

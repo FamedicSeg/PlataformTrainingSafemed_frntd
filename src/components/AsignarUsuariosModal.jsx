@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Search, Users, CheckSquare, Square, XCircle } from 'lucide-react';
+import { Plus, Trash2, Search, Users, CheckSquare, Square, XCircle, X } from 'lucide-react';
 import Swal from 'sweetalert2';
 import '../styles/pages/asignarUsuariosModal.css';
 
@@ -13,8 +13,8 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
   const [usuariosAsignados, setUsuariosAsignados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUsers, setSelectedUsers] = useState([]); // ✅ Usuarios a asignar
-  const [selectedAssigned, setSelectedAssigned] = useState([]); // ✅ Usuarios asignados seleccionados para eliminar
+  const [selectedUsers, setSelectedUsers] = useState([]); 
+  const [selectedAssigned, setSelectedAssigned] = useState([]); 
   const [estado, setEstado] = useState('no iniciado');
 
   // Cargar datos
@@ -32,7 +32,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
       console.log('token:', token ? 'existe' : 'no existe');
 
       // Cargar todos los usuarios
-      console.log('📥 Fetching usuarios desde:', `${API_URL}/api/cursos/debug/usuarios`);
+      console.log('Fetching usuarios desde:', `${API_URL}/api/cursos/debug/usuarios`);
       const usuariosRes = await fetch(`${API_URL}/api/cursos/debug/usuarios`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -50,7 +50,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
       setUsuarios(usuariosData.data || []);
 
       // Cargar inscripciones actuales del curso
-      console.log('📥 Fetching inscripciones desde:', `${API_URL}/api/inscripciones/curso/${cursoId}`);
+      console.log('Fetching inscripciones desde:', `${API_URL}/api/inscripciones/curso/${cursoId}`);
       const inscripcionesRes = await fetch(`${API_URL}/api/inscripciones/curso/${cursoId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -80,7 +80,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
   };
 
-  // ✅ Filtrar usuarios no asignados
+  // Filtrar usuarios no asignados
   const usuariosDisponibles = usuarios.filter(u => {
     // 1. Verificar que no esté asignado
     const yaAsignado = usuariosAsignados.some(a => a.usuario_id === u.id);
@@ -94,11 +94,11 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     const nombre = (u.nombre || '').toLowerCase();
     const proceso = (u.proceso || '').toLowerCase();
 
-    // ✅ Retornar si coincide en nombre o proceso
+    // Retornar si coincide en nombre o proceso
     return nombre.includes(termino) || proceso.includes(termino);
   });
 
-  // ✅ Seleccionar un usuario individual (para asignar)
+  // Seleccionar un usuario individual (para asignar)
   const handleSelectUser = (usuario) => {
     setSelectedUsers(prev => {
       const existe = prev.some(u => u.id === usuario.id);
@@ -110,7 +110,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     });
   };
 
-  // ✅ Seleccionar TODOS los usuarios disponibles
+  // Seleccionar TODOS los usuarios disponibles
   const handleSelectAll = () => {
     const disponibles = usuariosDisponibles;
     const yaSeleccionados = selectedUsers.map(u => u.id);
@@ -124,7 +124,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
   };
 
-  // ✅ Verificar si todos los disponibles están seleccionados
+  // Verificar si todos los disponibles están seleccionados
   const todosSeleccionados = () => {
     if (usuariosDisponibles.length === 0) return false;
     const idsDisponibles = usuariosDisponibles.map(u => u.id);
@@ -132,7 +132,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     return idsDisponibles.every(id => idsSeleccionados.includes(id));
   };
 
-  // ✅ Seleccionar por proceso (desde el buscador)
+  // Seleccionar por proceso (desde el buscador)
   const handleSelectByProcess = () => {
     if (!searchTerm.trim()) {
       Swal.fire('Info', 'Escribe un proceso para buscar', 'info');
@@ -162,11 +162,9 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     Swal.fire('Éxito', `Se seleccionaron ${nuevos.length} usuarios del proceso "${searchTerm}"`, 'success');
   };
 
-  // ✅ ============================================
-  // ✅ FUNCIONES PARA ELIMINAR MÚLTIPLES
-  // ✅ ============================================
+  // FUNCIONES PARA ELIMINAR MÚLTIPLES
 
-  // ✅ Seleccionar/Deseleccionar un usuario asignado para eliminar
+  // Seleccionar/Deseleccionar un usuario asignado para eliminar
   const handleSelectAssigned = (inscripcion) => {
     setSelectedAssigned(prev => {
       const existe = prev.some(a => a.id === inscripcion.id);
@@ -178,7 +176,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     });
   };
 
-  // ✅ Seleccionar todos los usuarios asignados
+  // Seleccionar todos los usuarios asignados
   const handleSelectAllAssigned = () => {
     const todos = usuariosAsignados;
     const yaSeleccionados = selectedAssigned.map(a => a.id);
@@ -191,7 +189,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
   };
 
-  // ✅ Verificar si todos los asignados están seleccionados
+  // Verificar si todos los asignados están seleccionados
   const todosAsignadosSeleccionados = () => {
     if (usuariosAsignados.length === 0) return false;
     const idsAsignados = usuariosAsignados.map(a => a.id);
@@ -199,7 +197,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     return idsAsignados.every(id => idsSeleccionados.includes(id));
   };
 
-  // ✅ Eliminar múltiples usuarios asignados
+  // Eliminar múltiples usuarios asignados
   const handleEliminarMultiples = async () => {
     if (selectedAssigned.length === 0) {
       Swal.fire('Error', 'Selecciona al menos un usuario para eliminar', 'error');
@@ -246,7 +244,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
   };
 
-  // ✅ Eliminar TODOS los usuarios asignados
+  // Eliminar TODOS los usuarios asignados
   const handleEliminarTodos = async () => {
     if (usuariosAsignados.length === 0) {
       Swal.fire('Info', 'No hay usuarios asignados para eliminar', 'info');
@@ -330,7 +328,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
       const errores = respuestas.filter(r => !r.ok);
 
       if (errores.length > 0) {
-        throw new Error(`Error al asignar ${errores.length} usuarios`);
+        throw new Error(`Error al asignar ${errores.length} usuarios. El token puede haber expirado`);
       }
 
       Swal.fire('Éxito', `${selectedUsers.length} usuarios asignados al curso`, 'success');
@@ -345,7 +343,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
   };
 
-  // ✅ Eliminar un solo usuario asignado
+  // Eliminar un solo usuario asignado
   const handleEliminar = async (inscripcionId) => {
     const result = await Swal.fire({
       title: '¿Eliminar asignación?',
@@ -391,7 +389,9 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
       <div className="card" style={{ maxWidth: '1500px', width: '90%', maxHeight: '90vh', overflowY: 'auto' }}>
         <div className="card-header d-flex justify-content-between align-items-center">
           <h5 className="mb-0">ASIGNAR USUARIOS AL CURSO</h5>
-          <button className="btn-close" onClick={onClose}></button>
+          <button type="button" className="panel-modal-close" onClick={onClose} aria-label="Cerrar ventana">
+            <X size={20} />
+          </button>
         </div>
 
         <div className="card-body">
@@ -404,7 +404,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
           ) : (
             <div className="row g-3">
               {/* Panel de asignación */}
-              <div className="col-lg-6">
+              <div className="columna-asignar-usuarios">
                 <h6 className="mb-3">ASIGNAR NUEVO USUARIO</h6>
                 
                 {/* Búsqueda */}
@@ -518,24 +518,24 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
               </div>
 
               {/* Panel de usuarios asignados */}
-              <div className="col-lg-6">
+              <div className="columna-asignar-usuarios">
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h6 className="mb-0">🧑‍💼 Usuarios Asignados ({usuariosAsignados.length})</h6>
+                  <h6 className="mb-0">👥 Usuarios Asignados ({usuariosAsignados.length})</h6>
                   
                   {/* Botones para eliminar */}
                   {usuariosAsignados.length > 0 && (
                     <div className="d-flex gap-2">
                       <button
-                        className="btn btn-outline-danger btn-sm"
+                        className="btn-asignar-borrar"
                         onClick={handleSelectAllAssigned}
                         title="Seleccionar todos"
                       >
-                        {todosAsignadosSeleccionados() ? '✅' : '☐'}
+                        {todosAsignadosSeleccionados() ? '✅' : '🗹'}
                       </button>
                       
                       {selectedAssigned.length > 0 && (
                         <button
-                          className="btn btn-danger btn-sm"
+                          className="btn-borrar2"
                           onClick={handleEliminarMultiples}
                           title={`Eliminar ${selectedAssigned.length} seleccionados`}
                         >
@@ -545,7 +545,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                       )}
                       
                       <button
-                        className="btn btn-outline-danger btn-sm"
+                        className="btn-borrar3"
                         onClick={handleEliminarTodos}
                         title="Eliminar todos"
                       >

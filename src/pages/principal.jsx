@@ -92,8 +92,9 @@ export default function LoginNombre() {
       // 3. Clave "isLoggedIn" CORRECTA
       localStorage.setItem("isLoggedIn", "true");
       
-      // 4. Datos del usuario
+      // 4. Datos del usuario - Guardar como objeto completo
       localStorage.setItem("usuario", data.usuario.nombre);
+      localStorage.setItem("usuario_logueado", JSON.stringify(data.usuario));
       localStorage.setItem("progreso", data.usuario.progreso ?? 0);
       
       // Guardar si ya aprobó la prueba
@@ -150,9 +151,9 @@ export default function LoginNombre() {
 
       {/* Formulario */}
       <div className="formulario-container">
-        <div className="row g-3">
+        <div className="contenedor-login-principal">
           
-          <div className="col-md-6">
+          <div className="columna-cedula">
             <input 
               type="text" 
               className="form-control-custom" 
@@ -165,7 +166,7 @@ export default function LoginNombre() {
             />
           </div>
           
-          <div className="col-md-6 position-relative">
+          <div className="columna-contrasenia">
             <input 
               type={showPassword ? "text" : "password"} 
               className="form-control-custom" 
@@ -176,6 +177,7 @@ export default function LoginNombre() {
               onKeyPress={handleKeyPress}
               disabled={loading}
             />
+         
             <span 
               onClick={() => !loading && setShowPassword(!showPassword)}
               className="toggle-password"
@@ -192,7 +194,8 @@ export default function LoginNombre() {
               {showPassword ? "🔒" : "🔍"}
             </span>
           </div>
-          
+           </div>
+           <div>
           <div className="col-12 text-center mt-4">
             <button 
               className="btn-continuar" 
@@ -207,14 +210,17 @@ export default function LoginNombre() {
             </button>
           </div>
 
-          <div className="botones-container">
+        <div className="botones-contenedor-administradores">
+          <div className="botones-container-admin-proceso">
             <button
               className="btn-adminProceso"
               onClick={() => navigate("/admin/procesos")}
             >
               ADMIN. PROCESOS
             </button>
+          </div>
 
+          <div className="botones-container-admin-principal">
             <button
               className="btn-adminPrincipal"
               onClick={() => navigate("/admin")}
@@ -222,6 +228,7 @@ export default function LoginNombre() {
               ADMIN. PRINCIPAL
             </button>
           </div>
+        </div>
         </div>
       </div>
     </div>

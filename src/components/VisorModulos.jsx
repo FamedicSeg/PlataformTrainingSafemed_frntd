@@ -16,6 +16,8 @@ export default function VisorCurso({ onCourseComplete }) {
   const [marcadosCompletar, setMarcadosCompletar] = useState(new Set());
   const [inscripcion, setInscripcion] = useState(null);
   const [curso, setCurso] = useState(null);
+  const [asistenciaVideoconferencia, setAsistenciaVideoconferencia] = useState({});
+  const [loadingUnirse, setLoadingUnirse] = useState({});
 
   useEffect(() => {
     cargarDatos();
@@ -79,6 +81,65 @@ export default function VisorCurso({ onCourseComplete }) {
       nuevosMarcados.add(modulos[moduloActual].id);
     }
     setMarcadosCompletar(nuevosMarcados);
+  };
+
+  const handleUnirseVideoconferencia = async () => {
+    const modulo = modulos[moduloActual];
+    
+    if (!modulo.tipo === 'video_conferencia') {
+      Swal.fire('Error', 'Este no es un módulo de videoconferencia', 'error');
+      return;
+    }
+
+    try {
+      setLoadingUnirse(prev => ({ ...prev, [modulo.id]: true }));
+
+      const response = await fetch(`${API_URL}/api/modulos/${modulo.id}/registrar-asistencia`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          usuario_id: usuario.id
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Error al registrar asistencia');
+      }
+
+      setAsistenciaVideoconferencia(prev => ({
+        ...prev,
+        [modulo.id]: data.data || { id: data.id }
+      }));
+
+      // Marcar automáticamente como completado
+      const nuevosMarcados = new Set(marcadosCompletar);
+      nuevosMarcados.add(modulo.id);
+      setMarcadosCompletar(nuevosMarcados);
+
+      const url = modulo.url_conferencia || `https://meet.jitsi.org/${modulo.id}-${usuario.id}`;
+      
+      Swal.fire({
+        title: '📺 Abriendo Videoconferencia',
+        text: 'Se abrirá la sala de conferencias en una nueva ventana...',
+        icon: 'info',
+        timer: 2000,
+        timerProgressBar: true,
+        didClose: () => {
+          window.open(url, '_blank');
+        }
+      });
+
+    } catch (error) {
+      console.error('Error al unirse a videoconferencia:', error);
+      Swal.fire('Error', error.message || 'No se pudo conectar a la videoconferencia', 'error');
+    } finally {
+      setLoadingUnirse(prev => ({ ...prev, [modulo.id]: false }));
+    }
   };
 
   const handleSiguiente = () => {
@@ -231,7 +292,7 @@ export default function VisorCurso({ onCourseComplete }) {
                 <strong>Módulo {moduloActual + 1} de {modulos.length}:</strong> {modulo?.titulo}
               </h5>
               <span className="badge bg-primary">
-                {modulo?.tipo === 'texto' ? '📝' : modulo?.tipo === 'video' ? '🎬' : modulo?.tipo === 'imagen' ? '🖼️' : '📄'} {modulo?.tipo}
+                {modulo?.tipo === 'texto' ? '📝' : modulo?.tipo === 'video' ? '🎬' : modulo?.tipo === 'imagen' ? '🖼️' : modulo?.tipo === 'video_conferencia' ? '📺' : '📄'} {modulo?.tipo}
               </span>
             </div>
 
@@ -275,6 +336,52 @@ export default function VisorCurso({ onCourseComplete }) {
                   </div>
                 </div>
               )}
+
+              {modulo?.tipo === 'video_conferencia' && (
+                <div className="text-center">
+                  <div style={{ fontSize: '72px', marginBottom: '20px' }}>📺</div>
+                  <h5 className="mb-4">Videoconferencia en Directo</h5>
+                  
+                  <div className="alert alert-info mb-4">
+                    <p className="mb-2"><strong>⏰ Hora de la Sesión:</strong></p>
+                    <p className="mb-2">
+                      Inicio: {modulo.fecha_inicio_conferencia ? new Date(modulo.fecha_inicio_conferencia).toLocaleString('es-ES') : 'No especificada'}
+                    </p>
+                    <p className="mb-0">
+                      Fin: {modulo.fecha_fin_conferencia ? new Date(modulo.fecha_fin_conferencia).toLocaleString('es-ES') : 'No especificada'}
+                    </p>
+                  </div>
+
+                  {asistenciaVideoconferencia[modulo.id] ? (
+                    <div className="alert alert-success mb-4">
+                      <p className="mb-0">✅ Ya te has unido a esta sesión</p>
+                    </div>
+                  ) : null}
+
+                  <button
+                    className="btn btn-primary btn-lg"
+                    onClick={handleUnirseVideoconferencia}
+                    disabled={loadingUnirse[modulo.id] || estaCompletado}
+                  >
+                    {loadingUnirse[modulo.id] ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Conectando...
+                      </>
+                    ) : (
+                      <>
+                        Unirse a la Conferencia
+                      </>
+                    )}
+                  </button>
+
+                  {modulo.url_conferencia && (
+                    <p className="text-muted small mt-3">
+                      Sala Jitsi: {modulo.url_conferencia}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="card-footer d-flex justify-content-between align-items-center">
@@ -287,19 +394,29 @@ export default function VisorCurso({ onCourseComplete }) {
                 Anterior
               </button>
 
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id={`checkModulo${moduloActual}`}
-                  checked={marcadosCompletar.has(modulo?.id)}
-                  onChange={handleMarcarCompleto}
-                  disabled={estaCompletado}
-                />
-                <label className="form-check-label" htmlFor={`checkModulo${moduloActual}`}>
-                  Marcar como completado
-                </label>
-              </div>
+              {modulo?.tipo === 'video_conferencia' ? (
+                <div className="text-center">
+                  <small className="text-muted">
+                    {asistenciaVideoconferencia[modulo.id] 
+                      ? '✅ Asistencia registrada'
+                      : 'Únete para registrar asistencia'}
+                  </small>
+                </div>
+              ) : (
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id={`checkModulo${moduloActual}`}
+                    checked={marcadosCompletar.has(modulo?.id)}
+                    onChange={handleMarcarCompleto}
+                    disabled={estaCompletado}
+                  />
+                  <label className="form-check-label" htmlFor={`checkModulo${moduloActual}`}>
+                    Marcar como completado
+                  </label>
+                </div>
+              )}
 
               <button
                 className="btn btn-outline-secondary"
@@ -329,13 +446,33 @@ export default function VisorCurso({ onCourseComplete }) {
                   style={{ cursor: 'pointer' }}
                 >
                   <div className="d-flex justify-content-between align-items-start">
-                    <div>
-                      <strong>Módulo {index + 1}</strong>
+                    <div className="flex-grow-1">
+                      <div className="d-flex align-items-center gap-2">
+                        <strong>Módulo {index + 1}</strong>
+                        {m.tipo === 'video_conferencia' && (
+                          <span style={{ fontSize: '12px' }}>📺</span>
+                        )}
+                      </div>
                       <p className="mb-0 small mt-1">{m.titulo}</p>
+                      {m.tipo === 'video_conferencia' && (
+                        <p className="mb-0 small text-muted mt-1">
+                          {m.fecha_inicio_conferencia ? new Date(m.fecha_inicio_conferencia).toLocaleString('es-ES', { 
+                            month: 'short', 
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          }) : 'Programado'}
+                        </p>
+                      )}
                     </div>
-                    {marcadosCompletar.has(m.id) && (
-                      <span className="badge bg-success rounded-pill">✓</span>
-                    )}
+                    <div className="d-flex align-items-center gap-1">
+                      {marcadosCompletar.has(m.id) && (
+                        <span className="badge bg-success rounded-pill">✓</span>
+                      )}
+                      {asistenciaVideoconferencia[m.id] && (
+                        <span className="badge bg-info rounded-pill" title="Has asistido">👤</span>
+                      )}
+                    </div>
                   </div>
                 </button>
               ))}

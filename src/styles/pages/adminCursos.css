@@ -61,21 +61,23 @@ body {
 
 }
 
-.label-search {
+.label-de-busqueda {
     border: 1px solid #000000;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     color: #000000;
     border-radius: 4px;
     padding: 20px 12px;
-    width: 70%;
+    width: 100vh;
     height: 40px;
     transition: border-color 0.3s ease;
+    transform: translateX(-40px) translateY(-20px);
 }
 
 .input-group-text{
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     color: #000000;
     border: none;
+    transform: translateX(-90px) translateY(20px);
 }
 
 .col {
@@ -157,4 +159,19 @@ body {
 .card-body {
   padding: 28px;
   background: #ffffff;
+}
+
+.btn-actualizar-cursos{
+    background-color: #f8f9fa;
+    color: #000000;
+    border: 1px solid #ced4da;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    
+}
+
+.btn.btn-outline-secondary.btn-sm:hover{
+    background-color: #e2e6ea;
+    color: #000000;
 }

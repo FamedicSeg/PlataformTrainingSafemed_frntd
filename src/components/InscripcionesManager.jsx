@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Trash2, Check } from 'lucide-react';
+import { Trash2, Check, X } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 /**
@@ -131,7 +131,9 @@ export default function InscripcionesManager({ cursoId, onClose }) {
       <div className="card">
         <div className="card-header d-flex justify-content-between align-items-center">
           <h5 className="mb-0">Inscripciones del Curso</h5>
-          <button className="btn-close" onClick={onClose}></button>
+          <button type="button" className="panel-modal-close" onClick={onClose} aria-label="Cerrar ventana">
+            <X size={20} />
+          </button>
         </div>
 
         <div className="card-body">
@@ -189,7 +191,7 @@ export default function InscripcionesManager({ cursoId, onClose }) {
                     <th>Cédula</th>
                     <th>Estado</th>
                     <th>Fecha Inscripción</th>
-                    <th className="text-center">Acciones</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
@@ -211,6 +213,7 @@ export default function InscripcionesManager({ cursoId, onClose }) {
                           {new Date(inscripcion.fecha_inscripcion).toLocaleDateString('es-ES')}
                         </small>
                       </td>
+                      {/*
                       <td className="text-center">
                         <div className="btn-group btn-group-sm" role="group">
                           {inscripcion.estado !== 'En progreso' && (
@@ -239,7 +242,7 @@ export default function InscripcionesManager({ cursoId, onClose }) {
                             <Trash2 size={16} />
                           </button>
                         </div>
-                      </td>
+                      </td>*/}
                     </tr>
                   ))}
                 </tbody>

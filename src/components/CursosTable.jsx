@@ -1,31 +1,21 @@
-import { Trash2, Edit, Plus, Eye, Users, ClipboardList, GitBranch } from 'lucide-react';
+import { Trash2, Edit, Plus, Eye, Users, ClipboardList, GitBranch, RefreshCw } from 'lucide-react';
 import Swal from 'sweetalert2';
 import '../styles/pages/cursoTable.css';
-/**
- * CursosTable - Tabla de cursos dinámicos
- * 
- * Props:
- *   - cursos: Array de cursos
- *   - loading: boolean
- *   - onEdit: callback para editar
- *   - onDelete: callback para eliminar
- *   - onViewModulos: callback para ver módulos
- *   - onViewInscripciones: callback para ver inscritos
- *   - onAssignUsers: callback para asignar usuarios
- *   - onViewEvaluacion: callback para gestionar evaluación
- */
+
 export default function CursosTable({ 
   cursos = [], 
   loading = false,
   onEdit,
-  onDelete,
+  //onDelete,
   onViewModulos,
   onViewInscripciones,
   onAssignUsers,
   onViewEvaluacion,
-  onViewVersiones
+  onViewVersiones,
 }) {
 
+
+    {/*
   const handleDeleteClick = (curso) => {
     Swal.fire({
       title: '¿Eliminar curso?',
@@ -42,6 +32,7 @@ export default function CursosTable({
       }
     });
   };
+  */}
 
   if (loading) {
     return (
@@ -70,11 +61,11 @@ export default function CursosTable({
                 <th className="col-nom">Nombre</th>
                 <th className="col-desc">Descripción</th>
                 <th className="col-mod">Módulos</th>
-                <th className="col-ins">Inscritos</th>
+                <th className="col-asignar">Asignar</th>
                 <th className="col-eval">Evaluación</th>
                 <th className="col-estado">Estado</th>
-                <th className="col-asignar">Asignar</th>
-                <th>Versiones</th>
+                <th className="col-ins">Inscritos</th>
+                <th className="col-version">Año</th>
                 <th className="col-acciones text-end">Acciones</th>
             </tr>
         </thead>
@@ -98,6 +89,8 @@ export default function CursosTable({
                         <button
                             className="btn-accion btn-modulos"
                             onClick={() => onViewModulos?.(curso.id)}
+                            disabled={curso.estado !== 'aprobado'}
+                            title={curso.estado !== 'aprobado' ? 'El curso debe estar aprobado para crear módulos' : ''}
                         >
                             <Plus size={14} />
                             <span>Módulos</span>
@@ -105,44 +98,66 @@ export default function CursosTable({
                     </td>
                     <td>
                         <button
-                            className="btn-accion btn-inscritos"
-                            onClick={() => onViewInscripciones?.(curso.id)}
+                            className="btn-accion btn-asignar"
+                            onClick={() => onAssignUsers?.(curso.id)}
+                            disabled={curso.estado !== 'aprobado'}
+                            title={curso.estado !== 'aprobado' ? 'El curso debe estar aprobado para asignar usuarios' : ''}
                         >
-                            <Eye size={14} />
-                            <span>Ver</span>
+                            <Users size={14} />
+                            <span>Asignar</span>
                         </button>
                     </td>
+                    
                     <td>
                         <button
                             className="btn-accion btn-evaluacion"
                             onClick={() => onViewEvaluacion?.(curso.id)}
-                            title="Gestionar evaluación final"
+                            disabled={curso.estado !== 'aprobado'}
+                            title={curso.estado !== 'aprobado' ? 'El curso debe estar aprobado para crear evaluaciones' : 'Gestionar evaluación final'}
                         >
                             <ClipboardList size={14} />
                             <span>Evaluación</span>
                         </button>
                     </td>
                     <td>
-                        <span className={`badge-estado ${curso.activo ? 'activo' : 'inactivo'}`}>
-                            <span className="dot"></span>
-                            {curso.activo ? 'Activo' : 'Inactivo'}
-                        </span>
+                        <div>
+                            <span className={`badge-estado ${
+                              curso.estado === 'aprobado' ? 'aprobado' :
+                              curso.estado === 'rechazado' ? 'rechazado' :
+                              'pendiente'
+                            }`} >
+                              <span className="dot" style={{backgroundColor: curso.estado === 'aprobado' ? 'green' : curso.estado === 'rechazado' ? '#6c0202' : 'gray', alignItems: 'center'}} ></span>
+                              {curso.estado === 'aprobado' ? 'Aprobado' :
+                               curso.estado === 'rechazado' ? 'Rechazado' :
+                               'Pendiente'}
+                            </span>
+                            {/*
+                            {curso.estado === 'rechazado' && curso.razon_rechazo && (
+                              <div style={{ fontSize: '12px', marginTop: '4px', color: '#d32f2f', maxWidth: '150px' }}>
+                                <strong>Razón:</strong> {curso.razon_rechazo}
+                              </div>
+                            )}
+                              */}
+                        </div>
                     </td>
                     <td>
                         <button
-                            className="btn-accion btn-asignar"
-                            onClick={() => onAssignUsers?.(curso.id)}
+                            className="btn-accion btn-inscritos"
+                            onClick={() => onViewInscripciones?.(curso.id)}
+                            disabled={curso.estado !== 'aprobado'}
+                            title={curso.estado !== 'aprobado' ? 'El curso debe estar aprobado para ver inscritos' : ''}
                         >
-                            <Users size={14} />
-                            <span>Asignar</span>
+                            <Eye size={14} />
+                            <span>Ver</span>
                         </button>
                     </td>
+                    
                     <td>
                         <button
-                            className="btn-accion"
-                            style={{ background: '#e8f4f8', color: '#0d6efd', border: '1px solid #b6d4fe' }}
+                            className="btn-accion btn-version"
                             onClick={() => onViewVersiones?.(curso)}
-                            title={`Versiones anuales — año ${curso.anio ?? '?'}`}
+                            disabled={curso.estado !== 'aprobado'}
+                            title={curso.estado !== 'aprobado' ? 'El curso debe estar aprobado para ver versiones' : `Versiones anuales — año ${curso.anio ?? '?'}`}
                         >
                             <GitBranch size={14} />
                             <span>{curso.anio ?? '—'}</span>
@@ -155,12 +170,14 @@ export default function CursosTable({
                         >
                             <Edit size={14} />
                         </button>
+                        {/*
                         <button
                             className="btn-accion btn-eliminar"
                             onClick={() => handleDeleteClick(curso)}
                         >
                             <Trash2 size={14} />
                         </button>
+                        */}
                     </td>
                 </tr>
             ))}

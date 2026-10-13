@@ -1,0 +1,225 @@
+/* Recording Controls Styles */
+.recording-controls-panel {
+    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d3d 100%);
+    border: 1px solid #404050;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.recording-controls-panel.recording-active {
+    border-color: #ff4444;
+    background: linear-gradient(135deg, #2d1a1a 0%, #3d2a2a 100%);
+    box-shadow: 0 0 12px rgba(255, 68, 68, 0.2);
+}
+
+/* Header */
+.recording-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recording-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.recording-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ff4444;
+}
+
+.red-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #ff4444;
+    border-radius: 50%;
+    animation: pulse-recording 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-recording {
+    0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7);
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 0 8px rgba(255, 68, 68, 0);
+    }
+}
+
+.recording-time {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ff4444;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+}
+
+.recording-status-text {
+    font-size: 14px;
+    color: #888;
+}
+
+/* Buttons */
+.recording-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-recording {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+.btn-recording:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-recording:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-recording:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Botón Grabar */
+.btn-start {
+    background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+    color: white;
+}
+
+.btn-start:hover:not(:disabled) {
+    background: linear-gradient(135deg, #56C956 0%, #45A049 100%);
+}
+
+/* Botón Pausar */
+.btn-pause {
+    background: linear-gradient(135deg, #FFC107 0%, #FFA000 100%);
+    color: white;
+}
+
+.btn-pause:hover:not(:disabled) {
+    background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%);
+}
+
+/* Botón Reanudar */
+.btn-resume {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    color: white;
+}
+
+.btn-resume:hover:not(:disabled) {
+    background: linear-gradient(135deg, #42A5F5 0%, #1E88E5 100%);
+}
+
+/* Botón Detener */
+.btn-stop {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+    color: white;
+}
+
+.btn-stop:hover:not(:disabled) {
+    background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+}
+
+/* Botón Cancelar */
+.btn-cancel {
+    background: #555;
+    color: white;
+    padding: 8px 10px;
+}
+
+.btn-cancel:hover:not(:disabled) {
+    background: #666;
+}
+
+/* Botón Descargar */
+.btn-download {
+    background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+    color: white;
+}
+
+.btn-download:hover:not(:disabled) {
+    background: linear-gradient(135deg, #BA68C8 0%, #8E24AA 100%);
+}
+
+.download-hint {
+    font-size: 11px;
+    color: #9C27B0;
+    margin: 8px 0 0 0;
+    font-style: italic;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .recording-controls-panel {
+        padding: 12px;
+    }
+
+    .recording-buttons {
+        gap: 6px;
+    }
+
+    .btn-recording {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .recording-time {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .recording-controls-panel {
+        padding: 10px;
+    }
+
+    .recording-buttons {
+        gap: 4px;
+    }
+
+    .btn-recording {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+
+    .btn-recording span {
+        display: none;
+    }
+
+    .recording-time {
+        font-size: 13px;
+    }
+}

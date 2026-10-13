@@ -65,7 +65,7 @@ export default function CambiarPassword() {
                 throw new Error(errorData.message || errorData.error || 'Error al cambiar la contraseña');
             }
 
-            const _data = await response.json();
+            const data = await response.json();
             
             // Actualizar usuario en localStorage con primer_login en false
             const usuarioActualizado = { ...user, primer_login: false };

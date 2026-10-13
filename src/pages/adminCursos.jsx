@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, ArrowLeft } from 'lucide-react';
+import { Plus, ArrowLeft, RefreshCw } from 'lucide-react';
 import Swal from 'sweetalert2';
 import CursoForm from '../components/CursoForm';
 import CursosTable from '../components/CursosTable';
@@ -28,6 +28,7 @@ export default function AdminCursos() {
   const [searchTerm, setSearchTerm] = useState('');
   const [versionesModalCurso, setVersionesModalCurso] = useState(null);
   const [filtroAnio, setFiltroAnio] = useState('');
+  const [filtroEstado, setFiltroEstado] = useState(''); // NUEVO: Filtro por estado
   const anioActual = new Date().getFullYear();
   const aniosSelector = [anioActual - 1, anioActual, anioActual + 1];
 
@@ -102,7 +103,7 @@ export default function AdminCursos() {
     }
   };
 
-  const handleSaveCurso = (nuevosCursos) => {
+  const handleSaveCurso = () => {
     setShowForm(false);
     setEditingCurso(null);
     cargarCursos();
@@ -113,20 +114,32 @@ export default function AdminCursos() {
     setEditingCurso(null);
   };
 
-  // Filtrar cursos
-  const cursosFiltrados = cursos.filter(curso =>
-    curso.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filtrar cursos por nombre, estado y año
+  const cursosFiltrados = cursos.filter(curso => {
+    const coincideNombre = curso.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    const coincideEstado = !filtroEstado || curso.estado === filtroEstado;
+    return coincideNombre && coincideEstado;
+  });
 
   return (
     <div className="container-fluid py-4">
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="header-info">
-          <h1 className="h3 mb-1">GESTIÓN DE CURSOS</h1>
+          <h1 className="h3 mb-1">GESTIÓN DE CURSOS (ANÁLISIS Y CREACIÓN)</h1>
           <p className="text-muted mb-0">
             Proceso: <strong>{adminUser.proceso_name}</strong>
           </p>
+        </div>
+        <div>
+          <button
+                    className="btn-actualizar-cursos"
+                    onClick={cargarCursos}
+                    title="Actualizar"
+                  >
+                    <RefreshCw size={20} />
+                  </button>
+
         </div>
         {/*
         <button
@@ -168,14 +181,29 @@ export default function AdminCursos() {
                     <span className="input-group-text">🔍</span>
                     <input
                       type="text"
-                      className="label-search"
+                      className="label-de-busqueda"
                       placeholder="Buscar curso por nombre..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
                 </div>
+
                 <div className="col-auto">
+                  <select
+                    className="form-select form-select-sm"
+                    value={filtroEstado}
+                    onChange={e => setFiltroEstado(e.target.value)}
+                    style={{ minWidth: 130 }}
+                  >
+                    <option value="">Todos los estados</option>
+                    <option value="pendiente">Pendiente de Aprobación</option>
+                    <option value="aprobado">Aprobado</option>
+                    <option value="rechazado">Rechazado</option>
+                  </select>
+                </div>
+                
+                <div className="col-auto">  
                   <select
                     className="form-select form-select-sm"
                     value={filtroAnio}
@@ -217,7 +245,8 @@ export default function AdminCursos() {
                 onViewInscripciones={setInscripcionesModalCurso}                
                 onAssignUsers={setAsignarUsuariosCurso}
                 onViewEvaluacion={setEvaluacionModalCurso}
-                onViewVersiones={setVersionesModalCurso}
+                onViewVersiones={setVersionesModalCurso}                
+                onRefresh={cargarCursos}                
                 />
             </div>
           </div>

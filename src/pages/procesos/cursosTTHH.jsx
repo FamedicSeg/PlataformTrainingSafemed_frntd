@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "../../styles/pages/cursos.css";
@@ -11,9 +11,10 @@ export default function CoursesTTHH() {
 
   const [courses, setCourses] = useState([]);
   const [cursosCompletados, setCursosCompletados] = useState({});
+  const [cursosAsignados, setCursosAsignados] = useState(new Set());
   const [cargandoCursos, setCargandoCursos] = useState(true);
 
-  // Cursos estáticos originales (con su contenido existente)
+  // Cursos estÃ¡ticos originales (con su contenido existente)
   const cursosEstaticos = [
     { 
       id: "estatico_1", 
@@ -26,7 +27,7 @@ export default function CoursesTTHH() {
     },
     { 
       id: "estatico_2", 
-      name: "2. Derechos laborales de Mujeres y Hombres", 
+      name: "2. Derechos laborales de mujeres y hombres", 
       desc: "Duración: 10 horas", 
       link: "/courses/derechoslaborales",
       dbName: "derechos_laborales",
@@ -35,7 +36,7 @@ export default function CoursesTTHH() {
     },
     { 
       id: "estatico_3", 
-      name: "3. Igualdad de Género", 
+      name: "3. Igualdad de género", 
       desc: "Duración: 10 horas", 
       link: "/courses/igualdadgenero",
       dbName: "igualdad_genero",
@@ -44,7 +45,7 @@ export default function CoursesTTHH() {
     },
     { 
       id: "estatico_4", 
-      name: "4. Erradicación de Violencia y No Discriminación en un Centro de Trabajo", 
+      name: "4. Erradicación de violencia y no discriminación en un centro de trabajo", 
       desc: "Duración: 10 horas", 
       link: "/courses/erradicacionviolencia",
       dbName: "erradicacion_Violencia",
@@ -53,7 +54,7 @@ export default function CoursesTTHH() {
     },
     { 
       id: "estatico_5", 
-      name: "5. Otros Relacionados para Establecer el Trabajo de igual valor", 
+      name: "5. Otros relacionados para establecer el trabajo de igual valor", 
       desc: "Duración: 10 horas", 
       link: "/courses/otrosrelacionados",
       dbName: "otrosRelacionados",
@@ -62,33 +63,40 @@ export default function CoursesTTHH() {
     }
   ];
 
-  // CARGAR CURSOS DESDE LA API Y COMBINAR CON ESTÁTICOS
-  const cargarCursosDelAPI = async () => {
+  // CARGAR CURSOS DESDE LA API Y COMBINAR CON ESTÃTICOS
+  const cargarCursosDelAPI = async (asignados) => {
     try {
       setCargandoCursos(true);
       const response = await fetch(`${API_URL}/api/cursos/disponibles`);
       const data = await response.json();
       
-      // Filtrar solo cursos de "Talento Humano" que estén activos
+      // Filtrar solo cursos de "Talento Humano" que estÃ©n activos
+      // âœ… Y que estÃ©n asignados al usuario actual
       const cursosDinamicos = (data.data || [])
-        .filter(c => c.proceso_name === "Talento Humano" && c.activo)
+        .filter(c => 
+          c.proceso_name === "Talento Humano" && 
+          c.activo &&
+          asignados.has(c.id)  // â† NUEVO: Solo mostrar si estÃ¡ asignado
+        )
         .map((c) => ({
           id: c.id,
           name: c.nombre,
           desc: c.descripcion,
-          link: `/curso/${c.id}`, // Usa el visor dinámico
-          dbName: `curso_${c.id}`, // Identificador único
+          tipo: c.tipo,
+          link: `/curso/${c.id}`,
+          dbName: `curso_${c.id}`, // Identificador Ãºnico
           bloqueado: false,
           esEstatico: false,
-          fecha_inicio: c.fecha_inicio || null
+          fecha_inicio: c.fecha_inicio_curso || null,
+          fecha_fin: c.fecha_fin_curso || null
         }));
       
-      // Combinar: primero dinámicos, luego estáticos
+      // Combinar: primero dinÃ¡micos, luego estÃ¡ticos
       const todosCursos = [...cursosDinamicos, ...cursosEstaticos];
       setCourses(todosCursos);
-      console.log('✅ Cursos cargados:', cursosDinamicos.length, '+ Estáticos:', cursosEstaticos.length);
+      console.log('✓ Cursos cargados:', cursosDinamicos.length, '+ Estáticos:', cursosEstaticos.length);
     } catch (error) {
-      console.error('❌ Error cargando cursos:', error);
+      console.error('✖ Error cargando cursos:', error);
       // Si hay error, mostrar solo estáticos
       setCourses(cursosEstaticos);
     } finally {
@@ -96,9 +104,9 @@ export default function CoursesTTHH() {
     }
   };
 
-  // FUNCIÓN PARA CARGAR CURSOS COMPLETADOS
-  const cargarCursosCompletados = async () => {
-    if (!nombre) return;
+  // FUNCIÃ“N PARA CARGAR CURSOS ASIGNADOS Y COMPLETADOS
+  const cargarCursosAsignados = async () => {
+    if (!nombre) return new Set();
     
     try {
       const token = localStorage.getItem("user_token");
@@ -111,18 +119,21 @@ export default function CoursesTTHH() {
       ]);
 
       const completadosObj = {};
+      // âœ… GUARDAR IDs DE CURSOS ASIGNADOS
+      const asignados = new Set();
 
-      // Cursos dinámicos: completados si tienen mejor_puntaje
+      // Cursos dinÃ¡micos: completados si tienen mejor_puntaje
       const dataDinamicos = await respDinamicos.json();
       if (dataDinamicos.success && dataDinamicos.data) {
         dataDinamicos.data.forEach(inscripcion => {
+          asignados.add(inscripcion.curso_id); // â† Agregar a asignados
           if (inscripcion.mejor_puntaje !== null && inscripcion.mejor_puntaje !== undefined) {
             completadosObj[`curso_${inscripcion.curso_id}`] = true;
           }
         });
       }
 
-      // Cursos estáticos: completados según cursos_completados en BD
+      // Cursos estÃ¡ticos: completados segÃºn cursos_completados en BD
       const dataEstaticos = await respEstaticos.json();
       if (dataEstaticos.ok && dataEstaticos.cursosCompletados) {
         dataEstaticos.cursosCompletados.forEach(curso => {
@@ -130,34 +141,41 @@ export default function CoursesTTHH() {
         });
       }
 
+      setCursosAsignados(asignados);
       setCursosCompletados(completadosObj);
-      console.log('✅ Cursos completados:', Object.keys(completadosObj).length);
+      console.log('✓ Cursos asignados al usuario:', asignados.size);
+      console.log('✓ Cursos completados:', Object.keys(completadosObj).length);
+      
+      return asignados; // â† RETORNAR EL SET LOCAL
     } catch (error) {
-      console.error("⚠ Error cargando cursos completados:", error);
+      console.error("✖ Error cargando cursos asignados:", error);
+      return new Set(); // Retornar Set vacÃ­o en caso de error
     }
   };
 
   // Cargar progreso al entrar por primera vez
   useEffect(() => {
-    // Cargar cursos desde API
-    cargarCursosDelAPI();
-
     if (nombre) {
-      cargarCursosCompletados();
+      // 1ï¸âƒ£ Primero cargar cursos asignados
+      cargarCursosAsignados().then((asignados) => {
+        // 2ï¸âƒ£ Luego cargar cursos del API (filtered por asignados)
+        cargarCursosDelAPI(asignados);
+      });
     }
   }, [nombre]);
 
   // Refrescar cuando se regresa desde un curso
   useEffect(() => {
     if (location.state && location.state.refrescar) {
-      cargarCursosCompletados();
-      cargarCursosDelAPI();
+      cargarCursosAsignados().then((asignados) => {
+        cargarCursosDelAPI(asignados);
+      });
       
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location, navigate]);
 
-  // Verificar si un curso específico está completado
+  // Verificar si un curso especÃ­fico estÃ¡ completado
   const estaCursoCompletado = (cursoDbName) => {
     return cursosCompletados[cursoDbName] || false;
   };
@@ -169,16 +187,18 @@ export default function CoursesTTHH() {
     return Math.round((cursosCompletadosCount / totalCursos) * 100);
   };
 
-  // Manejar clic en botón de curso
+  // Manejar clic en botÃ³n de curso
+  const esCursoExpirado = (curso) => !!curso.fecha_fin && new Date() > new Date(curso.fecha_fin);
+
   const manejarClicCurso = (curso) => {
-    if (curso.bloqueado) return;
+    if (curso.bloqueado || esCursoExpirado(curso)) return;
     if (estaCursoCompletado(curso.dbName)) {
-      // Si el curso ya está completado, preguntar si quiere repasar
-      if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
+      // Si el curso ya estÃ¡ completado, preguntar si quiere repasar
+      if (window.confirm(`Ya completaste "${curso.name}". Â¿Deseas repasarlo?`)) {
         navigate(curso.link);
       }
     } else {
-      // Si no está completado, iniciar normalmente
+      // Si no estÃ¡ completado, iniciar normalmente
       navigate(curso.link);
     }
   };
@@ -242,14 +262,15 @@ export default function CoursesTTHH() {
           )}
         </h4>
 
-        <div className="row g-4 mb-5">
+        <div className="columna-cursos-disponibles-tarjeta">
           {courses.map((curso) => {
             const completado = estaCursoCompletado(curso.dbName);
             const proximo = !curso.bloqueado && !!curso.fecha_inicio && new Date(curso.fecha_inicio) > new Date();
-            const noDisponible = curso.bloqueado || proximo;
+            const expirado = !curso.bloqueado && esCursoExpirado(curso);
+            const noDisponible = curso.bloqueado || proximo || expirado;
             
             return (
-              <div key={curso.id} className="col-md-3">
+              <div key={curso.id} className="tarjeta-curso">
                 <div className={`card card-curso shadow-sm h-100 ${completado ? 'curso-completado' : ''} ${noDisponible ? 'curso-bloqueado' : ''}`}>
                   <div className="card-body d-flex flex-column">
                     <div className="d-flex justify-content-between align-items-start mb-2">
@@ -258,11 +279,11 @@ export default function CoursesTTHH() {
                       </h5>
                       {noDisponible ? (
                         <span className="badge bg-warning text-dark">
-                          🕐
+                          ⚠
                         </span>
                       ) : completado && (
                         <span className="badge bg-success">
-                          ✅
+                          ✓
                         </span>
                       )}
                     </div>
@@ -272,8 +293,8 @@ export default function CoursesTTHH() {
 
                     {/* Aviso de disponibilidad futura */}
                     {proximo && (
-                      <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#fff3cd', border: '1px solid #ffc107', fontSize: '0.8rem', color: '#856404' }}>
-                        🕐 Disponible el {new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#fff3cd', border: '1px solid #107993', fontSize: '0.8rem', color: '#046385' }}>
+                        ⚠ Disponible el {new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </div>
                     )}
                     
@@ -281,7 +302,7 @@ export default function CoursesTTHH() {
                     <div className="mt-auto">
                       <div className="mb-2">
                         <small className={`badge ${noDisponible ? 'bg-warning text-dark' : completado ? 'bg-success' : 'bg-secondary'}`}>
-                          {noDisponible ? 'No Disponible' : completado ? 'Completado' : 'Por comenzar'}
+                          {expirado ? 'Expirado' : noDisponible ? 'Próximamente' : completado ? '✅ Curso realizado' : 'Por comenzar'}
                         </small>
                         {!noDisponible && completado && (
                           <small className="ms-2 text-success">
@@ -295,22 +316,18 @@ export default function CoursesTTHH() {
                         onClick={() => manejarClicCurso(curso)}
                         disabled={noDisponible}
                       >
-                        {noDisponible ? (
-                          <>
-                            <i className="bi bi-clock me-2"></i>
-                            No Disponible
-                          </>
+                        {expirado ? (
+                          <>⛔ No Disponible</>
+                        ) : noDisponible ? (
+                          <>⚠ Próximamente</>
                         ) : completado ? (
-                          <>
-                            <i className="bi bi-check-circle me-2"></i>
-                            Curso realizado
-                          </>
+                          <>✅ Curso realizado</>
                         ) : (
                           'Iniciar curso'
                         )}
                       </button>
                       
-                      {/* Botón para repasar incluso si está completado */}
+                      {/* BotÃ³n para repasar incluso si estÃ¡ completado */}
                       {!noDisponible && completado && (
                         <button
                           className="btn btn-outline-primary w-100 mt-2"
@@ -366,29 +383,31 @@ export default function CoursesTTHH() {
         </div>
         */}
 
-        {/* PRUEBA FINAL */}
+        {/* PRUEBA FINAL 
         <div className="text-center mt-5">
           {listo4Cursos ? (
             localStorage.getItem("pruebaAprobada") === "true" ? (
               <div className="alert alert-success py-3">
                 <i className="bi bi-award me-2"></i>
-                ¡Felicidades! Has completado toda la capacitación y aprobado la prueba final.
+                Â¡Felicidades! Has completado toda la capacitaciÃ³n y aprobado la prueba final.
               </div>
             ) : (
+              
               <button
                 className="btn btn-final"
                 onClick={() => navigate("/prueba")}
               >
-                Ir a la prueba final 📝
+                Ir a la prueba final ðŸ“
               </button>
             )
           ) : (
             <div className="alert alert-info">
               <i className="bi bi-info-circle me-2"></i>
-              La prueba final se habilitará cuando completes los 4 temas requeridos ({completadosRequeridos}/4 completados).
+              La prueba final se habilitarÃ¡ cuando completes los 4 temas requeridos ({completadosRequeridos}/4 completados).
             </div>
           )}
         </div>
+        */}
 
       </div>
 

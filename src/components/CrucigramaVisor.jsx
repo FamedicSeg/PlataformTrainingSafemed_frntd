@@ -294,7 +294,7 @@ export default function CrucigramaVisor({ pistas, onSubmit, disabled = false }) 
       {/* Submit */}
       {!disabled && (
         <button
-          className="btn btn-primary w-100"
+          className="btn-enviar-crucigrama"
           style={{ maxWidth: '300px' }}
           onClick={handleSubmit}
         >

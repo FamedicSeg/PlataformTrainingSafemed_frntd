@@ -324,10 +324,10 @@ export default function EvaluacionManager({ cursoId, onClose }) {
       <div className="eval-manager-modal">
 
         {/* Header */}
-        <div className="eval-manager-header">
+        <div className="evaluacion-titulo-header2">
           <div className="d-flex align-items-center gap-2">
             <ClipboardList size={20} />
-            <h5 className="mb-0">Evaluación Final del Curso</h5>
+            <h5 className="mb-0-1">Evaluación Final del Curso</h5>
           </div>
           <button className="btn-close-eval" onClick={onClose}>
             <X size={18} />
@@ -340,19 +340,19 @@ export default function EvaluacionManager({ cursoId, onClose }) {
           <div className="eval-section">
             <h6 className="eval-section-title">Configuración de la evaluación</h6>
             <form onSubmit={handleGuardarEval} className="eval-form-base">
-              <div className="row g-3">
-                <div className="col-md-7">
+              <div className="cuadro-principal-evaluacion">
+                <div className=".columna-titulo-evaluacion">
                   <label className="form-label">Título de la evaluación</label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="texto-titulo-nota"
                     value={formEval.titulo}
                     onChange={e => setFormEval(p => ({ ...p, titulo: e.target.value }))}
                     placeholder="Ej: Evaluación final — EPP"
                     required
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="columna-nota-minima">
                   <label className="form-label">Nota mínima para aprobar (%)</label>
                   <input
                     type="number"
@@ -365,13 +365,13 @@ export default function EvaluacionManager({ cursoId, onClose }) {
                   />
                 </div>
                 <div className="btn-guardar-evaluacion">
-                  <button type="submit" className="btn btn-primary w-100" disabled={guardandoEval}>
+                  <button type="submit" className="btn-crear-evaluacion" disabled={guardandoEval}>
                     {guardandoEval ? '...' : evaluacion ? 'Actualizar' : 'Crear'}
                   </button>
                   {evaluacion && (
                     <button
                       type="button"
-                      className="btn btn-outline-danger"
+                      className="btn-eliminar-evaluacion"
                       onClick={handleEliminarEval}
                       title="Eliminar evaluación"
                     >
@@ -382,9 +382,9 @@ export default function EvaluacionManager({ cursoId, onClose }) {
 
                 {/* Tipo de evaluación — solo al crear */}
                 {!evaluacion && (
-                  <div className="col-12">
+                  <div className="columna-tipo-evaluacion">
                     <label className="form-label fw-semibold">Tipo de evaluación</label>
-                    <div className="d-flex gap-3">
+                    <div className="c-tip-eval">
                       <label className="d-flex align-items-center gap-2 cursor-pointer" style={{ cursor: 'pointer' }}>
                         <input
                           type="radio"
@@ -409,7 +409,7 @@ export default function EvaluacionManager({ cursoId, onClose }) {
                       </label>
                     </div>
                     <small className="text-muted">
-                      El tipo no se puede cambiar después de crear la evaluación.
+                      Elije el tipo de evaluación
                     </small>
                   </div>
                 )}
@@ -471,7 +471,7 @@ export default function EvaluacionManager({ cursoId, onClose }) {
                             <Edit size={14} />
                           </button>
                           <button
-                            className="btn-icon btn-delete-p"
+                            className="btn-icon btn-eliminar-preg"
                             onClick={() => handleEliminarPregunta(preg)}
                             title="Eliminar"
                           >

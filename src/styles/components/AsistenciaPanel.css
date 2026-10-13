@@ -107,3 +107,17 @@
   border:none;
   color: #fff;
 }
+
+.btn-actualizar-asistencia{
+  height: 40px !important;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;  
+  color:#495057;
+  background-color: transparent;
+  border: 1px solid #495057;
+}

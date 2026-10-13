@@ -1,0 +1,263 @@
+.panel-firmas-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.panel-firmas-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.panel-firmas-header h2 {
+  font-size: 28px;
+  color: #2c3e50;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.panel-firmas-header .subtitle {
+  color: #7f8c8d;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+/* FORMULARIO */
+/* ════════════════════════════════════════════════════════════════ */
+
+.panel-firmas-form-section {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.panel-firmas-form-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 18px;
+}
+
+.form-firmas {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px 12px;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.file-name {
+  color: #27ae60;
+  font-size: 12px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-submit {
+  padding: 12px 24px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  align-self: flex-start;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #2980b9;
+}
+
+.btn-submit:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+/* LISTADO DE FIRMAS */
+/* ════════════════════════════════════════════════════════════════ */
+
+.panel-firmas-list-section {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.panel-firmas-list-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 18px;
+}
+
+.loading,
+.empty-state {
+  text-align: center;
+  color: #7f8c8d;
+  padding: 40px 20px;
+  font-size: 14px;
+}
+
+/* Agrupación por proceso */
+.proceso-grupo {
+  margin-bottom: 30px;
+}
+
+.proceso-grupo:last-child {
+  margin-bottom: 0;
+}
+
+.proceso-titulo {
+  font-size: 16px;
+  color: #2c3e50;
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ecf0f1;
+  font-weight: 600;
+}
+
+/* Grid de firmas */
+.firmas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .firmas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tarjeta de firma */
+.firma-card {
+  background: #f8f9fa;
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.firma-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.firma-imagen {
+  background: white;
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ecf0f1;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.firma-imagen img {
+  max-width: 100%;
+  max-height: 90px;
+  object-fit: contain;
+}
+
+.firma-info {
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.firma-info h5 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.firma-info .cargo {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.firma-info .fecha {
+  margin: 0;
+  font-size: 11px;
+  color: #95a5a6;
+}
+
+.firma-acciones {
+  padding: 10px 15px;
+  border-top: 1px solid #ecf0f1;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn-eliminar {
+  padding: 6px 12px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-weight: 600;
+}
+
+.btn-eliminar:hover {
+  background: #c0392b;
+}

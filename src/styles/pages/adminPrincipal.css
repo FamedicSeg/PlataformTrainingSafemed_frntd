@@ -13,3 +13,15 @@
 .table-text-center {
   text-align: left !important;
 }
+
+.btn-login-admin-proceso{
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-login-admin-proceso:hover{
+  background-color: #0056b3;
+}

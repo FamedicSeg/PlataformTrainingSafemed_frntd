@@ -338,8 +338,8 @@ export default function Curso5({ curso }) {
         
         {/* NIVELES */}
         <div className="niveles-contenedor">
-          {niveles.map((nivel) => {
-            const puedeAcceder = true;
+          {niveles.map((nivel, idx) => {
+            const puedeAcceder = idx === 0 || niveles[idx - 1].completado;
             return (
               <Nivel
                 key={nivel.id}

@@ -23,15 +23,22 @@
   overflow: hidden;
 }
 
-.eval-manager-header {
+.evaluacion-titulo-header2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
   background: #1a3c5e;
-  color: #fff;
+  color: #fff !important;
   border-radius: 12px 12px 0 0;
   flex-shrink: 0;
+}
+.mb-0{
+  color: #1a3c5e !important;
+}
+
+.mb-0-1{
+  color: #fff !important;
 }
 
 .eval-manager-body {
@@ -159,11 +166,13 @@
   background: #e8f0fe;
 }
 
-.btn-delete-p {
+.btn-eliminar-preg {
   color: #dc3545;
+  width: 100% !important;
 }
-.btn-delete-p:hover {
+.btn-eliminar-preg:hover {
   background: #fde8ea;
+  width: 100% !important;
 }
 
 .btn-close-eval {
@@ -241,16 +250,82 @@
   margin-top: 0px !important;
   display: flex !important;
   justify-content: flex-end !important;
+  width: 50% !important;
+  margin-left: auto !important;
 }
 
-.btn.btn-primary.w-100 {
-  width: 20% !important;
+.btn-crear-evaluacion {
+  width: 50% !important;
   height: 50px !important;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  background: #0d6efd;
+  width: 100% !important;
+  color: #fff;
 }
 
-.btn.btn-outline-danger {
+.btn-crear-evaluacion:hover {
+  background: #0b5ed7;
+}
+
+.btn-eliminar-evaluacion {
   margin-top: 10px !important;
   margin-left: 0.5rem !important;
-  width: 10% !important;
-  height: 50px !important;
+  width: 100% !important;
+  height: 40px !important;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  background: #ffff;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+}
+
+.btn-eliminar-evaluacion:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
+.cuadro-principal-evaluacion{
+  width: 100%;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.columna-titulo-evaluacion{
+  width: 100%;
+}
+
+.columna-nota-minima{
+  width: 100%;
+  margin-left: 30px !important;
+}
+
+.texto-titulo-nota{
+  width: 100%;
+  padding: 10px 12px;
+  border: 0px solid #ddd !important;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+  color: black;
+}
+
+.columna-tipo-evaluacion{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 12px;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+.c-tip-eval{
+  display: flex;
+  width: 150% !important;
+  gap: 5rem !important; /* Adjust the gap as needed */
 }

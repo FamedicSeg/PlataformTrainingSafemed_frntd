@@ -77,7 +77,7 @@ export default function DocumentoForm() {
     if (response.ok) {
       setEnviado(true);
       setTimeout(() => {
-        navigate("/courses");
+        navigate("/courses/tthh");
       }, 3000);
     } else {
       // 📌 Muestra el error real del servidor
@@ -198,7 +198,7 @@ export default function DocumentoForm() {
           </div>
           
           <div className="botones-documento">
-            <button type="button" className="btn-cancelar" onClick={() => navigate("/courses")}>
+            <button type="button" className="btn-cancelar" onClick={() => navigate("/courses/tthh")}>
               Cancelar
             </button>
             <button type="submit" className="btn-enviar" disabled={enviando}>

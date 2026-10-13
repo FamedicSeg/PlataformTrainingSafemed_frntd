@@ -5,6 +5,31 @@
     overflow-y: auto;
     border-radius: 12px;
 }
+
+.panel-modal-close {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 38px;
+    padding: 0;
+    color: #ffffff;
+    background: #447fba8c;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.panel-modal-close:hover {
+    color: #ffffff;
+    background: #294f74;
+}
+
+.panel-modal-close:focus-visible {
+    outline: 2px solid #1a3c5e;
+    outline-offset: 2px;
+}
 /* Estilo corporativo con acentos */
 .list-group {
     margin-top: 20px;
@@ -101,4 +126,16 @@
 
 .btn-actualizarM:hover {
     background-color: #2fa67a;
+}
+
+.ingreso-texto-modulo {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd !important;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+  color: black;
 }

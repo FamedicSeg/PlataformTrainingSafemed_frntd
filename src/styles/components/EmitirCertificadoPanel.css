@@ -1,0 +1,135 @@
+.emitir-certificado-panel {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 184, 198, 0.1);
+}
+
+.panel-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.panel-header h2 {
+  color: #00b8c6;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.panel-description {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-control {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
+  background: #fff;
+}
+
+.form-control:hover {
+  border-color: #00b8c6;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #00b8c6;
+  box-shadow: 0 0 8px rgba(0, 184, 198, 0.2);
+}
+
+.form-control:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.text-warning {
+  color: #ff9800;
+  font-size: 13px;
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: #fff3e0;
+  border-radius: 6px;
+  border-left: 4px solid #ff9800;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.btn-emitir {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #00b8c6 0%, #009db3 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 184, 198, 0.3);
+  min-width: 250px;
+  text-transform: uppercase;
+}
+
+.btn-emitir:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 184, 198, 0.4);
+  background: linear-gradient(135deg, #009db3 0%, #008899 100%);
+}
+
+.btn-emitir:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-emitir:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .emitir-certificado-panel {
+    padding: 15px;
+  }
+
+  .panel-header h2 {
+    font-size: 20px;
+  }
+
+  .btn-emitir {
+    min-width: auto;
+    width: 100%;
+  }
+}

@@ -34,9 +34,9 @@ export default function SubirArchivoSupabase({
     const file = event.target.files[0];
     if (!file) return;
 
-    // Verificar tamaño (máximo 50 MB en plan gratuito)
-    if (file.size > 50 * 1024 * 1024) {
-      alert('❌ El archivo es muy grande. Máximo 50 MB.');
+    // Verificar tamaño (máximo 200 MB en plan Pro)
+    if (file.size > 200 * 1024 * 1024) {
+      alert('❌ El archivo es muy grande. Máximo 200 MB.');
       event.target.value = '';
       return;
     }

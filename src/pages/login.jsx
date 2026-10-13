@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import '../styles/pages/login.css';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -94,7 +93,7 @@ export default function Login() {
               </span>
           </div>
 
-          <button type="submit" className="btn-admin">
+          <button type="submit" className="btn btn-primary w-100">
             Iniciar Sesión
           </button>
         </form>

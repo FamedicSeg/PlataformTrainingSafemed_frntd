@@ -1,0 +1,11 @@
+.btn-agregar-empleado {
+  background-color: #16b002;
+  border-color: #16b002;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+.btn-agregar-empleado:hover {
+  background-color: #00cc00;
+  border-color: #00cc00;
+}

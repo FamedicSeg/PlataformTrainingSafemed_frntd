@@ -1,0 +1,889 @@
+/* salaJitsiMeet.css - Diseño Moderno y Profesional */
+
+* {
+  box-sizing: border-box;
+}
+
+.sala-jitsi-contenedor-principal-usuario {
+  display: flex;
+  flex-direction: column;
+  height: 100% !important;
+  width: 100%!important;
+  background: #0f172a;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  margin-top: 20px;
+  border-radius: 16px;
+  color: white;
+}
+
+/* ========== HEADER ========== */
+.jitsi-header {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-bottom: 2px solid #334155;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  width: 100%;
+
+}
+
+.header-left {
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+}
+
+.curso-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.icono-container {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.icono-video {
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.info-text h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: -0.5px;
+}
+
+.info-text .room-name {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Center - Stats */
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stats-container {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: rgba(30, 41, 59, 0.6);
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.stat-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(100, 116, 139, 0.3);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-direction: column;
+}
+
+.stat-item svg {
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.stat-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f5f9;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* Right - Exit Button */
+.btn-salir {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-salir:hover:not(:disabled) {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+.btn-salir:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-salir:disabled {
+  background: #64748b;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ========== MAIN CONTAINER ========== */
+.jitsi-principal-container-usuario {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 16px;
+  padding: 5px;
+  overflow: hidden;
+  min-height: 70vh !important;
+  width: 100%;
+  background: #dee1e7;
+}
+
+/* Sala Jitsi */
+.jitsi-sala-contenedor-anfitrion {
+  background: #ece8e8 !important;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(51, 65, 85, 0.3);
+  height: 80vh !important;
+  width: 80vh !important;
+}
+
+.jitsi-sala-contenedor-anfitrion iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.jitsi-sala-contenedor-usuario{
+  background: #ece8e8 !important;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(51, 65, 85, 0.3);
+  height: 120vh !important;
+  width: 100% !important;
+}
+
+/* ========== SIDEBAR CONTROLES ========== */
+.jitsi-sidebar-controles {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(51, 65, 85, 0.3);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  height: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.jitsi-sidebar-controles::-webkit-scrollbar {
+  width: 6px;
+}
+
+.jitsi-sidebar-controles::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.jitsi-sidebar-controles::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.4);
+  border-radius: 3px;
+}
+
+.jitsi-sidebar-controles::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.6);
+}
+
+.sidebar-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Control Section */
+.control-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-icon {
+  font-size: 16px;
+}
+
+.section-hint {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* Link Container */
+.link-container {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.link-input {
+  flex: 1;
+  padding: 10px 12px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1.5px solid rgba(51, 65, 85, 0.5);
+  border-radius: 8px;
+  font-size: 11px;
+  color: #e2e8f0;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.link-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-copiar {
+  padding: 10px 12px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-copiar:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.btn-copiar:active {
+  transform: translateY(0);
+}
+
+.btn-copiar.copiado {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Config Options */
+.config-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.opcion-config {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #cbd5e1;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.4);
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.opcion-config:hover {
+  background: rgba(30, 41, 59, 0.7);
+  color: #f1f5f9;
+}
+
+.opcion-config input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+  flex-shrink: 0;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1400px) {
+  .jitsi-main-container {
+    grid-template-columns: 1fr 320px;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .jitsi-header {
+    padding: 12px 16px;
+    gap: 16px;
+  }
+
+  .stats-container {
+    padding: 10px 16px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .header-center {
+    display: none;
+  }
+
+  .jitsi-header {
+    justify-content: space-between;
+  }
+
+  .jitsi-main-container {
+    grid-template-columns: 1fr 300px;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .sidebar-content {
+    padding: 16px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sala-jitsi-contenedor-principal {
+    margin-top: 0;
+  }
+
+  .jitsi-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .header-left {
+    width: 100%;
+  }
+
+  .curso-info {
+    gap: 12px;
+  }
+
+  .icono-container {
+    width: 40px;
+    height: 40px;
+  }
+
+  .info-text h3 {
+    font-size: 16px;
+  }
+
+  .info-text .room-name {
+    font-size: 11px;
+  }
+
+  .btn-salir {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .jitsi-main-container {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 8px;
+    grid-template-rows: 1fr auto;
+  }
+
+  .jitsi-sidebar-controles {
+    max-height: 200px;
+    border-radius: 12px;
+  }
+
+  .sidebar-content {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .section-title {
+    font-size: 12px;
+  }
+
+  .stat-value {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .jitsi-header {
+    padding: 10px;
+  }
+
+  .icono-container {
+    width: 36px;
+    height: 36px;
+  }
+
+  .info-text h3 {
+    font-size: 14px;
+  }
+
+  .btn-salir {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .jitsi-main-container {
+    padding: 6px;
+  }
+
+  .jitsi-sidebar-controles {
+    max-height: 180px;
+  }
+
+  .sidebar-content {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    gap: 6px;
+  }
+
+  .title-icon {
+    font-size: 14px;
+  }
+
+  .section-hint {
+    font-size: 11px;
+  }
+
+  .link-input,
+  .btn-copiar {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+
+  .opcion-config {
+    font-size: 12px;
+    padding: 8px;
+    gap: 8px;
+  }
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+.curso-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px !important;
+}
+
+.icono-video {
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.curso-info h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.room-name {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.stats-container {
+  display: flex;
+  gap: 20px;
+  height: 100%;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.stat-item svg {
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.btn-salir {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-salir:hover:not(:disabled) {
+  background: #b71c1c;
+  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.4);
+}
+
+.btn-salir:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+/* Controles y panel de invitación */
+.jitsi-controles {
+  background: transparent;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+  padding: 15px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  overflow-y: auto;
+  max-height: 180px;
+  flex-shrink: 0;
+}
+
+.invitacion-panel,
+.configuracion-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.invitacion-panel h4,
+.configuracion-panel h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.invitacion-panel p,
+.configuracion-panel p {
+  margin: 0;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.link-container {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.link-input {
+  flex: 1;
+  padding: 8px 12px;
+  background: #1a1a1a;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #ddd;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.link-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.btn-copiar {
+  padding: 8px 12px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-copiar:hover {
+  background: #5568d3;
+}
+
+.btn-copiar.copiado {
+  background: #4caf50;
+}
+
+.ayuda-texto {
+  font-size: 11px;
+  color: #999;
+  margin: 5px 0 0 0;
+}
+
+/* Configuración */
+.config-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opcion-config {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #ddd;
+}
+
+.opcion-config input {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* Info y ayuda */
+.jitsi-info {
+  background: #2d2d2d;
+  border-top: 2px solid #404040;
+  padding: 12px 20px;
+  font-size: 12px;
+  color: #ddd;
+  flex-shrink: 0;
+  display: none;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.jitsi-info strong {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.jitsi-info ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.jitsi-info li {
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+/* Animaciones */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .jitsi-controles {
+    grid-template-columns: 1fr;
+    max-height: 240px;
+  }
+
+  .stats-container {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .jitsi-header {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 15px;
+  }
+
+  .header-info {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .curso-info {
+    width: 100%;
+    height: auto;
+  }
+
+  .curso-info h3 {
+    font-size: 16px;
+  }
+
+  .stats-container {
+    width: 100%;
+    justify-content: space-around;
+    gap: 10px;
+  }
+
+  .btn-salir {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .jitsi-controles {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-height: 300px;
+    padding: 12px 15px;
+  }
+
+  .link-container {
+    flex-direction: column;
+  }
+
+  .btn-copiar {
+    width: 100%;
+  }
+
+  .jitsi-info {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .jitsi-header {
+    padding: 10px;
+  }
+
+  .curso-info h3 {
+    font-size: 14px;
+  }
+
+  .room-name {
+    font-size: 10px;
+  }
+
+  .stat-item {
+    font-size: 12px;
+  }
+
+  .jitsi-controles {
+    max-height: 400px;
+    padding: 10px;
+  }
+
+  .invitacion-panel h4,
+  .configuracion-panel h4 {
+    font-size: 12px;
+  }
+
+  .link-input,
+  .btn-copiar {
+    font-size: 11px;
+  }
+}
+
+/* Tema oscuro optimizado para video */
+::selection {
+  background: #667eea;
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

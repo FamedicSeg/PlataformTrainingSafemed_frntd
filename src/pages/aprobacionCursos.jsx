@@ -13,7 +13,7 @@ export default function AprobacionCursos() {
   const [cursos, setCursos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCurso, setSelectedCurso] = useState(null);
-  const [_rechazoRazon, _setRechazoRazon] = useState('');
+  const [rechazoRazon, setRechazoRazon] = useState('');
   const [procesando, setProcesando] = useState(false);
 
   // Verificar autenticación y que sea TALENTO HUMANO
@@ -241,7 +241,7 @@ export default function AprobacionCursos() {
                 </div>
 
                 <div className="detalle-section">
-                  <h6>Descripción:</h6>
+                  <h6>Detalles de Temas a tratar:</h6>
                   <p>{selectedCurso.descripcion || 'Sin descripción'}</p>
                 </div>
 
@@ -251,7 +251,7 @@ export default function AprobacionCursos() {
                 </div>
 
                 <div className="detalle-section detalle-razon">
-                  <h6>Razón del Curso:</h6>
+                  <h6>Objetivo de Aprendizaje:</h6>
                   <div className="razon-box">
                     <p>{selectedCurso.razon_curso}</p>
                   </div>

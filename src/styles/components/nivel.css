@@ -1,0 +1,43 @@
+.modulo-conferencia{
+    margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+    border: 1px solid #f9f9f9;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    font-family: Arial, sans-serif;
+    transition: all 0.2s ease;
+    &:focus {
+        outline: none;
+        border-color: #3b82f6;
+        background-color: #fff;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+}
+
+.conferencia-titulo{
+    border: 1px solid #f9f9f9;
+    border-radius: 14px;
+    background-color: #0c81c43b;
+    padding: 1rem;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #06579e;
+    font-family: Arial, sans-serif;
+}
+.conferencia-fechas{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+}
+.conferencia-fecha-inicio,
+.conferencia-fecha-fin{
+    font-size: 16px;
+    color: #080808;
+    padding: 0.5rem 0.5rem;
+}
