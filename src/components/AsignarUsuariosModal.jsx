@@ -246,7 +246,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
           fetch(`${API_URL}/api/inscripciones/${inscripcion.id}`, {
             method: 'DELETE',
             headers: {
-              'Authorization': `${token}`
+              'Authorization': `Bearer ${token}`
             }
           })
         );
@@ -335,7 +335,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
           fetch(`${API_URL}/api/inscripciones/${inscripcion.id}`, {
             method: 'DELETE',
             headers: {
-              'Authorization': `${token}`
+              'Authorization': `Bearer ${token}`
             }
           })
         );
