@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Plus, Trash2, Search, Users, CheckSquare, Square, XCircle, X } from 'lucide-react';
 import Swal from 'sweetalert2';
 import '../styles/pages/asignarUsuariosModal.css';
@@ -26,7 +26,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     try {
       setLoading(true);
 
-      console.log('🔍 Iniciando carga de datos...');
+      console.log('ðŸ” Iniciando carga de datos...');
       console.log('API_URL:', API_URL);
       console.log('cursoId:', cursoId);
       console.log('token:', token ? 'existe' : 'no existe');
@@ -68,7 +68,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
       setUsuariosAsignados(inscripcionesData.data || []);
       console.log('Datos cargados exitosamente');
 
-      // Limpiar selecciones después de cargar
+      // Limpiar selecciones despuÃ©s de cargar
       setSelectedUsers([]);
       setSelectedAssigned([]);
 
@@ -82,11 +82,11 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
 
   // Filtrar usuarios no asignados
   const usuariosDisponibles = usuarios.filter(u => {
-    // 1. Verificar que no esté asignado
+    // 1. Verificar que no estÃ© asignado
     const yaAsignado = usuariosAsignados.some(a => a.usuario_id === u.id);
     if (yaAsignado) return false;
 
-    // 2. Si no hay término de búsqueda, mostrar todos los disponibles
+    // 2. Si no hay tÃ©rmino de bÃºsqueda, mostrar todos los disponibles
     if (!searchTerm.trim()) return true;
 
     // 3. Buscar en nombre o proceso
@@ -117,14 +117,14 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     const nuevos = disponibles.filter(u => !yaSeleccionados.includes(u.id));
     
     if (nuevos.length === 0) {
-      // Si todos ya están seleccionados, deseleccionar todos
+      // Si todos ya estÃ¡n seleccionados, deseleccionar todos
       setSelectedUsers([]);
     } else {
       setSelectedUsers(prev => [...prev, ...nuevos]);
     }
   };
 
-  // Verificar si todos los disponibles están seleccionados
+  // Verificar si todos los disponibles estÃ¡n seleccionados
   const todosSeleccionados = () => {
     if (usuariosDisponibles.length === 0) return false;
     const idsDisponibles = usuariosDisponibles.map(u => u.id);
@@ -154,15 +154,15 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     const nuevos = usuariosPorProceso.filter(u => !idsSeleccionados.includes(u.id));
     
     if (nuevos.length === 0) {
-      Swal.fire('Info', 'Todos los usuarios de este proceso ya están seleccionados', 'info');
+      Swal.fire('Info', 'Todos los usuarios de este proceso ya estÃ¡n seleccionados', 'info');
       return;
     }
 
     setSelectedUsers(prev => [...prev, ...nuevos]);
-    Swal.fire('Éxito', `Se seleccionaron ${nuevos.length} usuarios del proceso "${searchTerm}"`, 'success');
+    Swal.fire('Ã‰xito', `Se seleccionaron ${nuevos.length} usuarios del proceso "${searchTerm}"`, 'success');
   };
 
-  // FUNCIONES PARA ELIMINAR MÚLTIPLES
+  // FUNCIONES PARA ELIMINAR MÃšLTIPLES
 
   // Seleccionar/Deseleccionar un usuario asignado para eliminar
   const handleSelectAssigned = (inscripcion) => {
@@ -189,7 +189,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
   };
 
-  // Verificar si todos los asignados están seleccionados
+  // Verificar si todos los asignados estÃ¡n seleccionados
   const todosAsignadosSeleccionados = () => {
     if (usuariosAsignados.length === 0) return false;
     const idsAsignados = usuariosAsignados.map(a => a.id);
@@ -197,7 +197,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     return idsAsignados.every(id => idsSeleccionados.includes(id));
   };
 
-  // Eliminar múltiples usuarios asignados
+  // Eliminar mÃºltiples usuarios asignados
   const handleEliminarMultiples = async () => {
     if (selectedAssigned.length === 0) {
       Swal.fire('Error', 'Selecciona al menos un usuario para eliminar', 'error');
@@ -205,13 +205,13 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
 
     const result = await Swal.fire({
-      title: '¿Eliminar asignaciones?',
-      text: `Estás a punto de eliminar ${selectedAssigned.length} asignaciones. Esta acción no se puede deshacer.`,
+      title: 'Â¿Eliminar asignaciones?',
+      text: `EstÃ¡s a punto de eliminar ${selectedAssigned.length} asignaciones. Esta acciÃ³n no se puede deshacer.`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Sí, eliminar',
+      confirmButtonText: 'SÃ­, eliminar',
       cancelButtonText: 'Cancelar'
     });
 
@@ -234,7 +234,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
         throw new Error(`Error al eliminar ${errores.length} asignaciones`);
       }
 
-      Swal.fire('Éxito', `${selectedAssigned.length} asignaciones eliminadas`, 'success');
+      Swal.fire('Ã‰xito', `${selectedAssigned.length} asignaciones eliminadas`, 'success');
       setSelectedAssigned([]);
       cargarDatos();
 
@@ -252,13 +252,13 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
 
     const result = await Swal.fire({
-      title: '¿Eliminar TODAS las asignaciones?',
-      text: `Estás a punto de eliminar ${usuariosAsignados.length} asignaciones. Esta acción no se puede deshacer.`,
+      title: 'Â¿Eliminar TODAS las asignaciones?',
+      text: `EstÃ¡s a punto de eliminar ${usuariosAsignados.length} asignaciones. Esta acciÃ³n no se puede deshacer.`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Sí, eliminar todas',
+      confirmButtonText: 'SÃ­, eliminar todas',
       cancelButtonText: 'Cancelar'
     });
 
@@ -281,7 +281,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
         throw new Error(`Error al eliminar ${errores.length} asignaciones`);
       }
 
-      Swal.fire('Éxito', `Todas las asignaciones (${usuariosAsignados.length}) fueron eliminadas`, 'success');
+      Swal.fire('Ã‰xito', `Todas las asignaciones (${usuariosAsignados.length}) fueron eliminadas`, 'success');
       setSelectedAssigned([]);
       cargarDatos();
 
@@ -292,6 +292,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
   };
 
   // Asignar todos los usuarios seleccionados
+    // Asignar todos los usuarios seleccionados (procesados en lotes)
   const handleAsignarMultiples = async () => {
     if (selectedUsers.length === 0) {
       Swal.fire('Error', 'Selecciona al menos un usuario', 'error');
@@ -309,29 +310,75 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
 
     try {
-      const promesas = selectedUsers.map(user => 
-        fetch(`${API_URL}/api/inscripciones`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            usuario_id: user.id,
-            curso_id: cursoId,
-            estado: estado
+      const totalUsers = selectedUsers.length;
+      const BATCH_SIZE = 10; // Procesar 10 usuarios simultáneamente
+      let procesados = 0;
+      let erroresTotal = 0;
+
+      // Mostrar diálogo de progreso
+      Swal.fire({
+        title: 'Asignando usuarios...',
+        html: `<div style="text-align: center;">
+          <p id="progress-text">Procesando: 0/${totalUsers}</p>
+          <div class="progress" style="height: 20px; margin-top: 10px;">
+            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+              style="width: 0%"></div>
+          </div>
+        </div>`,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      // Procesar en lotes de BATCH_SIZE
+      for (let i = 0; i < totalUsers; i += BATCH_SIZE) {
+        const batch = selectedUsers.slice(i, i + BATCH_SIZE);
+
+        const promesas = batch.map(user => 
+          fetch(`${API_URL}/api/inscripciones`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${token}`
+            },
+            body: JSON.stringify({
+              usuario_id: user.id,
+              curso_id: cursoId,
+              estado: estado
+            })
           })
-        })
-      );
+        );
 
-      const respuestas = await Promise.all(promesas);
-      const errores = respuestas.filter(r => !r.ok);
+        const respuestas = await Promise.all(promesas);
+        const errores = respuestas.filter(r => !r.ok);
+        erroresTotal += errores.length;
+        procesados += batch.length;
 
-      if (errores.length > 0) {
-        throw new Error(`Error al asignar ${errores.length} usuarios. El token puede haber expirado`);
+        // Actualizar progreso en el diálogo
+        const porcentaje = Math.round((procesados / totalUsers) * 100);
+        const progressText = document.getElementById('progress-text');
+        const progressBar = document.getElementById('progress-bar');
+        
+        if (progressText) {
+          progressText.innerHTML = `Procesando: ${procesados}/${totalUsers}`;
+        }
+        if (progressBar) {
+          progressBar.style.width = `${porcentaje}%`;
+        }
       }
 
-      Swal.fire('Éxito', `${selectedUsers.length} usuarios asignados al curso`, 'success');
+      // Mostrar resultado final
+      if (erroresTotal > 0) {
+        Swal.fire('Advertencia', 
+          `Se asignaron ${totalUsers - erroresTotal}/${totalUsers} usuarios exitosamente.\n${erroresTotal} asignaciones fallaron. Intenta nuevamente.`, 
+          'warning'
+        );
+      } else {
+        Swal.fire('Éxito', `${selectedUsers.length} usuarios asignados al curso`, 'success');
+      }
+
       setSelectedUsers([]);
       cargarDatos();
       
@@ -346,12 +393,12 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
   // Eliminar un solo usuario asignado
   const handleEliminar = async (inscripcionId) => {
     const result = await Swal.fire({
-      title: '¿Eliminar asignación?',
+      title: 'Â¿Eliminar asignaciÃ³n?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Sí, eliminar',
+      confirmButtonText: 'SÃ­, eliminar',
       cancelButtonText: 'Cancelar'
     });
 
@@ -366,7 +413,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
 
         if (!response.ok) throw new Error('Error al eliminar');
 
-        Swal.fire('Eliminado', 'Inscripción eliminada', 'success');
+        Swal.fire('Eliminado', 'InscripciÃ³n eliminada', 'success');
         setSelectedAssigned([]);
         cargarDatos();
 
@@ -403,13 +450,13 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
             </div>
           ) : (
             <div className="row g-3">
-              {/* Panel de asignación */}
+              {/* Panel de asignaciÃ³n */}
               <div className="columna-asignar-usuarios">
                 <h6 className="mb-3">ASIGNAR NUEVO USUARIO</h6>
                 
-                {/* Búsqueda */}
+                {/* BÃºsqueda */}
                 <div className="input-group mb-3">
-                  <span className="input-group-text">🔍</span>
+                  <span className="input-group-text">ðŸ”</span>
                   <input
                     type="text"
                     className="form-control"
@@ -426,7 +473,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                   </button>
                 </div>
 
-                {/* Botones de selección masiva */}
+                {/* Botones de selecciÃ³n masiva */}
                 <div className="d-flex gap-2 mb-3">
                   <button
                     className="btn btn-outline-secondary btn-sm flex-grow-1"
@@ -450,7 +497,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                 <div className="list-group mb-3">
                   {usuariosDisponibles.length === 0 ? (
                     <div className="alert alert-info mb-0">
-                      No hay usuarios disponibles o todos están asignados
+                      No hay usuarios disponibles o todos estÃ¡n asignados
                     </div>
                   ) : (
                     usuariosDisponibles.map(usuario => {
@@ -465,7 +512,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                         >
                           <div className="d-flex align-items-center">
                             <span className="me-2">
-                              {isSelected ? '✅' : '☐'}
+                              {isSelected ? 'âœ…' : 'â˜'}
                             </span>
                             <div>
                               <div>
@@ -475,7 +522,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                                 </span>
                               </div>
                               <p className="mb-0 small text-muted" style={{ fontSize: '12px' }}>
-                                Cédula de Identidad: {usuario.cedula_identidad || 'N/A'}
+                                CÃ©dula de Identidad: {usuario.cedula_identidad || 'N/A'}
                               </p>
                             </div>
                           </div>
@@ -500,13 +547,13 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                     value={estado}
                     onChange={(e) => setEstado(e.target.value)}
                   >
-                    <option value="no iniciado">⭕ No iniciado</option>
-                    <option value="en progreso">🔄 En progreso</option>
-                    <option value="completado">✅ Completado</option>
+                    <option value="no iniciado">â­• No iniciado</option>
+                    <option value="en progreso">ðŸ”„ En progreso</option>
+                    <option value="completado">âœ… Completado</option>
                   </select>
                 </div>
 
-                {/* Botón asignar */}
+                {/* BotÃ³n asignar */}
                 <button
                   className="btn-asignarU"
                   onClick={handleAsignarMultiples}
@@ -520,7 +567,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
               {/* Panel de usuarios asignados */}
               <div className="columna-asignar-usuarios">
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h6 className="mb-0">👥 Usuarios Asignados ({usuariosAsignados.length})</h6>
+                  <h6 className="mb-0">ðŸ‘¥ Usuarios Asignados ({usuariosAsignados.length})</h6>
                   
                   {/* Botones para eliminar */}
                   {usuariosAsignados.length > 0 && (
@@ -530,7 +577,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                         onClick={handleSelectAllAssigned}
                         title="Seleccionar todos"
                       >
-                        {todosAsignadosSeleccionados() ? '✅' : '🗹'}
+                        {todosAsignadosSeleccionados() ? 'âœ…' : 'ðŸ—¹'}
                       </button>
                       
                       {selectedAssigned.length > 0 && (
@@ -559,7 +606,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                 <div className="list-group" style={{ maxHeight: '400px', overflowY: 'auto', fontSize: '14px' }}>
                   {usuariosAsignados.length === 0 ? (
                     <div className="alert alert-info mb-0">
-                      No hay usuarios asignados aún
+                      No hay usuarios asignados aÃºn
                     </div>
                   ) : (
                     usuariosAsignados.map(inscripcion => {
@@ -575,7 +622,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                         >
                           <div className="d-flex align-items-start">
                             <span className="me-2 mt-1">
-                              {isSelected ? '✅' : '☐'}
+                              {isSelected ? 'âœ…' : 'â˜'}
                             </span>
                             <div>
                               <strong>{inscripcion.usuario_nombre}</strong>
@@ -585,7 +632,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                                 </span>
                               )}
                               <p className="mb-0 small text-muted" style={{ fontSize: '12px' }}>
-                                Cédula: {inscripcion.cedula_identidad || 'N/A'}
+                                CÃ©dula: {inscripcion.cedula_identidad || 'N/A'}
                               </p>
                               <small>
                                 Estado:
@@ -621,3 +668,5 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     </div>
   );
 }
+
+
