@@ -56,6 +56,13 @@ export default function ModulosManager({ cursoId, onClose }) {
     }));
   };
 
+  // Convertir fecha del input (formato local) a ISO string con zona horaria correcta
+  const convertirFechaAlBackend = (fechaInput) => {
+    if (!fechaInput) return null;
+    const fecha = new Date(fechaInput);
+    return fecha.toISOString();
+  };
+
   const handleSubmitModulo = async (e) => {
     e.preventDefault();
 
@@ -102,8 +109,8 @@ export default function ModulosManager({ cursoId, onClose }) {
           tipo: formData.tipo,
           url: formData.tipo === 'texto' || formData.tipo === 'video_conferencia' ? null : formData.url || null,
           contenido: formData.tipo === 'texto' ? formData.contenido : null,
-          fecha_inicio_conferencia: formData.tipo === 'video_conferencia' ? formData.fecha_inicio_conferencia : null,
-          fecha_fin_conferencia: formData.tipo === 'video_conferencia' ? formData.fecha_fin_conferencia : null,
+          fecha_inicio_conferencia: formData.tipo === 'video_conferencia' ? convertirFechaAlBackend(formData.fecha_inicio_conferencia) : null,
+          fecha_fin_conferencia: formData.tipo === 'video_conferencia' ? convertirFechaAlBackend(formData.fecha_fin_conferencia) : null,
           url_conferencia: formData.tipo === 'video_conferencia' ? formData.url_conferencia : null
         })
       });
@@ -162,13 +169,13 @@ export default function ModulosManager({ cursoId, onClose }) {
     });
   };
 
-  // ISO (UTC) -> "YYYY-MM-DDTHH:mm" en hora local para datetime-local
+  // ISO (UTC) -> "YYYY-MM-DDTHH:mm:ss" en hora local para datetime-local
   const aInputLocal = (valor) => {
     if (!valor) return '';
     const d = new Date(valor);
     if (isNaN(d.getTime())) return '';
     const p = (n) => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
   };
 
   const handleEditModulo = (modulo) => {
