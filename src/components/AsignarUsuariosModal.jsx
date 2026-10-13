@@ -26,7 +26,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     try {
       setLoading(true);
 
-      console.log('ðŸ” Iniciando carga de datos...');
+      console.log('Iniciando carga de datos...');
       console.log('API_URL:', API_URL);
       console.log('cursoId:', cursoId);
       console.log('token:', token ? 'existe' : 'no existe');
@@ -117,14 +117,14 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     const nuevos = disponibles.filter(u => !yaSeleccionados.includes(u.id));
     
     if (nuevos.length === 0) {
-      // Si todos ya estÃ¡n seleccionados, deseleccionar todos
+      // Si todos ya están seleccionados, deseleccionar todos
       setSelectedUsers([]);
     } else {
       setSelectedUsers(prev => [...prev, ...nuevos]);
     }
   };
 
-  // Verificar si todos los disponibles estÃ¡n seleccionados
+  // Verificar si todos los disponibles están seleccionados
   const todosSeleccionados = () => {
     if (usuariosDisponibles.length === 0) return false;
     const idsDisponibles = usuariosDisponibles.map(u => u.id);
@@ -154,12 +154,12 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     const nuevos = usuariosPorProceso.filter(u => !idsSeleccionados.includes(u.id));
     
     if (nuevos.length === 0) {
-      Swal.fire('Info', 'Todos los usuarios de este proceso ya estÃ¡n seleccionados', 'info');
+      Swal.fire('Info', 'Todos los usuarios de este proceso ya están seleccionados', 'info');
       return;
     }
 
     setSelectedUsers(prev => [...prev, ...nuevos]);
-    Swal.fire('Ã‰xito', `Se seleccionaron ${nuevos.length} usuarios del proceso "${searchTerm}"`, 'success');
+    Swal.fire('Éxito', `Se seleccionaron ${nuevos.length} usuarios del proceso "${searchTerm}"`, 'success');
   };
 
   // FUNCIONES PARA ELIMINAR MÃšLTIPLES
@@ -189,7 +189,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
   };
 
-  // Verificar si todos los asignados estÃ¡n seleccionados
+  // Verificar si todos los asignados están seleccionados
   const todosAsignadosSeleccionados = () => {
     if (usuariosAsignados.length === 0) return false;
     const idsAsignados = usuariosAsignados.map(a => a.id);
@@ -197,7 +197,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     return idsAsignados.every(id => idsSeleccionados.includes(id));
   };
 
-  // Eliminar mÃºltiples usuarios asignados
+  // Eliminar múltiples usuarios asignados
   const handleEliminarMultiples = async () => {
     if (selectedAssigned.length === 0) {
       Swal.fire('Error', 'Selecciona al menos un usuario para eliminar', 'error');
@@ -218,23 +218,65 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     if (!result.isConfirmed) return;
 
     try {
-      const promesas = selectedAssigned.map(inscripcion => 
-        fetch(`${API_URL}/api/inscripciones/${inscripcion.id}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-      );
+      const totalUsers = selectedAssigned.length;
+      const BATCH_SIZE = 10;
+      let procesados = 0;
+      let erroresTotal = 0;
 
-      const respuestas = await Promise.all(promesas);
-      const errores = respuestas.filter(r => !r.ok);
+      Swal.fire({
+        title: 'Eliminando asignaciones...',
+        html: `<div style="text-align: center;">
+          <p id="progress-text">Eliminando: 0/${totalUsers}</p>
+          <div class="progress" style="height: 20px; margin-top: 10px;">
+            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+              style="width: 0%"></div>
+          </div>
+        </div>`,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
 
-      if (errores.length > 0) {
-        throw new Error(`Error al eliminar ${errores.length} asignaciones`);
+      for (let i = 0; i < totalUsers; i += BATCH_SIZE) {
+        const batch = selectedAssigned.slice(i, i + BATCH_SIZE);
+
+        const promesas = batch.map(inscripcion => 
+          fetch(`${API_URL}/api/inscripciones/${inscripcion.id}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `${token}`
+            }
+          })
+        );
+
+        const respuestas = await Promise.all(promesas);
+        const errores = respuestas.filter(r => !r.ok);
+        erroresTotal += errores.length;
+        procesados += batch.length;
+
+        const porcentaje = Math.round((procesados / totalUsers) * 100);
+        const progressText = document.getElementById('progress-text');
+        const progressBar = document.getElementById('progress-bar');
+        
+        if (progressText) {
+          progressText.innerHTML = `Eliminando: ${procesados}/${totalUsers}`;
+        }
+        if (progressBar) {
+          progressBar.style.width = `${porcentaje}%`;
+        }
       }
 
-      Swal.fire('Éxito', `${selectedAssigned.length} asignaciones eliminadas`, 'success');
+      if (erroresTotal > 0) {
+        Swal.fire('Advertencia', 
+          `Se eliminaron ${totalUsers - erroresTotal}/${totalUsers} asignaciones. ${erroresTotal} fallaron.`, 
+          'warning'
+        );
+      } else {
+        Swal.fire('Éxito', `${selectedAssigned.length} asignaciones eliminadas`, 'success');
+      }
+
       setSelectedAssigned([]);
       cargarDatos();
 
@@ -265,23 +307,65 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     if (!result.isConfirmed) return;
 
     try {
-      const promesas = usuariosAsignados.map(inscripcion => 
-        fetch(`${API_URL}/api/inscripciones/${inscripcion.id}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-      );
+      const totalUsers = usuariosAsignados.length;
+      const BATCH_SIZE = 10;
+      let procesados = 0;
+      let erroresTotal = 0;
 
-      const respuestas = await Promise.all(promesas);
-      const errores = respuestas.filter(r => !r.ok);
+      Swal.fire({
+        title: 'Eliminando todas las asignaciones...',
+        html: `<div style="text-align: center;">
+          <p id="progress-text">Eliminando: 0/${totalUsers}</p>
+          <div class="progress" style="height: 20px; margin-top: 10px;">
+            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+              style="width: 0%"></div>
+          </div>
+        </div>`,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
 
-      if (errores.length > 0) {
-        throw new Error(`Error al eliminar ${errores.length} asignaciones`);
+      for (let i = 0; i < totalUsers; i += BATCH_SIZE) {
+        const batch = usuariosAsignados.slice(i, i + BATCH_SIZE);
+
+        const promesas = batch.map(inscripcion => 
+          fetch(`${API_URL}/api/inscripciones/${inscripcion.id}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `${token}`
+            }
+          })
+        );
+
+        const respuestas = await Promise.all(promesas);
+        const errores = respuestas.filter(r => !r.ok);
+        erroresTotal += errores.length;
+        procesados += batch.length;
+
+        const porcentaje = Math.round((procesados / totalUsers) * 100);
+        const progressText = document.getElementById('progress-text');
+        const progressBar = document.getElementById('progress-bar');
+        
+        if (progressText) {
+          progressText.innerHTML = `Eliminando: ${procesados}/${totalUsers}`;
+        }
+        if (progressBar) {
+          progressBar.style.width = `${porcentaje}%`;
+        }
       }
 
-      Swal.fire('Éxito', `Todas las asignaciones (${usuariosAsignados.length}) fueron eliminadas`, 'success');
+      if (erroresTotal > 0) {
+        Swal.fire('Advertencia', 
+          `Se eliminaron ${totalUsers - erroresTotal}/${totalUsers} asignaciones. ${erroresTotal} fallaron.`, 
+          'warning'
+        );
+      } else {
+        Swal.fire('Éxito', `Todas las asignaciones (${totalUsers}) fueron eliminadas`, 'success');
+      }
+
       setSelectedAssigned([]);
       cargarDatos();
 
@@ -291,8 +375,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     }
   };
 
-  // Asignar todos los usuarios seleccionados
-    // Asignar todos los usuarios seleccionados (procesados en lotes)
+  // Asignar todos los usuarios seleccionados (procesados en lotes)
   const handleAsignarMultiples = async () => {
     if (selectedUsers.length === 0) {
       Swal.fire('Error', 'Selecciona al menos un usuario', 'error');
