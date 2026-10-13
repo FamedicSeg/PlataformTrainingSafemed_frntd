@@ -346,12 +346,18 @@ function SalaJitsiMeetAnfitrion({ cursoId, moduloId, nombreCurso, fechaInicio, u
             const horafin = new Date();
             const duracionMinutos = Math.round((horafin - horaInicio) / 60000);
 
+            // Función para convertir Date a formato datetime-local sin conversión UTC
+            const convertirFecha = (date) => {
+                const p = (n) => String(n).padStart(2, '0');
+                return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}T${p(date.getHours())}:${p(date.getMinutes())}:${p(date.getSeconds())}`;
+            };
+
             const dataConferencia = {
                 roomName: finalRoomName,
                 nombre_admin_proceso: nombreAdminProceso,
                 nombre_proceso: nombreProceso,
-                fecha_inicio: horaInicio.toISOString(),
-                fecha_fin: horafin.toISOString(),
+                fecha_inicio: convertirFecha(horaInicio),
+                fecha_fin: convertirFecha(horafin),
                 duracion_minutos: duracionMinutos,
                 participantes: participantesActuales,
                 estado: 'Completada'
