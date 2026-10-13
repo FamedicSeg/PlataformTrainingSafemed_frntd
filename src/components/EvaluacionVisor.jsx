@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { CheckCircle, XCircle, Lock, RotateCcw, Award } from 'lucide-react';
+import { CheckCircle, XCircle, Lock, RotateCcw, Award, ClipboardList, Grid3X3 } from 'lucide-react';
 import Swal from 'sweetalert2';
+import CrucigramaVisor from './CrucigramaVisor';
 import '../styles/components/evaluacionVisor.css';
 
 /**
@@ -17,9 +18,11 @@ export default function EvaluacionVisor({ cursoId, onClose }) {
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem('user_token');
 
-  const [fase, setFase] = useState('cargando'); // cargando | sin-eval | info | tomando | resultado
+  const [fase, setFase] = useState('cargando'); // cargando | sin-eval | seleccionar-tipo | info | tomando | resultado
   const [evaluacion, setEvaluacion] = useState(null);
   const [preguntas, setPrguntas] = useState([]);
+  const [pistas, setPistas] = useState([]);
+  const [tipoSeleccionado, setTipoSeleccionado] = useState(null);
   const [estado, setEstado] = useState({ intentos_usados: 0, bloqueado: false, aprobado: false });
   const [respuestas, setRespuestas] = useState({});
   const [resultado, setResultado] = useState(null);
@@ -166,7 +169,90 @@ export default function EvaluacionVisor({ cursoId, onClose }) {
     return null; // No hay evaluación configurada, no mostrar nada
   }
 
-  if (fase === 'info') {
+  if (fase === 'seleccionar-tipo') {
+    return (
+      <div className="evisor-container">
+        <div className="evisor-card">
+          {/* Encabezado */}
+          <div className="evisor-header">
+            <Award size={22} />
+            <div>
+              <h5 className="mb-0">{evaluacion?.titulo}</h5>
+              <small>Elige el tipo de evaluación</small>
+            </div>
+          </div>
+
+          <div className="evisor-body">
+            <p className="text-muted mb-4">
+              Puedes elegir responder preguntas de opción múltiple o resolver un crucigrama.
+            </p>
+
+            <div className="row g-3">
+              {/* Opción: Preguntas */}
+              {preguntas.length > 0 && (
+                <div className="col-md-6">
+                  <button
+                    className="btn btn-outline-primary btn-lg w-100 py-4 d-flex flex-column align-items-center gap-2"
+                    onClick={() => {
+                      setTipoSeleccionado('preguntas');
+                      setRespuestas({});
+                      setResultado(null);
+                      setFase('info');
+                    }}
+                  >
+                    <ClipboardList size={32} />
+                    <span>Preguntas Múltiples</span>
+                    <small className="text-muted">{preguntas.length} preguntas</small>
+                  </button>
+                </div>
+              )}
+
+              {/* Opción: Crucigrama */}
+              {pistas.length > 0 && (
+                <div className="col-md-6">
+                  <button
+                    className="btn btn-outline-success btn-lg w-100 py-4 d-flex flex-column align-items-center gap-2"
+                    onClick={() => {
+                      setTipoSeleccionado('crucigrama');
+                      setRespuestas({});
+                      setResultado(null);
+                      setFase('tomando-crucigrama');
+                    }}
+                  >
+                    <Grid3X3 size={32} />
+                    <span>Crucigrama</span>
+                    <small className="text-muted">{pistas.length} pistas</small>
+                  </button>
+                </div>
+              )}
+
+              {/* Si solo hay un tipo disponible */}
+              {preguntas.length === 0 && pistas.length === 0 && (
+                <div className="alert alert-warning w-100">
+                  No hay evaluación disponible en este momento.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (fase === 'tomando-crucigrama' && tipoSeleccionado === 'crucigrama') {
+    return (
+      <CrucigramaVisor
+        cursoId={cursoId}
+        pistas={pistas}
+        evaluacion={evaluacion}
+        onRegresar={() => {
+          setFase('info');
+          setTipoSeleccionado(null);
+        }}
+        onClose={onClose}
+      />
+    );
+  }
     const intentosRestantes = Math.max(0, 2 - estado.intentos_usados);
 
     return (
@@ -249,9 +335,14 @@ export default function EvaluacionVisor({ cursoId, onClose }) {
                   Si no alcanzas el mínimo tienes un intento adicional.
                 </p>
 
-                <button className="btn btn-primary btn-lg w-100 mt-2" onClick={iniciarPrueba}>
-                  {estado.intentos_usados === 0 ? 'Iniciar evaluación' : 'Reintentar evaluación'}
-                </button>
+                <div className="d-flex gap-2">
+                  <button className="btn btn-secondary flex-1" onClick={() => setFase('seleccionar-tipo')}>
+                    ← Volver a elegir
+                  </button>
+                  <button className="btn btn-primary flex-1" onClick={iniciarPrueba}>
+                    {estado.intentos_usados === 0 ? 'Iniciar evaluación' : 'Reintentar evaluación'}
+                  </button>
+                </div>
               </>
             )}
           </div>
