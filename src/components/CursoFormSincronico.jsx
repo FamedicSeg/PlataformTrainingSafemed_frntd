@@ -52,13 +52,14 @@ export default function CursoFormSincronico({ cursoId = null, onSave, onCancel, 
         setError('');
     };
 
-    // Convertir fecha del input (formato local) a ISO string con zona horaria correcta
+    // Convertir fecha del input (formato local) a string para enviar al backend
+    // El input datetime-local devuelve "2026-10-13T14:05" que es la hora LOCAL
+    // Enviamos como es, sin convertir a UTC, para que el backend la interprete como Guayaquil
     const convertirFechaAlBackend = (fechaInput) => {
         if (!fechaInput) return null;
-        // El input datetime-local devuelve "2026-10-13T14:45" (formato local sin zona)
-        // Convertir a Date y enviar como ISO string (JavaScript lo interpreta como local)
-        const fecha = new Date(fechaInput);
-        return fecha.toISOString();
+        // Devolver tal cual: "2026-10-13T14:05"
+        // El backend lo interpretará como hora de Guayaquil
+        return fechaInput;
     };
 
     const handleSubmit = async (e) => {
