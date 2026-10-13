@@ -41,7 +41,7 @@ export default function CoursesOperaciones() {
       if (data.success && data.data) {
         // Filtrar solo cursos del proceso "Operaciones"
         const cursosDinamicos = data.data
-          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'operaciones')
+          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'operaciones - producción')
           .map((c) => ({
             id: c.curso_id,
             inscripcion_id: c.id,

@@ -41,7 +41,7 @@ export default function CoursesSeguridadFisica() {
       if (data.success && data.data) {
         // Filtrar solo cursos del proceso "Seguridad Física"
         const cursosDinamicos = data.data
-          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'seguridad fisica')
+          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'seguridad física')
           .map((c) => ({
             id: c.curso_id,
             inscripcion_id: c.id,
