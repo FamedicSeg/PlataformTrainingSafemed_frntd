@@ -115,20 +115,21 @@ export default function AdminPrincipal() {
       const r = await fetch(`${API_URL}/api/auth/procesos`);
       const d = await r.json();
       if (d.success && Array.isArray(d.data)) procesos = d.data;
-    } catch { /* se usa el proceso actual como única opción */ }
-    if (!procesos.includes(admin.proceso_name)) procesos.unshift(admin.proceso_name);
+    } catch { /* sin lista previa */ }
+    if (admin.proceso_name && !procesos.includes(admin.proceso_name)) {
+      procesos.unshift(admin.proceso_name);
+    }
 
     const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
-    const opciones = procesos
-      .map(p => `<option value="${esc(p)}"${p === admin.proceso_name ? ' selected' : ''}>${esc(p)}</option>`)
-      .join('');
+    const datalistOpciones = procesos.map(p => `<option value="${esc(p)}">`).join('');
 
     const { value: form } = await Swal.fire({
       title: 'Editar administrador',
       html:
         `<input id="ea-nombre" class="swal2-input" placeholder="Nombre" value="${esc(admin.nombre)}">` +
         `<input id="ea-cedula" class="swal2-input" placeholder="Cédula" value="${esc(admin.cedula)}">` +
-        `<select id="ea-proceso" class="swal2-select" style="display:flex;width:auto;margin:1em auto">${opciones}</select>` +
+        `<input id="ea-proceso" class="swal2-input" list="ea-procesos-list" placeholder="Proceso (ej: Talento Humano, Gerencia, Compras)" value="${esc(admin.proceso_name)}">` +
+        `<datalist id="ea-procesos-list">${datalistOpciones}</datalist>` +
         `<label style="display:flex;gap:8px;justify-content:center;align-items:center">` +
         `<input type="checkbox" id="ea-activo"${admin.activo ? ' checked' : ''}> Activo</label>`,
       focusConfirm: false,
@@ -138,7 +139,7 @@ export default function AdminPrincipal() {
       preConfirm: () => {
         const nombre = document.getElementById('ea-nombre').value.trim();
         const cedula = document.getElementById('ea-cedula').value.trim();
-        const proceso_name = document.getElementById('ea-proceso').value;
+        const proceso_name = document.getElementById('ea-proceso').value.trim();
         const activo = document.getElementById('ea-activo').checked;
         if (!nombre || !cedula || !proceso_name) {
           Swal.showValidationMessage('Nombre, cédula y proceso son obligatorios');
@@ -173,22 +174,18 @@ export default function AdminPrincipal() {
       const r = await fetch(`${API_URL}/api/auth/procesos`);
       const d = await r.json();
       if (d.success && Array.isArray(d.data)) procesos = d.data;
-    } catch { /* sin lista */ }
-    if (procesos.length === 0) {
-      Swal.fire('Error', 'No se pudo cargar la lista de procesos', 'error');
-      return;
-    }
+    } catch { /* sin lista previa */ }
 
     const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
-    const opciones = procesos.map(p => `<option value="${esc(p)}">${esc(p)}</option>`).join('');
+    const datalistOpciones = procesos.map(p => `<option value="${esc(p)}">`).join('');
 
     const { value: form } = await Swal.fire({
       title: 'Nuevo administrador de proceso',
       html:
         `<input id="na-nombre" class="swal2-input" placeholder="Nombre completo">` +
         `<input id="na-cedula" class="swal2-input" placeholder="Cédula / usuario">` +
-        `<select id="na-proceso" class="swal2-select" style="display:flex;width:auto;margin:1em auto">` +
-        `<option value="">-- Proceso --</option>${opciones}</select>` +
+        `<input id="na-proceso" class="swal2-input" list="na-procesos-list" placeholder="Proceso (ej: Talento Humano, Gerencia, Compras)">` +
+        `<datalist id="na-procesos-list">${datalistOpciones}</datalist>` +
         `<input id="na-password" type="password" class="swal2-input" placeholder="Contraseña provisional (mín. 6)">`,
       focusConfirm: false,
       showCancelButton: true,
@@ -197,7 +194,7 @@ export default function AdminPrincipal() {
       preConfirm: () => {
         const nombre = document.getElementById('na-nombre').value.trim();
         const cedula = document.getElementById('na-cedula').value.trim();
-        const proceso_name = document.getElementById('na-proceso').value;
+        const proceso_name = document.getElementById('na-proceso').value.trim();
         const password = document.getElementById('na-password').value;
         if (!nombre || !cedula || !proceso_name) {
           Swal.showValidationMessage('Nombre, cédula y proceso son obligatorios');
