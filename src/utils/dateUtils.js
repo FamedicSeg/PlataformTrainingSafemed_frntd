@@ -6,6 +6,7 @@
 /**
  * Parsea una string de fecha de forma segura
  * Maneja formatos ISO-8601, locales y timestamps
+ * NOTA: Suma 5 horas para convertir de UTC a Ecuador (UTC-5)
  * @param {string|Date|number} dateStr - String de fecha, objeto Date o timestamp
  * @returns {Date|null} - Objeto Date válido o null si es inválido
  */
@@ -14,13 +15,20 @@ export const parseFecha = (dateStr) => {
   
   // Si ya es un objeto Date válido, devolverlo
   if (dateStr instanceof Date) {
-    return isNaN(dateStr.getTime()) ? null : dateStr;
+    const isValid = !isNaN(dateStr.getTime());
+    if (!isValid) return null;
+    // Sumar 5 horas para convertir UTC a Ecuador (UTC-5)
+    const dateAjustada = new Date(dateStr.getTime() + 5 * 60 * 60 * 1000);
+    return dateAjustada;
   }
   
   // Si es un número, tratarlo como timestamp
   if (typeof dateStr === 'number') {
     const date = new Date(dateStr);
-    return isNaN(date.getTime()) ? null : date;
+    if (isNaN(date.getTime())) return null;
+    // Sumar 5 horas
+    const dateAjustada = new Date(date.getTime() + 5 * 60 * 60 * 1000);
+    return dateAjustada;
   }
   
   // Convertir string a Date
@@ -32,7 +40,9 @@ export const parseFecha = (dateStr) => {
     return null;
   }
   
-  return date;
+  // Sumar 5 horas para convertir UTC a Ecuador (UTC-5)
+  const dateAjustada = new Date(date.getTime() + 5 * 60 * 60 * 1000);
+  return dateAjustada;
 };
 
 /**
