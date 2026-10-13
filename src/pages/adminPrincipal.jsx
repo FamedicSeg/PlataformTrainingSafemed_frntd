@@ -220,7 +220,7 @@ export default function AdminPrincipal() {
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        Swal.fire('✅ Listo', `Administrador creado. Deberá cambiar la contraseña provisional en su primer ingreso.`, 'success');
+        Swal.fire('Éxito', `Administrador creado. Deberá cambiar la contraseña provisional en su primer ingreso.`, 'success');
         cargarAdminProcesos();
       } else {
         Swal.fire('Error', data.message || 'No se pudo crear', 'error');

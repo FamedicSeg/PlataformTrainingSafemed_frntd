@@ -225,7 +225,7 @@ export default function PanelFirmas() {
   return (
     <div className="panel-firmas-container">
       <div className="panel-firmas-header">
-        <h2>📋 Gestionar Firmas por Proceso</h2>
+        <h2>Gestionar Firmas por Proceso</h2>
         <p className="subtitle">Carga las firmas de los admins/técnicos para cada proceso</p>
       </div>
 
@@ -277,7 +277,7 @@ export default function PanelFirmas() {
                 <label>Cargo *</label>
                 <input
                   type="text"
-                  placeholder="Ej: JEFE DE TALENTO HUMANO"
+                  placeholder="Ej: Jefe de Talento Humano"
                   value={formFirma.cargo}
                   onChange={(e) => setFormFirma({ ...formFirma, cargo: e.target.value })}
                   required
