@@ -12,7 +12,10 @@ import '../styles/components/AsistenciaPanel.css';
  * Props:
  *   onClose — callback para volver al inicio
  */
-export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/asistencia/proceso' }) {
+export default function AsistenciaPanel({
+  asistenciaUrl = '/api/inscripciones/asistencia/proceso',
+  ordenarPorNombre = false,
+}) {
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem('admin_token');
 
@@ -52,10 +55,15 @@ export default function AsistenciaPanel({ asistenciaUrl = '/api/inscripciones/as
       if (res.ok && data.success) {
         const registros = data.data || [];
         console.log('✅ Asistencia cargada correctamente:', registros.length, 'registros');
-        setAsistencia(registros);
+        const registrosOrdenados = ordenarPorNombre
+          ? [...registros].sort((a, b) =>
+              (a.usuario_nombre || '').localeCompare(b.usuario_nombre || '', 'es', { sensitivity: 'base' })
+            )
+          : registros;
+        setAsistencia(registrosOrdenados);
 
         // Extraer cursos únicos para el filtro y ordenar alfabéticamente
-        const cursos = [...new Map(registros.map(r => [r.curso_id, r.curso_nombre])).entries()]
+        const cursos = [...new Map(registrosOrdenados.map(r => [r.curso_id, r.curso_nombre])).entries()]
           .map(([id, nombre]) => ({ id, nombre }))
           .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
         setCursosUnicos(cursos);
