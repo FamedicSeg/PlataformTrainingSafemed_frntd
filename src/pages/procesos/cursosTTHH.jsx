@@ -286,9 +286,6 @@ export default function CoursesTTHH() {
                       )}
                     </div>
                     <p className="descripcion-curso">
-                      {curso.desc}
-                    </p>
-                    <p className="descripcion-curso">
                       <span style={{ fontWeight: 'bold' }}>Duración: </span> {curso.duracion}
                     </p>
                     <p className="descripcion-curso">
