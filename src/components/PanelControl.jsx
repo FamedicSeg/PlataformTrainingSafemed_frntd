@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { aInputLocal } from '../utils/dateUtils';
 import '../styles/pages/panelControl.css';
 
 export default function PanelControl() {
@@ -105,8 +106,8 @@ export default function PanelControl() {
   const abrirProgramar = (curso) => {
     setCursoProgramando(curso);
     setFormProgramacion({
-      fecha_inicio_curso: curso.fecha_inicio_curso ? new Date(curso.fecha_inicio_curso).toISOString().slice(0, 16) : '',
-      fecha_fin_curso: curso.fecha_fin_curso ? new Date(curso.fecha_fin_curso).toISOString().slice(0, 16) : ''
+      fecha_inicio_curso: aInputLocal(curso.fecha_inicio_curso),
+      fecha_fin_curso: aInputLocal(curso.fecha_fin_curso)
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

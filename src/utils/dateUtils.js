@@ -6,43 +6,33 @@
 /**
  * Parsea una string de fecha de forma segura
  * Maneja formatos ISO-8601, locales y timestamps
- * NOTA: Suma 5 horas para convertir de UTC a Ecuador (UTC-5)
+ * El backend envía instantes ISO con zona (UTC), por lo que no se aplica ningún ajuste manual.
  * @param {string|Date|number} dateStr - String de fecha, objeto Date o timestamp
  * @returns {Date|null} - Objeto Date válido o null si es inválido
  */
 export const parseFecha = (dateStr) => {
   if (!dateStr) return null;
-  
-  // Si ya es un objeto Date válido, devolverlo
-  if (dateStr instanceof Date) {
-    const isValid = !isNaN(dateStr.getTime());
-    if (!isValid) return null;
-    // Sumar 5 horas para convertir UTC a Ecuador (UTC-5)
-    const dateAjustada = new Date(dateStr.getTime() + 5 * 60 * 60 * 1000);
-    return dateAjustada;
-  }
-  
-  // Si es un número, tratarlo como timestamp
-  if (typeof dateStr === 'number') {
-    const date = new Date(dateStr);
-    if (isNaN(date.getTime())) return null;
-    // Sumar 5 horas
-    const dateAjustada = new Date(date.getTime() + 5 * 60 * 60 * 1000);
-    return dateAjustada;
-  }
-  
-  // Convertir string a Date
-  const date = new Date(dateStr);
-  
-  // Validar que la fecha sea válida
+
+  const date = dateStr instanceof Date ? dateStr : new Date(dateStr);
+
   if (isNaN(date.getTime())) {
     console.warn(`⚠️ Fecha inválida: "${dateStr}"`);
     return null;
   }
-  
-  // Sumar 5 horas para convertir UTC a Ecuador (UTC-5)
-  const dateAjustada = new Date(date.getTime() + 5 * 60 * 60 * 1000);
-  return dateAjustada;
+
+  return date;
+};
+
+/**
+ * Convierte una fecha a formato "YYYY-MM-DDTHH:mm" en hora local (para inputs datetime-local)
+ * @param {string|Date|number} dateStr
+ * @returns {string} - Valor para el input o string vacío si es inválida
+ */
+export const aInputLocal = (dateStr) => {
+  const date = parseFecha(dateStr);
+  if (!date) return '';
+  const p = (n) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}T${p(date.getHours())}:${p(date.getMinutes())}`;
 };
 
 /**
@@ -118,6 +108,7 @@ export const tiempoRestante = (fechaFin) => {
 
 export default {
   parseFecha,
+  aInputLocal,
   esCursoExpiradoSeguro,
   esCursoProximoSeguro,
   formatearFecha,

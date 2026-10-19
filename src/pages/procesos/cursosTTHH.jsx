@@ -194,7 +194,7 @@ export default function CoursesTTHH() {
     if (curso.bloqueado || esCursoExpirado(curso)) return;
     if (estaCursoCompletado(curso.dbName)) {
       // Si el curso ya estÃ¡ completado, preguntar si quiere repasar
-      if (window.confirm(`Ya completaste "${curso.name}". Â¿Deseas repasarlo?`)) {
+      if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
         navigate(curso.link);
       }
     } else {
@@ -312,7 +312,7 @@ export default function CoursesTTHH() {
                       </div>
                       
                       <button
-                        className={`btn w-100 ${noDisponible ? 'btn-warning' : completado ? 'btn-success' : 'btn-iniciar'}`}
+                        className={`btn-${completado ? 'iniciar' : 'primero'} w-100`}
                         onClick={() => manejarClicCurso(curso)}
                         disabled={noDisponible}
                       >

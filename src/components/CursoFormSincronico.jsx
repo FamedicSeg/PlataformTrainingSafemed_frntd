@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AlertCircle, CheckCircle } from 'lucide-react';
+import { aInputLocal } from '../utils/dateUtils';
 import '../styles/components/CursoFormAsincronico.css';
 
 export default function CursoFormSincronico({ cursoId = null, onSave, onCancel, initialData = null }) {
@@ -32,8 +33,8 @@ export default function CursoFormSincronico({ cursoId = null, onSave, onCancel, 
                 razon_curso: initialData.razon_curso || '',
                 dirigido_a: initialData.dirigido_a || '',
                 duracion: initialData.duracion || '',
-                fecha_inicio: initialData.fecha_inicio ? new Date(initialData.fecha_inicio).toISOString().slice(0, 16) : '',                
-                fecha_fin: initialData.fecha_fin ? new Date(initialData.fecha_fin).toISOString().slice (0, 16) : '',
+                fecha_inicio: aInputLocal(initialData.fecha_inicio),
+                fecha_fin: aInputLocal(initialData.fecha_fin),
                 tipo: 'Sincrónico'
             });
 
