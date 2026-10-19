@@ -136,11 +136,24 @@
 
 .columna-cursos-disponibles-tarjeta {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 340px));
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2rem;
   width: 100%;
 }
+
+.estado-curso {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 0.375rem;
+  color: #fff;
+}
+.estado-curso.proximo   { background-color: #ffc107; color: #212529; }
+.estado-curso.completado { background-color: #198754; }
+.estado-curso.pendiente { background-color: #6c757d; }
 
 .tarjeta-curso {
   display: block;
@@ -485,3 +498,15 @@
     font-size: 0.9rem !important;
   }
 }
+
+.estado-curso {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 0.375rem;
+  color: #fff;
+}
+.estado-curso.proximo   { background-color: #e9e8e6; color: #212529; }
+.estado-curso.completado { background-color: #198754; }
+.estado-curso.pendiente { background-color: #6c757d; }

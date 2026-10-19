@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Clock } from "lucide-react";
 import "../../styles/pages/cursos.css";
 
 export default function CoursesTTHH() {
@@ -87,6 +88,7 @@ export default function CoursesTTHH() {
           dbName: `curso_${c.id}`, // Identificador Ãºnico
           bloqueado: false,
           esEstatico: false,
+          duracion: c.duracion || "No disponible",
           fecha_inicio: c.fecha_inicio_curso || null,
           fecha_fin: c.fecha_fin_curso || null
         }));
@@ -277,11 +279,7 @@ export default function CoursesTTHH() {
                       <h5 className="titulo-curso">
                         {curso.name}
                       </h5>
-                      {noDisponible ? (
-                        <span className="badge bg-warning text-dark">
-                          ⚠
-                        </span>
-                      ) : completado && (
+                      { completado && (
                         <span className="badge bg-success">
                           ✓
                         </span>
@@ -290,10 +288,19 @@ export default function CoursesTTHH() {
                     <p className="descripcion-curso">
                       {curso.desc}
                     </p>
+                    <p className="descripcion-curso">
+                      <span style={{ fontWeight: 'bold' }}>Duración: </span> {curso.duracion}
+                    </p>
+                    <p className="descripcion-curso">
+                      <span style={{ fontWeight: 'bold' }}>Fecha de inicio: </span> {curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
+                    </p>
+                    <p className="descripcion-curso">
+                      <span style={{ fontWeight: 'bold' }}>Fecha de fin: </span> {curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
+                    </p>
 
                     {/* Aviso de disponibilidad futura */}
                     {proximo && (
-                      <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#fff3cd', border: '1px solid #107993', fontSize: '0.8rem', color: '#046385' }}>
+                      <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#aeaeac', border: '1px solid #a3abad26', fontSize: '0.8rem', color: '#046385' }}>
                         ⚠ Disponible el {new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </div>
                     )}
@@ -301,7 +308,7 @@ export default function CoursesTTHH() {
                     {/* Estado del curso */}
                     <div className="mt-auto">
                       <div className="mb-2">
-                        <small className={`badge ${noDisponible ? 'bg-warning text-dark' : completado ? 'bg-success' : 'bg-secondary'}`}>
+                        <small className={`estado-curso ${noDisponible ? 'proximo' : completado ? 'completado' : 'pendiente'}`}>
                           {expirado ? 'Expirado' : noDisponible ? 'Próximamente' : completado ? '✅ Curso realizado' : 'Por comenzar'}
                         </small>
                         {!noDisponible && completado && (
@@ -311,21 +318,24 @@ export default function CoursesTTHH() {
                         )}
                       </div>
                       
-                      <button
-                        className={`btn-${completado ? 'iniciar' : 'primero'} w-100`}
-                        onClick={() => manejarClicCurso(curso)}
-                        disabled={noDisponible}
-                      >
-                        {expirado ? (
-                          <>⛔ No Disponible</>
-                        ) : noDisponible ? (
-                          <>⚠ Próximamente</>
-                        ) : completado ? (
-                          <>✅ Curso realizado</>
-                        ) : (
-                          'Iniciar curso'
-                        )}
-                      </button>
+                      {expirado ? (
+                        <button className="btn-no-disponible-curso" disabled>
+                          ⛔ No Disponible
+                        </button>
+                      ) : proximo ? (
+                        <button className="btn btn-warning text-dark w-100" disabled>
+                          <Clock size={16} className="me-2" />
+                          Próximamente
+                        </button>
+                      ) : (
+                        <button
+                          className={`btn-${completado ? 'iniciar' : 'primero'} w-100`}
+                          onClick={() => manejarClicCurso(curso)}
+                          disabled={cargandoCursos || curso.bloqueado}
+                        >
+                          {completado ? '✅ Curso realizado' : 'Iniciar curso'}
+                        </button>
+                      )}
                       
                       {/* BotÃ³n para repasar incluso si estÃ¡ completado */}
                       {!noDisponible && completado && (

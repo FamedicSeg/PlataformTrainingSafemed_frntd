@@ -48,6 +48,9 @@ export default function CoursesInvestigacionDesarrollo() {
             inscripcion_id: c.id,
             name: c.curso_nombre,
             desc: c.descripcion,
+            duracion: c.curso_duracion || c.duracion || "No disponible",
+            fecha_inicio: c.fecha_inicio || c.fecha_inicio_curso || null,
+            fecha_fin: c.fecha_fin || c.fecha_fin_curso || null,
             tipo: c.tipo, // 'Sincrónico' o 'Asincrónico'
             proceso: c.proceso_nombre,
             fecha_inicio_curso: c.fecha_inicio_curso || null,
@@ -279,7 +282,13 @@ export default function CoursesInvestigacionDesarrollo() {
                       )}
                     </div>
                     <p className="descripcion-curso">
-                      {curso.desc}
+                      <span style={{ fontWeight: 'bold' }}>Duración: </span> {curso.duracion}
+                    </p>
+                    <p className="descripcion-curso">
+                      <span style={{ fontWeight: 'bold' }}>Fecha de inicio: </span> {curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
+                    </p>
+                    <p className="descripcion-curso">
+                      <span style={{ fontWeight: 'bold' }}>Fecha de fin: </span> {curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
                     </p>
 
                     {/* Aviso de disponibilidad futura */}

@@ -20,7 +20,7 @@ export default function Procesos(){
         {id:4, name: "Operaciones - Producción", desc: "Capacitación de Producción", link: "/courses/operaciones", enabled: true},
          //Segunda Fila
         {id:5, name: "Asuntos Regulatorios y Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/courses/asuntosRegulatorios", enabled: true},
-        {id:6, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capcitación de SGCS" , link: "/courses/sgcs", enabled: true},
+        {id:6, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capacitación de SGCS" , link: "/courses/sgcs", enabled: true},
         {id:7, name: "Almacenamiento y Logística", desc: "Capacitación de Almacenamiento y Logística", link:"/courses/almacenamientoLogistica", enabled: true},
         {id:8, name: "Seguridad Informática", desc: "Capacitación de la Seguridad en la Información", link:"/courses/seguridadInformatica", enabled: true},        
         //Tercera Fila
