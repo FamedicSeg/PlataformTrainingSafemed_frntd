@@ -166,7 +166,7 @@ export default function PanelControl() {
   });
 
   return (
-    <div style={{ minHeight: '80vh' }}>
+    <div style={{ minHeight: '80vh', minWidth: 0, maxWidth: '100%' }}>
 
       {/* Header del panel */}
       <div className="d-flex justify-content-between align-items-center mb-4">        
@@ -245,7 +245,7 @@ export default function PanelControl() {
         <div className="row mb-3 g-2">
           <div className="col-md-5">
             <select
-              className="form-select form-select-sm"
+              className="filtro-estado-panel-c"
               value={filtroProceso}
               onChange={e => setFiltroProceso(e.target.value)}
             >
@@ -257,7 +257,7 @@ export default function PanelControl() {
           </div>
           <div className="col-md-4">
             <select
-              className="form-select form-select-sm"
+              className="filtro-estado-panel-c"
               value={filtroEstado}
               onChange={e => setFiltroEstado(e.target.value)}
             >
@@ -292,14 +292,16 @@ export default function PanelControl() {
 
       {/* Tabla */}
       {!cargando && cursos.length > 0 && (
-        <div className="table-responsive">
-          <table className="table table-bordered table-hover align-middle bg-white">
+        <div className="table-responsive panel-control-table-wrapper">
+          <table className="table table-bordered table-hover align-middle bg-white panel-control-table">
             <thead className="table-dark">
               <tr>
                 <th className="col-curso-tabla">Curso</th>
                 <th className="col-proceso-tabla">Proceso</th>
                 <th className="col-fecha-inicio-tabla">Fecha Inicio</th>
                 <th className="col-fecha-fin-tabla">Fecha Fin</th>
+                <th className="col-dirigido-tabla">Dirigido A</th>
+                <th className="col-duracion-tabla">Duración</th>
                 <th className="col-estado-tabla text-center">Estado</th>
                 <th className="col-acciones-tabla text-center">Acciones</th>
               </tr>
@@ -307,7 +309,7 @@ export default function PanelControl() {
             <tbody>
               {cursosFiltrados.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center text-muted py-4">
+                  <td colSpan={8} className="text-center text-muted py-4">
                     No hay cursos con ese filtro.
                   </td>
                 </tr>
@@ -321,16 +323,18 @@ export default function PanelControl() {
                         <strong>{curso.nombre}</strong>
                         {esProgramando && <span className="ms-2 badge bg-primary">Editando...</span>}
                       </td>
-                      <td>
+                      <td className="col-proceso-tabla">
                         <span className="badge bg-secondary bg-opacity-75">{curso.proceso_name}</span>
                       </td>
-                      <td className="text-nowrap">{formatearFecha(curso.fecha_inicio_curso)}</td>
-                      <td className="text-nowrap">{formatearFecha(curso.fecha_fin_curso)}</td>
+                      <td className="col-fecha-tabla">{formatearFecha(curso.fecha_inicio_curso)}</td>
+                      <td className="col-fecha-tabla">{formatearFecha(curso.fecha_fin_curso)}</td>
+                      <td className="col-dirigido-tabla">{curso.dirigido_a || '—'}</td>
+                      <td className="text-nowrap">{curso.duracion}</td>
                       <td className="text-center">
                         <span className={`badge ${estado.clase}`}>{estado.texto}</span>
                       </td>
                       <td className="text-center">
-                        <div className="d-flex gap-1 justify-content-center flex-wrap">
+                        <div className="panel-control-actions">
                           <button
                             className={`btn btn-sm ${curso.habilitado_manual ? 'btn-deshabilitar' : 'btn-habilitar'}`}
                             onClick={() => toggleHabilitado(curso.id, curso.habilitado_manual)}

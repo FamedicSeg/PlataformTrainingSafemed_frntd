@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, RefreshCw, Download } from 'lucide-react';
 import jsPDF from 'jspdf';
+import * as XLSX from 'xlsx';
 import autoTable from 'jspdf-autotable';
 import '../styles/components/AsistenciaPanel.css';
 
@@ -23,6 +24,7 @@ export default function AsistenciaPanel({
   const [cargando, setCargando] = useState(true);
   const [filtroCurso, setFiltroCurso] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('');
+  const [filtroEmpresa, setFiltroEmpresa] = useState('');
   const [cursosUnicos, setCursosUnicos] = useState([]);
 
   useEffect(() => {
@@ -106,40 +108,45 @@ export default function AsistenciaPanel({
   };
 
   // ── Filtros ───────────────────────────────────────────────────
+  const empresasUnicas = [...new Set(asistencia.map(r => r.empresa_socio).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'es'));
+
+  const coincideEmpresa = (r) => !filtroEmpresa || r.empresa_socio === filtroEmpresa;
+
   const registrosFiltrados = asistencia.filter(r => {
     const coincideCurso  = !filtroCurso || String(r.curso_id) === filtroCurso;
     const coincideEstado = filtroEstado === '' || r.estado === filtroEstado;
-    return coincideCurso && coincideEstado;
+    return coincideCurso && coincideEstado && coincideEmpresa(r);
   });
+  const registrosCurso = asistencia.filter(
+    r => filtroCurso !== '' && String(r.curso_id) === filtroCurso && coincideEmpresa(r)
+  );
 
   // ── Exportar a CSV ────────────────────────────────────────────
-  const exportarCSV = () => {
-    const cabecera = ['Apellidos y Nombres', 'Cédula', 'Proceso', 'Cargo', 'Curso', 'Fecha Inicio', 'Estado'];
-    const filas = registrosFiltrados.map(r => [
-      r.usuario_nombre,
-      r.cedula_identidad,
-      r.usuario_proceso,
-      r.usuario_cargo,
-      r.curso_nombre,
-      formatearFecha(r.inicio_en),
-      capitalizarEstado(r.estado)
-    ]);
+  const exportarExcel = () => {
+    const filas = [
+      ['Apellidos y Nombres', 'Cédula', 'Proceso', 'Empresa Socio', 'Cargo', 'Curso', 'Fecha Inicio', 'Estado'],
+      ...registrosFiltrados.map(r => [
+        r.usuario_nombre,
+        r.cedula_identidad,
+        r.usuario_proceso,
+        r.empresa_socio || '—',
+        r.usuario_cargo,
+        r.curso_nombre,
+        formatearFecha(r.inicio_en),
+        capitalizarEstado(r.estado)
+      ])
+    ];
 
-    const contenido = [cabecera, ...filas]
-      .map(f => f.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(','))
-      .join('\n');
+    const hoja = XLSX.utils.aoa_to_sheet(filas);
+    const libro = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(libro, hoja, 'Asistencia');
+    XLSX.writeFile(libro, 'asistencia.xlsx');
 
-    const blob = new Blob(['\uFEFF' + contenido], { type: 'text/csv;charset=utf-8;' });
-    const url  = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href     = url;
-    link.download = 'asistencia.csv';
-    link.click();
-    URL.revokeObjectURL(url);
   };
 
-  // ── PDF solo activo cuando hay curso seleccionado + estado completado ────
-  const pdfActivo = filtroCurso !== '' && filtroEstado === 'completado';
+  // El PDF incluye todas las inscripciones del curso, sin importar su estado.
+  const pdfActivo = registrosCurso.length > 0;
 
   // ── Exportar a PDF ────────────────────────────────────────────
   const exportarPDF = async () => {
@@ -173,9 +180,9 @@ export default function AsistenciaPanel({
     }
 
     // Datos del curso
-    const primerRegistro   = registrosFiltrados[0] || {};
+    const primerRegistro   = registrosCurso[0] || {};
     const nombreCurso      = primerRegistro.curso_nombre        || '—';
-    const fechaFallback    = registrosFiltrados
+    const fechaFallback    = registrosCurso
       .map(r => r.inicio_en)
       .filter(Boolean)
       .sort()[0] || null;
@@ -352,7 +359,7 @@ export default function AsistenciaPanel({
 
     // ── Tabla de asistencia ────────────────────────────────────
     const headers = ['N°', 'APELLIDOS Y NOMBRES', 'CÉDULA', 'CARGO', 'ESTADO / FIRMA'];
-    const rows = registrosFiltrados.map((r, idx) => [
+    const rows = registrosCurso.map((r, idx) => [
       idx + 1,
       r.usuario_nombre,
       r.cedula_identidad || '—',
@@ -514,18 +521,30 @@ export default function AsistenciaPanel({
             <option value="completado">Completado</option>
           </select>
 
+          {/* Filtro por empresa socio */}
+          <select
+            className="form-select form-select-sm"
+            value={filtroEmpresa}
+            onChange={e => setFiltroEmpresa(e.target.value)}
+          >
+            <option value="">Todas las empresas</option>
+            {empresasUnicas.map(e => (
+              <option key={e} value={e}>{e}</option>
+            ))}
+          </select>
+
           <button className="btn-actualizar-asistencia" onClick={cargarAsistencia} title="Actualizar">
             <RefreshCw size={15} />
           </button>
 
-          <button className="btn btn-outline-success btn-sm" onClick={exportarCSV} title="Exportar CSV">
-            <Download size={15} className="me-1" /> CSV
+          <button className="btn btn-outline-success btn-sm" onClick={exportarExcel} title="Exportar Excel">
+            <Download size={15} className="me-1" /> Excel
           </button>
 
           <button
             className="btn-download-pdf"
             onClick={exportarPDF}
-            title={pdfActivo ? 'Exportar PDF' : 'Selecciona un curso y filtra por "Completado" para exportar'}
+            title={pdfActivo ? 'Exportar PDF con todos los inscritos, sin importar su estado' : 'Selecciona un curso con registros para exportar'}
             disabled={!pdfActivo}
             style={{ opacity: pdfActivo ? 1 : 0.45, cursor: pdfActivo ? 'pointer' : 'not-allowed' }}
           >
