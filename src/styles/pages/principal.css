@@ -166,6 +166,7 @@ body {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   display: inline-block;
   font-size: 14px !important;
+  font-weight: 600;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 12px;
