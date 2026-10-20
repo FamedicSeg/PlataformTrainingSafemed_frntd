@@ -194,9 +194,8 @@ export default function LoginNombre() {
               {showPassword ? "🔒" : "🔍"}
             </span>
           </div>
-           </div>
-           <div>
-          <div className="col-12 text-center mt-4">
+        </div>
+          <div className="acciones-login">
             <button 
               className="btn-continuar" 
               onClick={handleLogin}
@@ -208,28 +207,23 @@ export default function LoginNombre() {
             >
               {loading ? "Cargando..." : "Acceder"}
             </button>
-          </div>
 
-        <div className="botones-contenedor-administradores">
-          <div className="botones-container-admin-proceso">
-            <button
-              className="btn-adminProceso"
-              onClick={() => navigate("/admin/procesos")}
-            >
-              ADMIN. PROCESOS
-            </button>
+            <div className="botones-contenedor-administradores">
+              <button
+                className="btn-adminProceso"
+                onClick={() => navigate("/admin/procesos")}
+              >
+                ADMIN. PROCESOS
+              </button>
+              <button
+                className="btn-adminPrincipal"
+                onClick={() => navigate("/admin")}
+                aria-label="Administración principal"
+                title="Administración principal"
+              >
+              </button>
+            </div>
           </div>
-
-          <div className="botones-container-admin-principal">
-            <button
-              className="btn-adminPrincipal"
-              onClick={() => navigate("/admin")}
-            >
-              ADMIN. PRINCIPAL
-            </button>
-          </div>
-        </div>
-        </div>
       </div>
     </div>
   );
