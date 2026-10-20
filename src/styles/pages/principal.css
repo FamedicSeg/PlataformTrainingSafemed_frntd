@@ -325,3 +325,57 @@ body {
 .no-transform {
   text-transform: none !important;
 }
+
+@media (max-width: 767px) {
+  body {
+    display: block;              /* quita el centrado flex que corta el contenido */
+    background-attachment: scroll; /* "fixed" falla en iOS/móviles */
+  }
+
+  .container-pr {
+    padding: 20px 15px;
+    border-radius: 14px;
+  }
+
+  /* Las dos columnas pasan a una sola */
+  .contenedor-login-principal {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .formulario-container {
+    max-height: none;
+  }
+
+  /* Botones de administradores apilados, sin el gap de 350px */
+  .botones-contenedor-administradores {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .botones-container-admin-proceso,
+  .botones-container-admin-principal {
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* min-width: 140% provoca scroll horizontal */
+  .btn-adminProceso,
+  .btn-adminPrincipal,
+  .btn-continuar {
+    min-width: 100% !important;
+    width: 100%;
+  }
+
+  .form-control-custom {
+    padding: 10px 12px !important;
+    font-size: 16px;             /* evita el zoom automático en iOS */
+  }
+
+  .bienvenida-subtitulo {
+    font-size: clamp(26px, 8vw, 40px);
+  }
+  .instruccion-texto,
+  .instruccion-texto2 {
+    font-size: 16px;
+  }
+}

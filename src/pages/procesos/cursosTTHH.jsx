@@ -297,7 +297,7 @@ export default function CoursesTTHH() {
 
                     {/* Aviso de disponibilidad futura */}
                     {proximo && (
-                      <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#aeaeac', border: '1px solid #a3abad26', fontSize: '0.8rem', color: '#046385' }}>
+                      <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#aeaeac', border: '1px solid #a3abad55', fontSize: '0.8rem', color: '#046385' }}>
                         ⚠ Disponible el {new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </div>
                     )}

@@ -12,6 +12,16 @@
   padding: 20px;
 }
 
+@media (max-width: 767px) {
+  .contenedor-procesos-princ {
+    margin-top: 10px;
+    min-width: 100% !important;
+    padding: 0 15px;
+    border-radius: 14px;
+    background-color: aliceblue;
+  }
+}
+
 /* Encabezado */
 .text-center h2 {
   font-size: 2.5rem;
