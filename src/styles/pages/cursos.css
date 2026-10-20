@@ -136,9 +136,9 @@
 
 .columna-cursos-disponibles-tarjeta {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 340px));
+  grid-template-columns: repeat(4, 1fr);
   justify-content: center;
-  gap: 3rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
   width: 100%;
 }
@@ -162,7 +162,7 @@
 
 
 .titulo-curso {
-  font-size: 1.3rem !important;
+  font-size: 18px !important;
   font-weight: 700 !important;
   color: #0c3c60 !important;
   font-family: 'Segoe UI', sans-serif;
@@ -176,7 +176,7 @@
 }
 
 .descripcion-curso {
-  font-size: 0.95rem !important;
+  font-size: 14px !important;
   line-height: 1.5;
   color: #5a5a5a !important;
   margin-bottom: 20px;

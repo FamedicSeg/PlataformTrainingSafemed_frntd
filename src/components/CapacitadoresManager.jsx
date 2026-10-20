@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Eye, EyeOff, Edit2 } from 'lucide-react';
 import '../styles/components/CapacitadorManager.css';
 
 export default function CapacitadoresManager() {
@@ -9,6 +10,9 @@ export default function CapacitadoresManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [editandoId, setEditandoId] = useState(null);
+  const [formEditar, setFormEditar] = useState({ nombre: '', cedula: '' });
 
   const cargarCapacitadores = useCallback(async () => {
     setLoading(true);
@@ -40,7 +44,7 @@ export default function CapacitadoresManager() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(form),
       });
@@ -64,7 +68,7 @@ export default function CapacitadoresManager() {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({ activo: !capacitador.activo }),
         },
@@ -77,6 +81,42 @@ export default function CapacitadoresManager() {
     } catch (updateError) {
       setError(updateError.message);
     }
+  };
+
+  const iniciarEdicion = (capacitador) => {
+    setEditandoId(capacitador.id);
+    setFormEditar({ nombre: capacitador.nombre, cedula: capacitador.cedula });
+  };
+
+  const guardarEdicion = async () => {
+    setError('');
+    try {
+      const response = await fetch(
+        `${API_URL}/api/auth/procesos/capacitadores/${editandoId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(formEditar),
+        },
+      );
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || 'No se pudo actualizar el capacitador');
+      setCapacitadores((current) => current.map((item) => (
+        item.id === editandoId ? result.data : item
+      )));
+      setEditandoId(null);
+      setFormEditar({ nombre: '', cedula: '' });
+    } catch (updateError) {
+      setError(updateError.message);
+    }
+  };
+
+  const cancelarEdicion = () => {
+    setEditandoId(null);
+    setFormEditar({ nombre: '', cedula: '' });
   };
 
   return (
@@ -93,7 +133,7 @@ export default function CapacitadoresManager() {
                 <label className="form-label" htmlFor="capacitador-nombre">Nombre</label>
                 <input
                   id="capacitador-nombre"
-                  className="form-control mb-3"
+                  className="form-control capacitador-nombre"
                   value={form.nombre}
                   onChange={(event) => setForm({ ...form, nombre: event.target.value })}
                   required
@@ -101,21 +141,31 @@ export default function CapacitadoresManager() {
                 <label className="form-label" htmlFor="capacitador-cedula">Cédula / usuario</label>
                 <input
                   id="capacitador-cedula"
-                  className="form-control mb-3"
+                  className="form-control capacitador-nombre"
                   value={form.cedula}
                   onChange={(event) => setForm({ ...form, cedula: event.target.value })}
                   required
                 />
                 <label className="form-label" htmlFor="capacitador-password">Contraseña inicial</label>
-                <input
-                  id="capacitador-password"
-                  type="password"
-                  minLength={6}
-                  className="form-control mb-3"
-                  value={form.password}
-                  onChange={(event) => setForm({ ...form, password: event.target.value })}
-                  required
-                />
+                <div className="input-group mb-3">
+                  <input
+                    id="capacitador-password"
+                    type={showPassword ? "text" : "password"}
+                    minLength={6}
+                    className="form-control"
+                    value={form.password}
+                    onChange={(event) => setForm({ ...form, password: event.target.value })}
+                    required
+                  />
+                  <button 
+                    className="btn btn-outline-secondary" 
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex="-1"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
                 <button className="btn-crear-cuenta-capacitador" type="submit" disabled={saving}>
                   {saving ? 'Creando…' : 'Crear cuenta'}
                 </button>
@@ -141,23 +191,65 @@ export default function CapacitadoresManager() {
                 <div className="tabla-capacitadores-ingresados">
                   <table className="tabla-capacitadores-registrados">
                     <thead>
-                      <tr><th>Nombre</th><th>Usuario</th><th>Estado</th><th /></tr>
+                      <tr><th>Nombre</th><th>Cédula</th><th>Estado</th><th /></tr>
                     </thead>
                     <tbody>
                       {capacitadores.map((capacitador) => (
-                        <tr key={capacitador.id}>
-                          <td>{capacitador.nombre}</td>
-                          <td>{capacitador.cedula}</td>
-                          <td>{capacitador.activo ? 'Activo' : 'Desactivado'}</td>
-                          <td className="text-end">
-                            <button
-                              className={`btn btn-sm ${capacitador.activo ? 'btn-outline-danger' : 'btn-outline-success'}`}
-                              onClick={() => cambiarEstado(capacitador)}
-                            >
-                              {capacitador.activo ? 'Desactivar' : 'Activar'}
-                            </button>
-                          </td>
-                        </tr>
+                        editandoId === capacitador.id ? (
+                          <tr key={capacitador.id} className="fila-edicion">
+                            <td>
+                              <input
+                                type="text"
+                                className="form-control capacitador-nombre"
+                                value={formEditar.nombre}
+                                onChange={(e) => setFormEditar({ ...formEditar, nombre: e.target.value })}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                className="form-control capacitador-nombre"
+                                value={formEditar.cedula}
+                                onChange={(e) => setFormEditar({ ...formEditar, cedula: e.target.value })}
+                              />
+                            </td>
+                            <td colSpan="2" className="text-end">
+                              <button
+                                className="btn btn-sm btn-success me-2"
+                                onClick={guardarEdicion}
+                              >
+                                Guardar
+                              </button>
+                              <button
+                                className="btn btn-sm btn-secondary"
+                                onClick={cancelarEdicion}
+                              >
+                                Cancelar
+                              </button>
+                            </td>
+                          </tr>
+                        ) : (
+                          <tr key={capacitador.id}>
+                            <td>{capacitador.nombre}</td>
+                            <td>{capacitador.cedula}</td>
+                            <td>{capacitador.activo ? 'Activo' : 'Desactivado'}</td>
+                            <td className="text-end">
+                              <button
+                                className="btn btn-sm btn-outline-primary me-2"
+                                onClick={() => iniciarEdicion(capacitador)}
+                                title="Editar capacitador"
+                              >
+                                <Edit2 size={16} />
+                              </button>
+                              <button
+                                className={`btn btn-sm ${capacitador.activo ? 'btn-outline-danger' : 'btn-outline-success'}`}
+                                onClick={() => cambiarEstado(capacitador)}
+                              >
+                                {capacitador.activo ? 'Desactivar' : 'Activar'}
+                              </button>
+                            </td>
+                          </tr>
+                        )
                       ))}
                     </tbody>
                   </table>

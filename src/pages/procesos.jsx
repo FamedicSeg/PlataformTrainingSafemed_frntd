@@ -11,33 +11,30 @@ export default function Procesos(){
 
     const [expandido, setExpandido] = useState(null);
     const [cursos, setCursos] = useState([]);
-    //const [loading, setLoading] = useState(false);
+    const [pendientesPorProceso, setPendientesPorProceso] = useState({});
 
     const processes =[
-        {id:1, name: "Talento Humano", desc: "Capacitación de Talento Humano" ,link: "/courses/tthh", enabled: true},
-        {id:2, name: "Seguridad Industrial", desc: "Capacitación de Seguridad Industrial", link:"/courses/seguridad-industrial", enabled: true},
-        {id:3, name: "Salud Ocupacional", desc: "Capacitación de Salud Ocupacional", link:"/courses/salud-ocupacional", enabled: true},
-        {id:4, name: "Operaciones - Producción", desc: "Capacitación de Producción", link: "/courses/operaciones", enabled: true},
-         //Segunda Fila
-        {id:5, name: "Asuntos Regulatorios y Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/courses/asuntosRegulatorios", enabled: true},
-        {id:6, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capacitación de SGCS" , link: "/courses/sgcs", enabled: true},
-        {id:7, name: "Almacenamiento y Logística", desc: "Capacitación de Almacenamiento y Logística", link:"/courses/almacenamientoLogistica", enabled: true},
-        {id:8, name: "Seguridad Informática", desc: "Capacitación de la Seguridad en la Información", link:"/courses/seguridadInformatica", enabled: true},        
-        //Tercera Fila
-        {id:9, name: "Gerencia", desc: "Capacitación de Dirección", link:"/courses/gerencia", enabled: true},
-        {id:10, name: "Gestión Comercial Sierra", desc: "Capacitación de Gestión Comercial", link:"/courses/ventasSierra", enabled: true},
-        {id:11, name: "Gestión Comercial Costa", desc: "Capacitación de Gestión Comercial", link:"/courses/ventasCosta", enabled: true},
-        {id:12, name: "Desarrollo e Investigación", desc: "Capacitación de Desarrollo e Investigación", link:"/courses/investigacionDesarrollo", enabled: true},
-        {id:13, name: "Compras e Importaciones", desc: "Capacitación de Compras", link:"/courses/compras", enabled: true},
-        //Cuarta Fila
-        {id:14, name: "Marketing", desc: "Capacitación de Marketing", link:"/courses/marketing", enabled: true},
-        {id:15, name: "Seguridad Física", desc: "Capacitación de la Seguridad Física", link:"/courses/seguridad-fisica", enabled: true},
-        {id:16, name: "Infraestructura y Mantenimiento", desc: "Capacitación de Infraestructura y Mantenimiento", link:"/courses/mantenimiento", enabled: true},
+        {id:16, name: "Talento Humano", desc: "Capacitación de Talento Humano" ,link: "/courses/tthh", enabled: true},
+        {id:14, name: "Seguridad Industrial", desc: "Capacitación de Seguridad Industrial", link:"/courses/seguridad-industrial", enabled: true},
+        {id:12, name: "Salud Ocupacional", desc: "Capacitación de Salud Ocupacional", link:"/courses/salud-ocupacional", enabled: true},
+        {id:11, name: "Operaciones - Producción", desc: "Capacitación de Producción", link: "/courses/operaciones", enabled: true},
+        {id:3, name: "Asuntos Regulatorios y Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/courses/asuntosRegulatorios", enabled: true},
+        {id:2, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capacitación de Aseguramiento de la Calidad y Seguridad" , link: "/courses/sgcs", enabled: true},
+        {id:1, name: "Almacenamiento y Logística", desc: "Capacitación de Almacenamiento y Logística", link:"/courses/almacenamientoLogistica", enabled: true},
+        {id:15, name: "Seguridad Informática", desc: "Capacitación de la Seguridad en la Información", link:"/courses/seguridadInformatica", enabled: true},        
+        {id:5, name: "Gerencia", desc: "Capacitación de Dirección", link:"/courses/gerencia", enabled: true},
+        {id:7, name: "Gestión Comercial Sierra", desc: "Capacitación de Gestión Comercial", link:"/courses/ventasSierra", enabled: true},
+        {id:6, name: "Gestión Comercial Costa", desc: "Capacitación de Gestión Comercial", link:"/courses/ventasCosta", enabled: true},
+        {id:9, name: "Desarrollo e Investigación", desc: "Capacitación de Desarrollo e Investigación", link:"/courses/investigacionDesarrollo", enabled: true},
+        {id:4, name: "Compras e Importaciones", desc: "Capacitación de Compras", link:"/courses/compras", enabled: true},
+        {id:10, name: "Marketing", desc: "Capacitación de Marketing", link:"/courses/marketing", enabled: true},
+        {id:13, name: "Seguridad Física", desc: "Capacitación de la Seguridad Física", link:"/courses/seguridad-fisica", enabled: true},
+        {id:8, name: "Infraestructura y Mantenimiento", desc: "Capacitación de Infraestructura y Mantenimiento", link:"/courses/mantenimiento", enabled: true},
     ];
 
-    // Cargar cursos de la API
     useEffect(() => {
         cargarCursos();
+        cargarPendientes();
     }, []);
 
     const cargarCursos = async () => {
@@ -47,6 +44,27 @@ export default function Procesos(){
             setCursos(data.data || []);
         } catch (error) {
             console.error('Error cargando cursos:', error);
+        }
+    };
+
+    const cargarPendientes = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_URL}/api/inscripciones/pendientes-por-proceso`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            if (data.success && data.data) {
+                const mapa = {};
+                data.data.forEach(item => {
+                    mapa[item.proceso_id] = item.pendientes;
+                });
+                setPendientesPorProceso(mapa);
+            }
+        } catch (error) {
+            console.error('Error cargando pendientes por proceso:', error);
         }
     };
 
@@ -67,6 +85,7 @@ export default function Procesos(){
         if(location.state && location.state.refrescar){
             navigate(location.pathname, { replace: true, state: {}});
             cargarCursos();
+            cargarPendientes();
         }
     }, [navigate, location]);
 
@@ -89,7 +108,6 @@ export default function Procesos(){
                             transition: 'all 0.3s ease',
                             minHeight: estaExpandido ? 'auto' : '250px'
                         }}>
-                            {/* Header - Clickeable para expandir */}
                             <div 
                                 className='card-body d-flex flex-column'
                                 onClick={() => proceso.enabled && toggleExpandir(proceso.id)}
@@ -97,27 +115,32 @@ export default function Procesos(){
                                     backgroundColor: estaExpandido && proceso.enabled ? '#f8f9fa' : 'transparent',
                                     cursor: proceso.enabled ? 'pointer' : 'default',
                                     padding: '1.5rem'
-                                }}
-                            >
+                                }}>
                                 <div className='d-flex justify-content-between align-items-start mb-2'>
                                     <h5 className='titulo-curso mb-0'>
                                         {proceso.name}
                                     </h5>
-                                    {proceso.enabled && (
-                                        <ChevronDown 
-                                            size={20} 
-                                            style={{
-                                                transform: estaExpandido ? 'rotate(180deg)' : 'rotate(0deg)',
-                                                transition: 'transform 0.3s ease'
-                                            }}
-                                        />
-                                    )}
+                                    <div className='d-flex gap-2 align-items-start'>
+                                        {pendientesPorProceso[proceso.id] > 0 && (
+                                            <span className='badge bg-danger' style={{ fontSize: '0.75rem', padding: '0.5rem 0.6rem' }}>
+                                                {pendientesPorProceso[proceso.id]}
+                                            </span>
+                                        )}
+                                        {proceso.enabled && (
+                                            <ChevronDown 
+                                                size={20} 
+                                                style={{
+                                                    transform: estaExpandido ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                    transition: 'transform 0.3s ease'
+                                                }}
+                                            />
+                                        )}
+                                    </div>
                                 </div>
                                 <p className='descripcion-curso'>
                                     {proceso.desc}
                                 </p>
 
-                                {/* Botón principal */}
                                 <button 
                                     className={`btn w-100 mt-auto ${proceso.enabled ? 'btn-continuar2' : 'btn-disabled'}`}
                                     style={{
@@ -136,51 +159,6 @@ export default function Procesos(){
                                     {proceso.enabled ? 'Iniciar Proceso' : '🔒 Próximamente'}
                                 </button>
                             </div>
-
-                            {/* Sección expandible - Cursos 
-                            {estaExpandido && proceso.enabled && (
-                                <div style={{
-                                    borderTop: '1px solid #dee2e6',
-                                    backgroundColor: '#f8f9fa',
-                                    padding: '1rem',
-                                    maxHeight: '400px',
-                                    overflowY: 'auto'
-                                }}>
-                                    <h6 className='mb-3 text-muted'>
-                                        <BookOpen size={16} className='me-2 mb-1' style={{display: 'inline'}} />
-                                        Cursos del Proceso
-                                    </h6>
-
-                                    {cursosDelProceso.length === 0 ? (
-                                        <div className='text-center text-muted py-3'>
-                                            <p className='mb-0 small'>No hay cursos creados aún</p>
-                                        </div>
-                                    ) : (
-                                        <div className='list-group list-group-flush'>
-                                            {cursosDelProceso.map((curso) => (
-                                                <div 
-                                                    key={curso.id} 
-                                                    className='list-group-item list-group-item-action border-0 px-0 py-2'
-                                                    style={{
-                                                        cursor: 'default',
-                                                        backgroundColor: 'transparent',
-                                                        fontSize: '0.9rem'
-                                                    }}
-                                                >
-                                                    <div className='d-flex align-items-start'>
-                                                        <span className='badge bg-success me-2 mt-1'>✓</span>
-                                                        <div className='flex-grow-1'>
-                                                            <div className='fw-500'>{curso.nombre}</div>
-                                                            <small className='text-muted d-block'>{curso.descripcion}</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            )} 
-                                */}
                         </div>
                     </div>
                 )
