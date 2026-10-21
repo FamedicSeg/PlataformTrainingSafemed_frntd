@@ -21,8 +21,6 @@ const toBase64 = (url) =>
  */
 export async function descargarCertificadoPdf({
   nombreUsuario,
-  //cedula,
-  //cargo,
   nombreCurso,
   //calificacion,
   fecha,
