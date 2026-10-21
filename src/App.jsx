@@ -223,7 +223,7 @@ function Layout({ children }) {
       {/* Componente Flotante para Jitsi */}
       <FloatingJitsi />
 
-{/*
+
       {!hideFooter && (
         <footer className="bg-light py-3 text-center border-top footer-full" style={{ 
           width: '100%',
@@ -237,11 +237,11 @@ function Layout({ children }) {
             style={{ height: "200px", objectFit: "cover" }}
           />
           <small className="footer-full" style={{ display: 'block', marginTop: '10px', textAlign: 'center' }}>
-            Copyright © 2026 | Sistema de Capacitación Interna | Analista de Transformación Digital
+            Copyright © 2026 | Sistema de Capacitación Interna | Made by: Analista de Transformación Digital
           </small>
         </footer>
       )}
-        */}
+        
     </>
   );
 }

@@ -181,33 +181,35 @@ export default function Certificado() {
       }
 
       // ── TÍTULO ──
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(60);
+      doc.setFont("garamond","bold");
+      doc.setFontSize(70);
       doc.setTextColor(212, 175, 55);
-      doc.text('CERTIFICADO', W / 2 + 40, 58, { align: 'center' });
+      doc.text('CERTIFICADO', W / 2 + 40, 65, { align: 'center' });
 
       // ── ENCABEZADO ──
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(14);
       doc.setTextColor(68, 68, 68);
-      doc.text('Otorgado a', W / 2 + 40, 72, { align: 'center' });
+      doc.text('Otorgado a', W / 2 + 40, 78, { align: 'center' });
 
       // ── NOMBRE DEL USUARIO ──
       doc.setFont('times', 'italic');
-      doc.setFontSize(30);
+      doc.setFontSize(35);
       doc.setTextColor(0, 0, 0);
-      doc.text(nombreUsuario.toUpperCase(), W / 2 + 30, 87, { align: 'center' });
+      doc.text(nombreUsuario, W / 2 + 30, 95, { align: 'center' });
 
-      // ── INFORMACIÓN DEL USUARIO ──
+      /* ── INFORMACIÓN DEL USUARIO ──
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(12);
       doc.setTextColor(85, 85, 85);
       doc.text(`C.I.: ${cedula}  |  Cargo: ${cargo}`, W / 2 + 30, 96, { align: 'center' });
+      */
 
       // ── PÁRRAFO INTRODUCTORIO ──
-      doc.setFontSize(13);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
-      doc.text('Por haber completado y aprobado satisfactoriamente la capacitación:', W / 2 + 35, 108, { align: 'center' });
+      doc.text('Por haber completado y aprobado satisfactoriamente la formación de:', W / 2 + 35, 108, { align: 'center' });
 
       // ── NOMBRE DEL CURSO ──
       doc.setFont('helvetica', 'bold');
@@ -216,18 +218,20 @@ export default function Certificado() {
       const cursoLines = doc.splitTextToSize(nombreCurso, 170);
       doc.text(cursoLines, W / 2 + 35, 120, { align: 'center' });
 
-      const nextY = 120 + cursoLines.length * 7;
+      const nextY = 125 + cursoLines.length * 7;
 
-      // ── CALIFICACIÓN Y FECHA ──
+      //── CALIFICACIÓN Y FECHA ──
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(13);
       doc.setTextColor(0, 0, 0);
+      /*
       if (calificacion != null) {
         doc.text(`Calificación obtenida: ${Number(calificacion).toFixed(1)}%`, W / 2 - 20, nextY + 10, {
           align: 'center',
         });
-      }
-      doc.text(`Fecha: ${fecha}`, W / 2 + 100, nextY + 10, { align: 'center' });
+      }*/
+      doc.text(`Fecha: ${fecha}`, W / 2 + 110, nextY + 10, { align: 'center' });
+      
 
       {/* // ── LÍNEA DE FIRMA ──
       doc.setDrawColor(20, 103, 129);
@@ -330,24 +334,24 @@ export default function Certificado() {
 
       if (logoBase64) doc.addImage(logoBase64, 'PNG', W - 85, 5, 75, 25);
 
-      doc.setFont('helvetica', 'bold');
+      doc.setFont("garamond", "bold");
       doc.setFontSize(70);
-      doc.setTextColor(212, 175, 55);
+      doc.setTextColor("#d4af37");
       doc.text('CERTIFICADO', W / 2 + 40, 65, { align: 'center' });
 
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(16);
-      doc.setTextColor(68, 68, 68);
+      doc.setTextColor("#444444");
       doc.text('Otorgado a', W / 2 + 40, 80, { align: 'center' });
 
       doc.setFont('times', 'italic');
       doc.setFontSize(35);
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor("#000000");
       doc.text(nombre, W / 2 + 30, 95, { align: 'center' });
 
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(14);
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor("#000000");
       doc.text(
         'Por haber participado con éxito en la capacitación que abarca los siguientes temas:',
         W / 2 + 35, 105, { align: 'center' }
@@ -359,14 +363,14 @@ export default function Certificado() {
       doc.text('• Otros relacionados para establecer el trabajo de igual valor', W / 2 + 55, 145, { align: 'center' });
 
       doc.setFontSize(15);
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor("#000000");
       const fechaMostrar = pruebaEstatica?.ultima_fecha
         ? new Date(pruebaEstatica.ultima_fecha).toLocaleDateString('es-EC', { month: 'long', year: 'numeric' })
         : 'Agosto 2026';
       doc.text(`Fecha: ${fechaMostrar}`, W / 2 + 105, 155, { align: 'center' });
       doc.text('Duración: 40 horas', W / 2 - 35, 155, { align: 'center' });
 
-      doc.setDrawColor(20, 103, 129);
+      doc.setDrawColor("#146785");
       doc.setLineWidth(0.8);
       doc.line(W / 2, H - 25, W / 2 + 85, H - 25);
 

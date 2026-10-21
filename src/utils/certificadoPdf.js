@@ -21,10 +21,10 @@ const toBase64 = (url) =>
  */
 export async function descargarCertificadoPdf({
   nombreUsuario,
-  cedula,
-  cargo,
+  //cedula,
+  //cargo,
   nombreCurso,
-  calificacion,
+  //calificacion,
   fecha,
   firmas = [],
   logo = '/img/safemedic.png',
@@ -60,29 +60,32 @@ export async function descargarCertificadoPdf({
 
   if (logoBase64) doc.addImage(logoBase64, 'PNG', W - 85, 5, 75, 25);
 
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(60);
+  doc.setFont("garamond","bold");
+  doc.setFontSize(70);
   doc.setTextColor(212, 175, 55);
-  doc.text('CERTIFICADO', W / 2 + 40, 58, { align: 'center' });
+  doc.text('CERTIFICADO', W / 2 + 40, 65, { align: 'center' });
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(14);
   doc.setTextColor(68, 68, 68);
-  doc.text('Otorgado a', W / 2 + 40, 72, { align: 'center' });
+  doc.text('Otorgado a', W / 2 + 40, 78, { align: 'center' });
 
   doc.setFont('times', 'italic');
-  doc.setFontSize(30);
+  doc.setFontSize(35);
   doc.setTextColor(0, 0, 0);
-  doc.text(String(nombreUsuario || '').toUpperCase(), W / 2 + 30, 87, { align: 'center' });
+  doc.text(String(nombreUsuario || ''), W / 2 + 30, 95, { align: 'center' });
 
+  /*
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(12);
   doc.setTextColor(85, 85, 85);
   doc.text(`C.I.: ${cedula || ''}  |  Cargo: ${cargo || ''}`, W / 2 + 30, 96, { align: 'center' });
+*/
 
-  doc.setFontSize(13);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(16);
   doc.setTextColor(0, 0, 0);
-  doc.text('Por haber completado y aprobado satisfactoriamente la capacitación:', W / 2 + 35, 108, {
+  doc.text('Por haber completado y aprobado satisfactoriamente la formación de:', W / 2 + 35, 108, {
     align: 'center',
   });
 
@@ -91,16 +94,18 @@ export async function descargarCertificadoPdf({
   doc.setTextColor(13, 45, 62);
   const cursoLines = doc.splitTextToSize(nombreCurso || '', 170);
   doc.text(cursoLines, W / 2 + 35, 120, { align: 'center' });
-  const nextY = 120 + cursoLines.length * 7;
+
+  const nextY = 125 + cursoLines.length * 7;
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(13);
   doc.setTextColor(0, 0, 0);
+  /*
   if (calificacion != null && !Number.isNaN(Number(calificacion))) {
     doc.text(`Calificación obtenida: ${Number(calificacion).toFixed(1)}%`, W / 2 - 20, nextY + 10, {
       align: 'center',
     });
-  }
+  }*/
   doc.text(`Fecha: ${fecha}`, W / 2 + 100, nextY + 10, { align: 'center' });
 
   const n = firmasBase64.length;

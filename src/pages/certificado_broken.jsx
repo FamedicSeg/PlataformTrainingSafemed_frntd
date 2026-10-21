@@ -190,58 +190,61 @@ export default function Certificado() {
       }
 
       // ── TÍTULO ──
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(60);
-      doc.setTextColor(212, 175, 55); // Dorado
-      doc.text('CERTIFICADO', W / 2 + 40, 58, { align: 'center' });
+      doc.setFont("garamond", "bold");
+      doc.setFontSize(70);
+      doc.setTextColor("#d4af37"); // Dorado
+      doc.text('CERTIFICADO', W / 2 + 40, 65, { align: 'center'});
 
       // ── ENCABEZADO ──
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(14);
-      doc.setTextColor(68, 68, 68); // Gris
-      doc.text('Otorgado a', W / 2 + 40, 72, { align: 'center' });
+      doc.setTextColor("#444444"); // Gris
+      doc.text('Otorgado a', W / 2 + 40, 78, { align: 'center' });
 
       // ── NOMBRE DEL USUARIO ──
       doc.setFont('times', 'italic');
-      doc.setFontSize(30);
-      doc.setTextColor(0, 0, 0); // Negro
-      doc.text(nombreUsuario.toUpperCase(), W / 2 + 30, 87, { align: 'center' });
+      doc.setFontSize(35);
+      doc.setTextColor("#000000"); // Negro
+      doc.text(nombreUsuario, W / 2 + 30, 95, { align: 'center' });
 
-      // ── INFORMACIÓN DEL USUARIO ──
+      /* ── INFORMACIÓN DEL USUARIO ──
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(12);
-      doc.setTextColor(85, 85, 85); // Gris oscuro
+      doc.setTextColor("#555555"); // Gris oscuro
       doc.text(`C.I.: ${cedula}  |  Cargo: ${cargo}`, W / 2 + 30, 96, { align: 'center' });
+      */
 
       // ── PÁRRAFO INTRODUCTORIO ──
-      doc.setFontSize(13);
-      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(14);
+      doc.setTextColor("#000000");
       doc.text('Por haber completado y aprobado satisfactoriamente la capacitación:', W / 2 + 35, 108, { align: 'center' });
 
       // ── NOMBRE DEL CURSO ──
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(15);
-      doc.setTextColor(13, 45, 62); // Azul oscuro
+      doc.setTextColor("#0d2d3e"); // Azul oscuro
       const cursoLines = doc.splitTextToSize(nombreCurso, 170);
       doc.text(cursoLines, W / 2 + 35, 120, { align: 'center' });
 
-      const nextY = 120 + cursoLines.length * 7;
+      const nextY = 125 + cursoLines.length * 7;
 
       // ── CALIFICACIÓN Y FECHA ──
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(13);
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor("#000000");
+      /*
       if (calificacion != null) {
         doc.text(`Calificación obtenida: ${Number(calificacion).toFixed(1)}%`, W / 2 - 20, nextY + 10, {
           align: 'center',
         });
-      }
+      }*/
       doc.text(`Fecha: ${fecha}`, W / 2 + 100, nextY + 10, { align: 'center' });
 
-      // ── LÍNEA DE FIRMA ──
+      /* ── LÍNEA DE FIRMA ──
       doc.setDrawColor(20, 103, 129); // #146781
       doc.setLineWidth(0.8);
       doc.line(W / 2, H - 25, W / 2 + 85, H - 25);
+      */
 
       // ── FIRMAS (DINÁMICAS) ──
       // Distribuir las firmas según la cantidad
@@ -403,8 +406,8 @@ export default function Certificado() {
       await fetch(`${API_URL}/api/certificados/marcar-descargado`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: Bearer ${token}`,
+        'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ nombreCurso }),
       });
@@ -426,7 +429,7 @@ export default function Certificado() {
 
       // PASO 1: Obtener el certificado con sus firmas asociadas
       const resCert = await fetch(`${API_URL}/api/certificados/con-firmas/${cert.id}`, {
-        headers: { Authorization: Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!resCert.ok) {
