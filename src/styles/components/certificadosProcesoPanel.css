@@ -1,0 +1,13 @@
+.btn-descargar-certificados{
+    background-color: #01213cbc;
+    border-color: transparent !important;
+    color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 6px 8px;
+}
+
+.btn-descargar-certificados:hover {
+    background-color: #011f39;
+    border-color: transparent !important;
+}

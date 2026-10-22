@@ -16,13 +16,29 @@ const toBase64 = (url) =>
         })
     );
 
+const cargarFirmas = async (firmas, cache = new Map()) =>
+  Promise.all(
+    (firmas || []).map(async (firma) => {
+      const url = firma.imagen_firma_url;
+      let imagen = null;
+      if (url) {
+        if (!cache.has(url)) cache.set(url, toBase64(url).catch(() => null));
+        imagen = await cache.get(url);
+      }
+      return {
+        nombre_admin: firma.nombre_admin || 'Administrador',
+        cargo: firma.cargo || 'Cargo',
+        imagen,
+      };
+    })
+  );
+
 /**
  * Genera y descarga el PDF de un certificado (mismo diseño que el de la vista del usuario).
  */
 export async function descargarCertificadoPdf({
   nombreUsuario,
   nombreCurso,
-  //calificacion,
   fecha,
   firmas = [],
   logo = '/img/safemedic.png',
@@ -32,20 +48,50 @@ export async function descargarCertificadoPdf({
 
   try {
     logoBase64 = await toBase64(logo);
-    firmasBase64 = await Promise.all(
-      (firmas || []).map(async (firma) => ({
-        nombre_admin: firma.nombre_admin || 'Administrador',
-        cargo: firma.cargo || 'Cargo',
-        imagen: firma.imagen_firma_url
-          ? await toBase64(firma.imagen_firma_url).catch(() => null)
-          : null,
-      }))
-    );
+    firmasBase64 = await cargarFirmas(firmas);
   } catch {
     console.warn('No se pudieron cargar las imágenes');
   }
 
   const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  dibujarCertificado(doc, { nombreUsuario, nombreCurso, fecha, logoBase64, firmasBase64 });
+
+  const nombreArchivo = `Certificado_${String(nombreUsuario).replace(/\s+/g, '_')}_${String(nombreCurso)
+    .slice(0, 20)
+    .replace(/\s+/g, '_')}.pdf`;
+  doc.save(nombreArchivo);
+}
+
+/**
+ * Genera un único PDF con varios certificados (una página por certificado).
+ * `certificados` = [{ nombreUsuario, nombreCurso, fecha, firmas }]
+ */
+export async function descargarCertificadosMultiplesPdf(
+  certificados,
+  nombreArchivo = 'Certificados.pdf',
+  logo = '/img/safemedic.png'
+) {
+  const logoBase64 = await toBase64(logo).catch(() => null);
+  const cache = new Map();
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+  for (let i = 0; i < certificados.length; i += 1) {
+    if (i > 0) doc.addPage();
+    const c = certificados[i];
+    const firmasBase64 = await cargarFirmas(c.firmas, cache);
+    dibujarCertificado(doc, {
+      nombreUsuario: c.nombreUsuario,
+      nombreCurso: c.nombreCurso,
+      fecha: c.fecha,
+      logoBase64,
+      firmasBase64,
+    });
+  }
+
+  doc.save(nombreArchivo);
+}
+
+function dibujarCertificado(doc, { nombreUsuario, nombreCurso, fecha, logoBase64, firmasBase64 }) {
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();
 
@@ -134,9 +180,4 @@ export async function descargarCertificadoPdf({
       doc.text(firma.cargo, pos.x + 32.5, H - 7, { align: 'center' });
     }
   });
-
-  const nombreArchivo = `Certificado_${String(nombreUsuario).replace(/\s+/g, '_')}_${String(nombreCurso)
-    .slice(0, 20)
-    .replace(/\s+/g, '_')}.pdf`;
-  doc.save(nombreArchivo);
 }

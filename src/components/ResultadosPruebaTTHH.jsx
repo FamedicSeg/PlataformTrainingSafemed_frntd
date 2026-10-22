@@ -3,6 +3,7 @@ import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import '../styles/components/resultadosPruebaTTHH.css'
 
 export default function ResultadosPruebaTTHH() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -242,6 +243,104 @@ export default function ResultadosPruebaTTHH() {
     doc.save(`Certificado_2025_${persona.nombre_completo}.pdf`);
   };
 
+  // DESCARGAR TODOS LOS CERTIFICADOS (aprobados) EN UN SOLO PDF
+  const [generandoTodos, setGenerandoTodos] = useState(false);
+
+  const exportarTodosCertificados = async (anio) => {
+    const aprobados = datos.filter((r) => r.aprobado);
+    if (aprobados.length === 0) {
+      alert("No hay personas aprobadas para generar certificados.");
+      return;
+    }
+    const fechaTexto = anio === 2025 ? "Octubre 2025" : "Agosto 2026";
+
+    setGenerandoTodos(true);
+    try {
+      const toBase64 = (url) =>
+        fetch(url)
+          .then((r) => r.blob())
+          .then(
+            (blob) =>
+              new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+              })
+          );
+
+      const [logoBase64, firmaBase64] = await Promise.all([
+        toBase64("/img/safemedic.png"),
+        toBase64("/img/firma.png"),
+      ]);
+
+      const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+      const W = doc.internal.pageSize.getWidth();
+      const H = doc.internal.pageSize.getHeight();
+
+      aprobados.forEach((persona, i) => {
+        if (i > 0) doc.addPage();
+
+        doc.setFillColor("#00b8c6");
+        doc.triangle(0, H, W * 0.40, H, 0, H * 0.5, "F");
+        doc.setFillColor("#0d2d3e");
+        doc.triangle(0, 0, W * 0.28, 0, 0, H - 60, "F");
+        doc.setFillColor("#d4af37");
+        doc.circle(W * 0.08, H * 0.10, W * 0.07, "F");
+
+        doc.addImage(logoBase64, "PNG", W - 85, 5, 75, 25);
+        doc.setFont("garamond", "bold");
+        doc.setFontSize(70);
+        doc.setTextColor("#d4af37");
+        doc.text("CERTIFICADO", W / 2 + 40, 65, { align: "center" });
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(16);
+        doc.setTextColor("#444444");
+        doc.text("Otorgado a", W / 2 + 40, 80, { align: "center" });
+
+        doc.setFont("times", "italic");
+        doc.setFontSize(35);
+        doc.setTextColor("#000000");
+        doc.text(persona.nombre_completo, W / 2 + 30, 95, { align: "center" });
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(14);
+        doc.text(
+          "Por haber participado con éxito en la capacitación que abarca los siguientes temas:",
+          W / 2 + 35,
+          105,
+          { align: "center" }
+        );
+        doc.setFontSize(12);
+        doc.text("• Derechos laborales de hombres y mujeres", W / 2 + 40, 115, { align: "center" });
+        doc.text("• Igualdad de género", W / 2 + 18, 125, { align: "center" });
+        doc.text("• Erradicación de la violencia y no discriminación", W / 2 + 44, 135, { align: "center" });
+        doc.text("• Otros relacionados para establecer el trabajo de igual valor", W / 2 + 55, 145, { align: "center" });
+
+        doc.setFontSize(15);
+        doc.text(`Fecha: ${fechaTexto}`, W / 2 + 105, 155, { align: "center" });
+        doc.text("Duración: 40 horas", W / 2 - 35, 155, { align: "center" });
+
+        doc.setDrawColor("#146781");
+        doc.setLineWidth(0.8);
+        doc.line(W / 2, H - 25, W / 2 + 85, H - 25);
+
+        doc.addImage(firmaBase64, "PNG", W / 2 + 10, H - 58, 65, 32);
+        doc.setFont("times", "italic");
+        doc.text("Abigail Cisneros", W / 2 + 40, H - 15, { align: "center" });
+        doc.text("JEFE DE TALENTO HUMANO", W / 2 + 40, H - 7, { align: "center" });
+      });
+
+      doc.save(`Certificados_TTHH_${anio}.pdf`);
+    } catch (err) {
+      console.error("Error generando certificados:", err);
+      alert("No se pudo generar el PDF con todos los certificados.");
+    } finally {
+      setGenerandoTodos(false);
+    }
+  };
+
   return (
     <div className="p-3">
       <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
@@ -253,10 +352,17 @@ export default function ResultadosPruebaTTHH() {
             <i className="bi bi-file-earmark-excel me-1"></i>
             Exportar Excel (aprobados)
           </button>
-          {/*<button className="btn btn-primary btn-sm" onClick={exportarTodosCertificados}>
-            <i className="bi bi-file-earmark-pdf me-1"></i>
-            Todos los certificados
-          </button>*/}
+          {[2025, 2026].map((anio) => (
+            <button
+              key={anio}
+              className="btn-descargar-2025-2026"
+              disabled={generandoTodos || cargando}
+              onClick={() => exportarTodosCertificados(anio)}
+            >
+              <i className="bi bi-file-earmark-pdf me-1"></i>
+              {generandoTodos ? "⌛ Generando..." : `Certificados ${anio}`}
+            </button>
+          ))}
           <button className="btn btn-outline-secondary btn-sm" onClick={cargarDatos}>
             <i className="bi bi-arrow-clockwise me-1"></i>
             Actualizar

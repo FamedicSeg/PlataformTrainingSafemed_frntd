@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Award, Download, Search } from 'lucide-react';
 import Swal from 'sweetalert2';
-import { descargarCertificadoPdf } from '../utils/certificadoPdf';
+import { descargarCertificadoPdf, descargarCertificadosMultiplesPdf } from '../utils/certificadoPdf';
+import '../styles/components/certificadosProcesoPanel.css';
+
 
 const formatFecha = (valor) => {
   if (!valor) return '—';
@@ -18,6 +20,7 @@ export default function CertificadosProcesoPanel() {
   const [busqueda, setBusqueda] = useState('');
   const [cursoFiltro, setCursoFiltro] = useState('');
   const [descargando, setDescargando] = useState(null);
+  const [descargandoTodos, setDescargandoTodos] = useState(false);
 
   useEffect(() => {
     const cargar = async () => {
@@ -85,6 +88,47 @@ export default function CertificadosProcesoPanel() {
     }
   };
 
+  const descargarTodos = async () => {
+    if (filtrados.length === 0) return;
+    setDescargandoTodos(true);
+    try {
+      const detalles = [];
+      for (let i = 0; i < filtrados.length; i += 10) {
+        const lote = await Promise.all(
+          filtrados.slice(i, i + 10).map(async (cert) => {
+            const res = await fetch(`${API_URL}/api/certificados/mi-proceso/${cert.id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.message || 'Error');
+            const c = data.data;
+            return {
+              nombreUsuario: c.nombre_usuario,
+              nombreCurso: c.nombre_curso,
+              fecha: formatFecha(c.fecha_emision),
+              firmas: (c.firmas || []).map((f) => ({
+                nombre_admin: f.nombre_admin,
+                cargo: f.cargo,
+                imagen_firma_url: f.imagen_firma_url || '/img/firma.png',
+              })),
+            };
+          })
+        );
+        detalles.push(...lote);
+      }
+
+      const sufijo = busqueda.trim()
+        ? busqueda.trim().replace(/\s+/g, '_')
+        : 'todos';
+      await descargarCertificadosMultiplesPdf(detalles, `Certificados_${sufijo}.pdf`);
+    } catch (error) {
+      console.error(error);
+      Swal.fire('Error', 'No se pudo generar el PDF con todos los certificados', 'error');
+    } finally {
+      setDescargandoTodos(false);
+    }
+  };
+
   return (
     <div className="p-3">
       <div className="d-flex flex-wrap gap-2 mb-3 align-items-center">
@@ -109,6 +153,14 @@ export default function CertificadosProcesoPanel() {
             <option key={c} value={c}>{c}</option>
           ))}
         </select>
+        <button
+          className="btn-descargar-certificados"
+          disabled={descargandoTodos || filtrados.length === 0}
+          onClick={descargarTodos}
+        >
+          <Download size={16} />{' '}
+          {descargandoTodos ? '⌛ Generando...' : `Descargar (${filtrados.length}) certificados`}
+        </button>
         <span className="text-muted ms-auto">
           <Award size={16} /> {filtrados.length} certificado{filtrados.length !== 1 ? 's' : ''}
         </span>

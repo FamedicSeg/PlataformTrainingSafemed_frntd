@@ -1,0 +1,14 @@
+.btn-descargar-2025-2026{
+    font-size: 12px;
+    padding: 4px 8px;
+    background-color: #007bff;
+    border-color: transparent !important;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-descargar-2025-2026:hover {
+    background-color: #013c6c;
+    border-color: transparent !important;
+}
