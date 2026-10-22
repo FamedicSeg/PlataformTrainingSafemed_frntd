@@ -93,8 +93,8 @@ export default function CoursesTTHH() {
           fecha_fin: c.fecha_fin_curso || null
         }));
       
-      // Combinar: primero dinÃ¡micos, luego estÃ¡ticos
-      const todosCursos = [...cursosDinamicos, ...cursosEstaticos];
+      // Combinar: primero estáticos, luego dinámicos (ya vienen ordenados por id ASC)
+      const todosCursos = [...cursosEstaticos, ...cursosDinamicos];
       setCourses(todosCursos);
       console.log('✓ Cursos cargados:', cursosDinamicos.length, '+ Estáticos:', cursosEstaticos.length);
     } catch (error) {
