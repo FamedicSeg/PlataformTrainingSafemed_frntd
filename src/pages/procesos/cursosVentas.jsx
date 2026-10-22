@@ -6,7 +6,7 @@ import SalaJitsiMeet from "../../components/SalaJitsiMeet";
 import { esCursoExpiradoSeguro, esCursoProximoSeguro } from "../../utils/dateUtils";
 import "../../styles/pages/cursos.css";
 
-export default function CoursesVentasCosta() {
+export default function CoursesVentas() {
   const navigate = useNavigate();
   const location = useLocation();
   const nombre = localStorage.getItem("usuario");
@@ -42,7 +42,7 @@ export default function CoursesVentasCosta() {
       if (data.success && data.data) {
         // Filtrar solo cursos del proceso "Ventas"
         const cursosDinamicos = data.data
-          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'gestión comercial costa')
+          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'gestión comercial sierra')
           .map((c) => ({
             id: c.curso_id,
             inscripcion_id: c.id,
@@ -72,7 +72,7 @@ export default function CoursesVentasCosta() {
         });
         _setCursosCompletados(completadosObj);
         setCourses(cursosDinamicos);
-        console.log('✓ Cursos de Ventas Costa cargados:', cursosDinamicos.length);
+        console.log('✓ Cursos de Ventas Sierra cargados:', cursosDinamicos.length);
       }
     } catch (error) {
       console.error('✖ Error cargando cursos:', error);
@@ -213,7 +213,7 @@ export default function CoursesVentasCosta() {
                 Plataforma de Capacitación Laboral
               </h2>
               <h3 className="titulo-pagina">
-                Cursos de Gestión Comercial Costa
+                Cursos de Gestión Comercial Sierra
               </h3>
               <p className="subtitulo-pagina">
                 Completa los cursos paso a paso y adquiere nuevas habilidades.
@@ -301,7 +301,7 @@ export default function CoursesVentasCosta() {
                     {/* Estado del curso */}
                     <div className="mt-auto">
                       <div className="mb-2">
-                        <small className={`badge ${noDisponible ? 'bg-warning text-dark' : completado ? 'bg-success' : 'bg-secondary'}`}>
+                        <small className={`estado-curso ${noDisponible ? 'proximo' : completado ? 'completado' : 'pendiente'}`}>
                           {noDisponible ? 'Próximamente' : completado ? '✅ Curso realizado' : 'Por comenzar'}
                         </small>
                         {esCursoSincronico(curso) && (

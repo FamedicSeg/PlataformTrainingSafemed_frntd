@@ -390,7 +390,7 @@ export default function AsistenciaPanel({
         
       alternateRowStyles: { fillColor: FONDO_SECUNDARIO },
       columnStyles: {
-        0: { cellWidth: 9.5,  halign: 'center' },
+        0: { cellWidth: 10.5,  halign: 'center' },
         1: { cellWidth: 60,  halign: 'center'   },
         2: { cellWidth: 30,  halign: 'center' },
         3: { cellWidth: 48,  halign: 'center'   },
@@ -405,7 +405,7 @@ export default function AsistenciaPanel({
     // ── Pie de página ──────────────────────────────────────────
     const finalY = doc.lastAutoTable.finalY + 10;
 
-    const espacioDisponible = pageH - finalY - 15; // 20mm de margen inferior
+    const margenInferior = 15;
 
     const ancho1 = 60;
     const ancho2 = 60;
@@ -416,10 +416,12 @@ export default function AsistenciaPanel({
 
     let yCuadros;
 
-    if (espacioDisponible > alturaTotalCuadros){
-      yCuadros = pageH - cuadroAlto - 15; // 15mm de margen inferior
+    if (finalY + alturaTotalCuadros <= pageH - margenInferior) {
+      yCuadros = pageH - cuadroAlto - margenInferior;
     } else {
-      yCuadros = pageH - cuadroAlto - 15; // Si no hay espacio, los ponemos justo después de la tabla
+      // No cabe debajo de la tabla: las firmas van en una página nueva
+      doc.addPage();
+      yCuadros = mL + 3; // dibujarCuadro dibuja el recuadro 3mm por encima de y
     }
 
     const x1 = mL;

@@ -416,7 +416,7 @@ export default function EvaluacionManager({ cursoId, onClose }) {
               </div>
               <p className="eval-nota-info mt-2">
                 El usuario necesita obtener al menos <strong>{formEval.calificacion_minima}%</strong> para aprobar.
-                Tiene máximo <strong>2 intentos</strong>. Si falla ambos, Talento Humano puede rehabilitar.
+                Tiene máximo <strong>2 intentos</strong>. Si falla ambos, el Líder del proceso puede rehabilitar.
               </p>
             </form>
           </div>

@@ -301,7 +301,7 @@ export default function CoursesInvestigacionDesarrollo() {
                     {/* Estado del curso */}
                     <div className="mt-auto">
                       <div className="mb-2">
-                        <small className={`badge ${noDisponible ? 'bg-warning text-dark' : completado ? 'bg-success' : 'bg-secondary'}`}>
+                        <small className={`estado-curso ${noDisponible ? 'proximo' : completado ? 'completado' : 'pendiente'}`}>
                           {noDisponible ? 'Próximamente' : completado ? '✅ Curso realizado' : 'Por comenzar'}
                         </small>
                         {esCursoSincronico(curso) && (

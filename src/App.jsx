@@ -22,8 +22,7 @@ import CoursesCompras from './pages/procesos/cursosCompras';
 import CoursesInfraMantenimiento from './pages/procesos/cursosInfraMantenimiento';
 import CoursesInvestigacionDesarrollo from './pages/procesos/cursosInvestigaciónDesarrollo';
 import CoursesMarketing from './pages/procesos/cursosMarketing';
-import CoursesVentasCosta from './pages/procesos/cursosVentasCosta';
-import CoursesVentasSierra from './pages/procesos/cursosVentasSierra';
+import CoursesVentas from './pages/procesos/cursosVentas';
 
 import AdminPrincipal from './pages/adminPrincipal';
 import Login from './pages/login';
@@ -390,18 +389,10 @@ function App() {
             } 
           />
           <Route 
-            path="/courses/ventasCosta" 
+            path="/courses/ventas" 
             element={
               <ProtectedUserRoute>
-                <CoursesVentasCosta />
-              </ProtectedUserRoute>
-            } 
-          />
-          <Route 
-            path="/courses/ventasSierra" 
-            element={
-              <ProtectedUserRoute>
-                <CoursesVentasSierra />
+                <CoursesVentas />
               </ProtectedUserRoute>
             } 
           />
