@@ -213,7 +213,7 @@ export default function CoursesVentas() {
                 Plataforma de Capacitación Laboral
               </h2>
               <h3 className="titulo-pagina">
-                Cursos de Gestión Comercial Sierra
+                Cursos de Gestión Comercial
               </h3>
               <p className="subtitulo-pagina">
                 Completa los cursos paso a paso y adquiere nuevas habilidades.
