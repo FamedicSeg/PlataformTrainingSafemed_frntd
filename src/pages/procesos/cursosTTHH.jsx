@@ -131,11 +131,12 @@ export default function CoursesTTHH() {
           asignados.add(inscripcion.curso_id); // â† Agregar a asignados
           if (inscripcion.mejor_puntaje !== null && inscripcion.mejor_puntaje !== undefined) {
             completadosObj[`curso_${inscripcion.curso_id}`] = true;
+          } else if (inscripcion.porcentaje_modulos === 100) {
+            completadosObj[`curso_${inscripcion.curso_id}`] = true;
           }
         });
       }
 
-      // Cursos estÃ¡ticos: completados segÃºn cursos_completados en BD
       const dataEstaticos = await respEstaticos.json();
       if (dataEstaticos.ok && dataEstaticos.cursosCompletados) {
         dataEstaticos.cursosCompletados.forEach(curso => {

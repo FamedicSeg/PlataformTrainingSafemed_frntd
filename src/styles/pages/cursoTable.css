@@ -311,6 +311,22 @@
     border-color: #dc2626;
 }
 
+/* ===== BOTONES DESHABILITADOS ===== */
+.table-corporate .btn-accion:disabled {
+    background: #f3f4f6 !important;
+    color: #9ca3af !important;
+    border-color: #e5e7eb !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.table-corporate .btn-accion:disabled:hover {
+    background: #f3f4f6 !important;
+    color: #9ca3af !important;
+}
+
 /* ===== SELECTORES DE FILA ===== */
 .table-corporate .fila-seleccionada {
     background: #f0f7ff !important;

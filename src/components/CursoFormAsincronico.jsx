@@ -43,7 +43,7 @@ export default function CursoFormAsincronico({ cursoId = null, onSave, onCancel,
                 fecha_inicio: aInputLocal(initialData.fecha_inicio_curso || initialData.fecha_inicio),
                 fecha_fin: aInputLocal(initialData.fecha_fin_curso || initialData.fecha_fin),
                 habilitar_certificado: !!initialData.habilitar_certificado,
-                crear_evaluacion: !!initialData.tiene_evaluacion
+                crear_evaluacion: !!initialData.crear_evaluacion    
             });
 
             // Detectar si es rechazado
@@ -201,6 +201,7 @@ export default function CursoFormAsincronico({ cursoId = null, onSave, onCancel,
                 
                 console.log('📤 Enviando datos del curso:', bodyData);
                 console.log('   - habilitar_certificado:', formData.habilitar_certificado);
+                console.log('   - crear_evaluacion:', formData.crear_evaluacion);
                 console.log('   - firmas_seleccionadas:', bodyData.firmas_seleccionadas);
 
                 const response = await fetch(url, {

@@ -112,8 +112,14 @@ export default function CursosTable({
                         <button
                             className="btn-accion btn-evaluacion"
                             onClick={() => onViewEvaluacion?.(curso.id)}
-                            disabled={curso.estado !== 'aprobado'}
-                            title={curso.estado !== 'aprobado' ? 'El curso debe estar aprobado para crear evaluaciones' : 'Gestionar evaluación final'}
+                            disabled={curso.estado !== 'aprobado' || !curso.crear_evaluacion}
+                            title={
+                              !curso.crear_evaluacion 
+                                ? 'Evaluación deshabilitada en este curso' 
+                                : curso.estado !== 'aprobado' 
+                                ? 'El curso debe estar aprobado para crear evaluaciones' 
+                                : 'Gestionar evaluación final'
+                            }
                         >
                             <ClipboardList size={14} />
                             <span>Evaluación</span>
