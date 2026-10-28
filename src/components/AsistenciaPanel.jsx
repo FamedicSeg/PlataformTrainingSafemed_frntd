@@ -217,6 +217,20 @@ export default function AsistenciaPanel({
     const rowH  = 8;                        // altura fila estándar
     const valW  = useW - etqW;              // columna valor (fila simple)
 
+    // ── Helper: calcula la altura necesaria según las líneas de texto ──
+    const calcularAlturaDinamica = (texto, anchoCelda) => {
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      // Usamos anchoCelda - 8 para dar un margen de 4mm a cada lado
+      const lineas = doc.splitTextToSize(texto, anchoCelda - 8);
+      
+      // FIJAMOS LA ALTURA DE LÍNEA EN 4.5mm para evitar el bug de getLineHeight() en jsPDF
+      const altoLinea = 4.5; 
+      
+      // Altura total de las líneas + 6mm de margen (3mm arriba y 3mm abajo)
+      return Math.max(rowH, (lineas.length * altoLinea) + 6);
+    };
+
     // ── Helper: dibuja una celda con borde, fondo y texto ─────
     const celda = (x, y, w, h, texto, negrita = false, fondo = null) => {
       if (fondo) {
@@ -231,24 +245,15 @@ export default function AsistenciaPanel({
       doc.setTextColor(...TEXTO_OSCURO);
       doc.setFont('helvetica', negrita ? 'bold' : 'normal');
       
-      const lineas = doc.splitTextToSize(texto, w - 6);
-      const altoLinea = doc.getLineHeight(); 
+      const lineas = doc.splitTextToSize(texto, w - 8);
+      const altoLinea = 4.5; // Fijamos la misma altura de línea
       const altoTexto = lineas.length * altoLinea;
       
       // Calculamos la posición Y para que el texto quede centrado verticalmente
-      const textY = y + (h - altoTexto) / 2 + (altoLinea * 0.7);
+      // El + (altoLinea * 0.8) ajusta la línea base del texto para que no se vea muy abajo
+      const textY = y + (h - altoTexto) / 2 + (altoLinea * 0.8);
       
-      doc.text(lineas, x + 3, textY);
-    };
-
-    // ── Helper: calcula la altura necesaria según las líneas de texto ──
-    const calcularAlturaDinamica = (texto, anchoCelda) => {
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      const lineas = doc.splitTextToSize(texto, anchoCelda - 6);
-      const altoLinea = doc.getLineHeight();
-      // Altura total de las líneas + 4mm de margen (2mm arriba y 2mm abajo)
-      return Math.max(rowH, (lineas.length * altoLinea) + 4);
+      doc.text(lineas, x + 4, textY);
     };
 
     let y = mL;
