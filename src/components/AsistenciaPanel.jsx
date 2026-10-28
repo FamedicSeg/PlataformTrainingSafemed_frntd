@@ -312,7 +312,7 @@ export default function AsistenciaPanel({
     const temaH = Math.max(rowH, temaLineas.length * 3 + 5);
     celda(mL,        y, etqW, temaH, 'TEMA:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, temaH, nombreCurso);
-    y += temaH;
+    y += temaH + 5;
 
     // ── Fila 2: FECHA | DURACIÓN ────────────────────────────
     // Dividimos el área de valores en dos mitades iguales
@@ -349,7 +349,7 @@ export default function AsistenciaPanel({
     const dirigidoH = Math.max(rowH, dirigidoLineas.length * 3 + 5); 
     celda(mL,        y, etqW, dirigidoH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, dirigidoH, dirigidoA);
-    y += dirigidoH;
+    y += dirigidoH + 5;
 
     // ── Fila 4: DESCRIPCIÓN (altura variable) ──────────────────
     const descLineas = doc.splitTextToSize(descripcionCurso, valW - 6);
