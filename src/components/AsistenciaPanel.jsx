@@ -307,7 +307,7 @@ export default function AsistenciaPanel({
     const rowH  = 8;                       // altura fila estándar
     const valW  = useW - etqW;                // columna valor (fila simple)
 
-    // ── Fila 1: TEMA ───────────────────────────────────────────
+    // ── Fila 1: TEMA ────────────────
     const temaLineas = doc.splitTextToSize(nombreCurso, valW - 6);
     const temaH = Math.max(rowH, temaLineas.length * 4.5 + 5);
     celda(mL,        y, etqW, temaH, 'TEMA:', true, FONDO_SECUNDARIO);
