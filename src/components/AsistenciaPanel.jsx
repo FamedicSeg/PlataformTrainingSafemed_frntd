@@ -226,7 +226,7 @@ export default function AsistenciaPanel({
       doc.setTextColor(...TEXTO_OSCURO);
       doc.setFont('helvetica', negrita ? 'bold' : 'normal');
       const lineas = doc.splitTextToSize(texto, w - 4);
-      doc.text(lineas, x + 3, y + 2);
+      doc.text(lineas, x + 3, y + 6);
     };
 
     let y = mL;
@@ -307,9 +307,9 @@ export default function AsistenciaPanel({
     const rowH  = 8;                       // altura fila estándar
     const valW  = useW - etqW;                // columna valor (fila simple)
 
-    // ── Fila 1: TEMA ────────────────
+    // ── Fila 1: TEMA ───────────────────────────────────────────
     const temaLineas = doc.splitTextToSize(nombreCurso, valW - 6);
-    const temaH = Math.max(rowH, temaLineas.length * 6 + 5);
+    const temaH = Math.max(rowH, temaLineas.length * 4.5 + 5);
     celda(mL,        y, etqW, temaH, 'TEMA:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, temaH, nombreCurso);
     y += temaH;
@@ -349,7 +349,7 @@ export default function AsistenciaPanel({
     const dirigidoH = Math.max(rowH, dirigidoLineas.length * 3 + 5); 
     celda(mL,        y, etqW, dirigidoH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, dirigidoH, dirigidoA);
-    y += dirigidoH;
+    y += dirigidoH + 5;
 
     // ── Fila 4: DESCRIPCIÓN (altura variable) ──────────────────
     const descLineas = doc.splitTextToSize(descripcionCurso, valW - 6);
