@@ -312,7 +312,7 @@ export default function AsistenciaPanel({
     const temaH = Math.max(rowH, temaLineas.length * 3 + 5);
     celda(mL,        y, etqW, temaH, 'TEMA:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, temaH, nombreCurso);
-    y += temaH + 5;
+    y += temaH;
 
     // ── Fila 2: FECHA | DURACIÓN ────────────────────────────
     // Dividimos el área de valores en dos mitades iguales
