@@ -207,7 +207,7 @@ export default function AsistenciaPanel({
     const useW  = pageW - mL - mR;  // 182mm
 
     // ── Colores ────────────────────────────────────────────────
-    const FONDO_PRINCIPAL  = [255, 255, 255]; // Cambiado a blanco para el título
+    const FONDO_PRINCIPAL  = [255, 255, 255]; 
     const FONDO_SECUNDARIO = [255, 255, 255];
     const BORDE        = [0, 0, 0];
     const TEXTO_OSCURO = [0,  0,  0];
@@ -217,21 +217,7 @@ export default function AsistenciaPanel({
     const rowH  = 8;                        // altura fila estándar
     const valW  = useW - etqW;              // columna valor (fila simple)
 
-    // ── Helper: calcula la altura necesaria según las líneas de texto ──
-    const calcularAlturaDinamica = (texto, anchoCelda) => {
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      // Usamos anchoCelda - 8 para dar un margen de 4mm a cada lado
-      const lineas = doc.splitTextToSize(texto, anchoCelda - 8);
-      
-      // FIJAMOS LA ALTURA DE LÍNEA EN 4.5mm para evitar el bug de getLineHeight() en jsPDF
-      const altoLinea = 4.5; 
-      
-      // Altura total de las líneas + 6mm de margen (3mm arriba y 3mm abajo)
-      return Math.max(rowH, (lineas.length * altoLinea) + 6);
-    };
-
-    // ── Helper: dibuja una celda con borde, fondo y texto ─────
+    // ── Helper: dibuja una celda con borde, fondo y texto perfectamente centrado ─────
     const celda = (x, y, w, h, texto, negrita = false, fondo = null) => {
       if (fondo) {
         doc.setFillColor(...fondo);
@@ -245,13 +231,14 @@ export default function AsistenciaPanel({
       doc.setTextColor(...TEXTO_OSCURO);
       doc.setFont('helvetica', negrita ? 'bold' : 'normal');
       
+      // Dividimos el texto dándole un margen interno de 4mm a cada lado (w - 8)
       const lineas = doc.splitTextToSize(texto, w - 8);
-      const altoLinea = 4.5; // Fijamos la misma altura de línea
+      const altoLinea = 4.5; // Altura aproximada en mm de una línea de texto a 9pt
       const altoTexto = lineas.length * altoLinea;
       
-      // Calculamos la posición Y para que el texto quede centrado verticalmente
-      // El + (altoLinea * 0.8) ajusta la línea base del texto para que no se vea muy abajo
-      const textY = y + (h - altoTexto) / 2 + (altoLinea * 0.8);
+      // Fórmula para centrar el texto verticalmente dentro de la celda
+      // Le sumamos 3.2 para ajustar la línea base (baseline) y que no se vea pegado arriba
+      const textY = y + (h - altoTexto) / 2 + 3.2;
       
       doc.text(lineas, x + 4, textY);
     };
@@ -320,8 +307,9 @@ export default function AsistenciaPanel({
 
     y += tituloH;
 
-    // ── Fila 1: TEMA (Altura Dinámica) ────────────────
-    const temaH = calcularAlturaDinamica(nombreCurso, valW);
+    // ── Fila 1: TEMA (ALTURA FIJA MAS GRANDE) ────────────────
+    // AQUI ESTA LA SOLUCION: Forzamos una altura de 24mm (puedes subirlo a 28 si es necesario)
+    const temaH = 24; 
     celda(mL,        y, etqW, temaH, 'TEMA:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, temaH, nombreCurso);
     y += temaH;
@@ -354,14 +342,16 @@ export default function AsistenciaPanel({
     celda(xResponsable + etqW, y, respValW2, rowH, responsable);
     y += rowH;
 
-    // ── Fila 4: DIRIGIDO A (Altura Dinámica) ───────────────────
-    const dirigidoH = calcularAlturaDinamica(dirigidoA, valW);
-    celda(mL,        y, etqW, dirigidoH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
-    celda(mL + etqW, y, valW, dirigidoH, dirigidoA);
-    y += dirigidoH;
+    // ── Fila 4: DIRIGIDO A ───────────────────
+    // Como suele ser texto corto, lo dejamos en la altura estándar
+    celda(mL,        y, etqW, rowH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
+    celda(mL + etqW, y, valW, rowH, dirigidoA);
+    y += rowH;
 
-    // ── Fila 5: DESCRIPCIÓN (Altura Dinámica) ──────────────────
-    const descH = calcularAlturaDinamica(descripcionCurso, valW);
+    // ── Fila 5: DESCRIPCIÓN ──────────────────
+    // Como este texto suele ser más largo (como se vio en tu PDF anterior), 
+    // también le damos una altura fija más generosa, por ejemplo de 30mm.
+    const descH = 30; 
     celda(mL,        y, etqW, descH, 'DETALLE:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, descH, descripcionCurso);
     y += descH + 2;
