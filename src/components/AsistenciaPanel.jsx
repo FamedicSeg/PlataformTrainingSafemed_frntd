@@ -307,12 +307,7 @@ export default function AsistenciaPanel({
 
     y += tituloH;
 
-    // ── Fila 1: TEMA (ALTURA FIJA MAS GRANDE) ────────────────
-    // AQUI ESTA LA SOLUCION: Forzamos una altura de 24mm (puedes subirlo a 28 si es necesario)
-    const temaH = 24; 
-    celda(mL,        y, etqW, temaH, 'TEMA:', true, FONDO_SECUNDARIO);
-    celda(mL + etqW, y, valW, temaH, nombreCurso);
-    y += temaH;
+
 
     // ── Fila 2: FECHA | DURACIÓN ────────────────────────────
     // Dividimos el área de valores en dos mitades iguales
