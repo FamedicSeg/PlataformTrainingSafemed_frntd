@@ -226,7 +226,7 @@ export default function AsistenciaPanel({
       doc.setTextColor(...TEXTO_OSCURO);
       doc.setFont('helvetica', negrita ? 'bold' : 'normal');
       const lineas = doc.splitTextToSize(texto, w - 4);
-      doc.text(lineas, x + 3, y + 6);
+      doc.text(lineas, x + 3, y + 2);
     };
 
     let y = mL;
