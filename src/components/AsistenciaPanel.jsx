@@ -196,8 +196,9 @@ export default function AsistenciaPanel({
     const duracion = primerRegistro.curso_duracion || '—';
     const procesoCurso = (primerRegistro.curso_proceso || '—');
 
-    // Nombre del capacitador que dictó el curso (desde backend)
-    const responsable = primerRegistro.capacitador_nombre || '—';
+    // Nombre del admin desde localStorage
+    const adminUser   = JSON.parse(localStorage.getItem('admin_proceso_user') || '{}');
+    const responsable = adminUser.nombre || '—';
 
 
     const doc   = new jsPDF('portrait', 'mm', 'a4');
@@ -308,11 +309,9 @@ export default function AsistenciaPanel({
     const valW  = useW - etqW;                // columna valor (fila simple)
 
     // ── Fila 1: TEMA ───────────────────────────────────────────
-    const temaLineas = doc.splitTextToSize(nombreCurso, valW - 6);
-    const temaH = Math.max(rowH, temaLineas.length * 3 + 5);
-    celda(mL,        y, etqW, temaH, 'TEMA:', true, FONDO_SECUNDARIO);
-    celda(mL + etqW, y, valW, temaH, nombreCurso);
-    y += temaH;
+    celda(mL,        y, etqW, rowH, 'TEMA:',        true, FONDO_SECUNDARIO);
+    celda(mL + etqW, y, valW, rowH, nombreCurso);
+    y += rowH;
 
     // ── Fila 2: FECHA | DURACIÓN ────────────────────────────
     // Dividimos el área de valores en dos mitades iguales
@@ -347,9 +346,9 @@ export default function AsistenciaPanel({
     // ── Fila 4: DIRIGIDO A ─────────────────────────────────────
     const dirigidoLineas = doc.splitTextToSize(dirigidoA, valW - 6);
     const dirigidoH = Math.max(rowH, dirigidoLineas.length * 3 + 5); 
-    celda(mL,        y, etqW, dirigidoH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
+    celda(mL,        y, etqW, rowH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, dirigidoH, dirigidoA);
-    y += dirigidoH + 5;
+    y += dirigidoH;
 
     // ── Fila 4: DESCRIPCIÓN (altura variable) ──────────────────
     const descLineas = doc.splitTextToSize(descripcionCurso, valW - 6);
