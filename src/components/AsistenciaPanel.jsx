@@ -193,11 +193,12 @@ export default function AsistenciaPanel({
         : '—';
     const descripcionCurso = primerRegistro.curso_descripcion   || '—';
     const dirigidoA        = primerRegistro.curso_dirigido_a    || '—';
-    const duracion         = primerRegistro.curso_duracion      || '—';
-    const procesoCurso     = (primerRegistro.curso_proceso      || '—');
+    const duracion = primerRegistro.curso_duracion || '—';
+    const procesoCurso = (primerRegistro.curso_proceso || '—');
 
     // Nombre del capacitador que dictó el curso (desde backend)
     const responsable = primerRegistro.capacitador_nombre || '—';
+
 
     const doc   = new jsPDF('portrait', 'mm', 'a4');
     const pageW = doc.internal.pageSize.getWidth();   // 210mm
@@ -207,17 +208,12 @@ export default function AsistenciaPanel({
     const useW  = pageW - mL - mR;  // 182mm
 
     // ── Colores ────────────────────────────────────────────────
-    const FONDO_PRINCIPAL  = [255, 255, 255]; 
+    const FONDO_PRINCIPAL  = [255, 255, 255]; // Cambiado a blanco para el título
     const FONDO_SECUNDARIO = [255, 255, 255];
     const BORDE        = [0, 0, 0];
     const TEXTO_OSCURO = [0,  0,  0];
 
-    // ── Dimensiones de columnas ────────────────────────────────
-    const etqW  = 35;                       // columna etiqueta
-    const rowH  = 8;                        // altura fila estándar
-    const valW  = useW - etqW;              // columna valor (fila simple)
-
-    // ── Helper: dibuja una celda con borde, fondo y texto perfectamente centrado ─────
+    // ── Helper: dibuja una celda con borde, fondo y texto ─────
     const celda = (x, y, w, h, texto, negrita = false, fondo = null) => {
       if (fondo) {
         doc.setFillColor(...fondo);
@@ -226,27 +222,18 @@ export default function AsistenciaPanel({
       doc.setDrawColor(...BORDE);
       doc.setLineWidth(0.3);
       doc.rect(x, y, w, h, 'S');
-      
       doc.setFontSize(9);
       doc.setTextColor(...TEXTO_OSCURO);
       doc.setFont('helvetica', negrita ? 'bold' : 'normal');
-      
-      // Dividimos el texto dándole un margen interno de 4mm a cada lado (w - 8)
-      const lineas = doc.splitTextToSize(texto, w - 8);
-      const altoLinea = 4.5; // Altura aproximada en mm de una línea de texto a 9pt
-      const altoTexto = lineas.length * altoLinea;
-      
-      // Fórmula para centrar el texto verticalmente dentro de la celda
-      // Le sumamos 3.2 para ajustar la línea base (baseline) y que no se vea pegado arriba
-      const textY = y + (h - altoTexto) / 2 + 3.2;
-      
-      doc.text(lineas, x + 4, textY);
+      const lineas = doc.splitTextToSize(texto, w - 4);
+      doc.text(lineas, x + 3, y + 2);
     };
 
     let y = mL;
 
     // ── Fila 0: título ─────────────────────────────────────────
     const tituloH = 25;
+
 
     // Fondo del Título
     doc.setFillColor(...FONDO_PRINCIPAL);
@@ -260,6 +247,13 @@ export default function AsistenciaPanel({
     const fotoY = y + 5;
     const ancho = 40
     const alto = 12
+
+    {/*
+    // Celda para la imagen
+    doc.setDrawColor(...BORDE);
+    doc.setLineWidth(0.3);
+    doc.rect(fotoX, fotoY, ancho, alto, 'S');
+    */}
 
     if (logoDataUrl) {
       doc.addImage(logoDataUrl, 'PNG', fotoX, fotoY, ancho, alto);
@@ -283,6 +277,7 @@ export default function AsistenciaPanel({
     doc.setFont('helvetica', 'bold');
     doc.text('REGISTRO DE ASISTENCIA Y PARTICIPACIÓN', tituloX + (tituloW / 2)  ,  tituloY + (tituloAlto / 2) + 6, { align: 'center' });
 
+    
     // Texto de la derecha
     const textoDerecha = [
       'Código: RG-GTH-04', 
@@ -292,22 +287,32 @@ export default function AsistenciaPanel({
       'Versión: 10'
     ];
 
-    // Texto dentro de la celda
-    doc.setFontSize(9.5);
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('helvetica', 'bold');
-      
-    const textX = mL + useW - 45; 
-    const textY = y + 6;
-    const lineHeight = 3;
+  // Texto dentro de la celda
+  doc.setFontSize(9.5);
+  doc.setTextColor(0, 0, 0);
+  doc.setFont('helvetica', 'bold');
+    
+  const textX = mL + useW - 45; // Ajusta la posición horizontal según tus necesidades
+  const textY = y + 6;
+  const lineHeight = 3;
 
-    textoDerecha.forEach((linea, index) => {
-      doc.text(linea, textX, textY + index * lineHeight, { align: 'left' });
-    });
+  textoDerecha.forEach((linea, index) => {
+    doc.text(linea, textX, textY + index * lineHeight, { align: 'left' });
+  });
 
-    y += tituloH;
+  y += tituloH;
 
+    // ── Dimensiones de columnas ────────────────────────────────
+    const etqW  = 35;                       // columna etiqueta
+    const rowH  = 8;                       // altura fila estándar
+    const valW  = useW - etqW;                // columna valor (fila simple)
 
+    // ── Fila 1: TEMA ────────────────
+    const temaLineas = doc.splitTextToSize(nombreCurso, valW - 6);
+    const temaH = Math.max(rowH, temaLineas.length * 6 + 5);
+    celda(mL,        y, etqW, temaH, 'TEMA:', true, FONDO_SECUNDARIO);
+    celda(mL + etqW, y, valW, temaH, nombreCurso);
+    y += temaH;
 
     // ── Fila 2: FECHA | DURACIÓN ────────────────────────────
     // Dividimos el área de valores en dos mitades iguales
@@ -337,16 +342,18 @@ export default function AsistenciaPanel({
     celda(xResponsable + etqW, y, respValW2, rowH, responsable);
     y += rowH;
 
-    // ── Fila 4: DIRIGIDO A ───────────────────
-    // Como suele ser texto corto, lo dejamos en la altura estándar
-    celda(mL,        y, etqW, rowH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
-    celda(mL + etqW, y, valW, rowH, dirigidoA);
-    y += rowH;
 
-    // ── Fila 5: DESCRIPCIÓN ──────────────────
-    // Como este texto suele ser más largo (como se vio en tu PDF anterior), 
-    // también le damos una altura fija más generosa, por ejemplo de 30mm.
-    const descH = 30; 
+
+    // ── Fila 4: DIRIGIDO A ─────────────────────────────────────
+    const dirigidoLineas = doc.splitTextToSize(dirigidoA, valW - 6);
+    const dirigidoH = Math.max(rowH, dirigidoLineas.length * 3 + 5); 
+    celda(mL,        y, etqW, dirigidoH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
+    celda(mL + etqW, y, valW, dirigidoH, dirigidoA);
+    y += dirigidoH;
+
+    // ── Fila 4: DESCRIPCIÓN (altura variable) ──────────────────
+    const descLineas = doc.splitTextToSize(descripcionCurso, valW - 6);
+    const descH      = Math.max(rowH, descLineas.length * 4.5 + 4);
     celda(mL,        y, etqW, descH, 'DETALLE:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, descH, descripcionCurso);
     y += descH + 2;
@@ -358,6 +365,7 @@ export default function AsistenciaPanel({
       r.usuario_nombre,
       r.cedula_identidad || '—',
       r.usuario_cargo,
+      //r.inicio_en ? formatearFecha(r.inicio_en) : '—',
       capitalizarEstado(r.estado) || '—',
     ]);
 
@@ -384,12 +392,16 @@ export default function AsistenciaPanel({
       alternateRowStyles: { fillColor: FONDO_SECUNDARIO },
       columnStyles: {
         0: { cellWidth: 10.5,  halign: 'center' },
-        1: { cellWidth: 60,    halign: 'center' },
-        2: { cellWidth: 30,    halign: 'center' },
-        3: { cellWidth: 48,    halign: 'center' },
-        4: { cellWidth: 35,    halign: 'center' },
+        1: { cellWidth: 60,  halign: 'center'   },
+        2: { cellWidth: 30,  halign: 'center' },
+        3: { cellWidth: 48,  halign: 'center'   },
+        4: { cellWidth: 35,  halign: 'center' },
+        //5: { cellWidth: 25,  halign: 'center' },
       },
     });
+
+    // Obtener la posicion Y y despues la Tabla
+    
 
     // ── Pie de página ──────────────────────────────────────────
     const finalY = doc.lastAutoTable.finalY + 10;
@@ -417,6 +429,8 @@ export default function AsistenciaPanel({
     const x2 = x1 + ancho1 + espacioEntreCuadros;
     const x3 = x2 + ancho2 + espacioEntreCuadros;
 
+    //const ancho4 = useW - (x3 - mL); // Ancho total de los tres cuadros
+
     const dibujarCuadro = (x, y, w, h, textoSuperior, textoInferior = '') => {
       doc.setDrawColor(...BORDE);
       doc.setLineWidth(0.3);
@@ -429,6 +443,12 @@ export default function AsistenciaPanel({
       const lineasSuperior = doc.splitTextToSize(textoSuperior, w - 6);
       doc.text(lineasSuperior, x + (w / 2), y + 7, { align: 'center' });
       
+
+      // LINEA SEPARADORA 
+      //doc.setDrawColor(200, 200, 200);
+      //doc.setLineWidth(0.1);
+      //doc.line(x + 3, y + 14, x + w - 4, y + 14);
+
       if(textoInferior) {
         doc.setFontSize(9);
         doc.setTextColor(...TEXTO_OSCURO);
@@ -439,14 +459,29 @@ export default function AsistenciaPanel({
     };
     
     dibujarCuadro(x1, yCuadros, ancho1, cuadroAlto, responsable, 'CONDUCIDO POR');
+
     dibujarCuadro(x2, yCuadros, ancho2, cuadroAlto, procesoCurso, 'PROCESO RESPONSABLE');
+
     dibujarCuadro(x3 , yCuadros, ancho3, cuadroAlto, '', 'JEFE DE TALENTO HUMANO');
-    
     if (firmaDataUrl) {
       doc.addImage(firmaDataUrl, 'PNG', x3 + ((ancho3 - 35) / 2), yCuadros - 2, 35, 15);
     }
 
     y = finalY + cuadroAlto + 8;
+    {/*
+    const totalPages = doc.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      const fechaReporte = new Date().toLocaleString('es-EC', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit',
+      });
+      doc.text(`Generado: ${fechaReporte}`, mL, pageH - 6);
+      doc.text(`Página ${i} de ${totalPages}`, pageW - mR, pageH - 6, { align: 'right' });
+    }
+      */}
 
     const nombreArchivo = `asistencia_${nombreCurso.replace(/\s+/g, '_')}.pdf`;
     doc.save(nombreArchivo);
@@ -458,6 +493,12 @@ export default function AsistenciaPanel({
 
       {/* Toolbar */}
       <div className="asistencia-toolbar">
+        {/*
+        <button className="btn btn-outline-secondary btn-sm" onClick={onClose}>
+          <ArrowLeft size={16} className="me-1" /> Volver
+        </button>
+        */}
+
         <div className="asistencia-filtros">
           {/* Filtro por curso */}
           <select
