@@ -295,12 +295,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
     const rowH  = 8;                       // altura fila estándar
     const valW  = useW - etqW;                // columna valor (fila simple)
 
-    // ── Fila 1: TEMA ───────────────────────────────────────────
-    celda(mL,        y, etqW, rowH, 'TEMA:',        true, FONDO_SECUNDARIO);
-    celda(mL + etqW, y, valW, rowH, nombreCurso);
-    y += rowH;
-
-    // ── Fila 2: FECHA | DURACIÓN ────────────────────────────
+    // ── Fila 1: FECHA | DURACIÓN ────────────────────────────
     // Dividimos el área de valores en dos mitades iguales
     const mitad     = (useW - etqW * 2) / 2;
     const xFechaVal = mL + etqW;
@@ -315,7 +310,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
     celda(xRespVal,  y, respValW, rowH, duracion);
     y += rowH;
 
-    // FILA 3: LUGAR + RESPONSABLE
+    // ── Fila 2: LUGAR + RESPONSABLE
     const mitad2 = (useW - etqW * 2)/2;
     const xLugar = mL + etqW;
     const xResponsable = xLugar + mitad2;
@@ -330,7 +325,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
 
 
 
-    // ── Fila 4: DIRIGIDO A ─────────────────────────────────────
+    // ── Fila 3: DIRIGIDO A ─────────────────────────────────────
     const dirigidoLineas = doc.splitTextToSize(dirigidoA, valW - 6);
     const dirigidoH = Math.max(rowH, dirigidoLineas.length * 3 + 5); 
     celda(mL,        y, etqW, rowH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
