@@ -405,9 +405,19 @@ export default function VisorCurso() {
   }, [inscripcion]); */}
 
   // Marcar curso como completado
+  // 🔧 CAMBIO: Solo marcar como completado si NO hay evaluación
+  // Si hay evaluación, esperar a que se apruebe primero
   useEffect(() => {
     const finalizarCurso = async () => {
       if (progreso === 100 && !loading && !cursoMarcadoCompletado && inscripcion) {
+        // Si el curso tiene evaluación, NO marcarlo como completado automáticamente
+        // Se marcará como completado solo después de que el usuario apruebe la evaluación
+        if (tieneEvaluacion) {
+          console.log('📋 Evaluación encontrada. Esperando a que sea aprobada...');
+          return;
+        }
+
+        // Si NO hay evaluación, marcar como completado de inmediato
         try {
           const response = await fetch(`${API_URL}/api/inscripciones/${inscripcion.id}`, {
             method: 'PUT',
@@ -420,16 +430,7 @@ export default function VisorCurso() {
 
           if (response.ok) {
             setCursoMarcadoCompletado(true);
-            {/*
-            await Swal.fire({
-              title: '¡Excelente!',
-              text: 'Has completado el curso. Ahora realizarás la prueba final.',
-              icon: 'success',
-              confirmButtonText: 'Ir a la prueba',
-              allowOutsideClick: false,
-            });
-            */}
-            //navigate('/prueba-proceso', { state: { courseId: parseInt(cursoId) } });
+            console.log('✅ Curso marcado como completado (sin evaluación)');
           }
         } catch (error) {
           console.error('Error:', error);
@@ -439,7 +440,7 @@ export default function VisorCurso() {
 
     finalizarCurso();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progreso, loading, cursoMarcadoCompletado, inscripcion, API_URL, token]);
+  }, [progreso, loading, cursoMarcadoCompletado, inscripcion, API_URL, token, tieneEvaluacion]);
 
   // Controlar acceso secuencial a niveles
   const puedeAccederNivel = (index) => {

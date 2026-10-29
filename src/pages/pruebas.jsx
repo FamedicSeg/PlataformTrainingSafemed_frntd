@@ -29,6 +29,47 @@ export default function Pruebas({ cursoId: cursoIdProp, onClose }){
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cursoId]);
 
+    // 🔧 NUEVO: Marcar curso como completado cuando se aprueba la evaluación
+    useEffect(() => {
+        const marcarCursoCompletado = async () => {
+            // Solo marcar si la evaluación fue aprobada y estamos en la fase de resultados
+            if (estado.aprobado && resultado && resultado.aprobado && cursoId) {
+                try {
+                    const usuario = JSON.parse(localStorage.getItem('usuario_logueado') || '{}');
+                    if (!usuario.id) return;
+
+                    // Obtener la inscripción del usuario para este curso
+                    const inscRes = await fetch(`${API_URL}/api/inscripciones/usuario/${usuario.id}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const inscData = await inscRes.json();
+                    const inscripcion = inscData.data?.find(i => i.curso_id === parseInt(cursoId));
+
+                    if (inscripcion && inscripcion.estado !== 'completado') {
+                        // Marcar el curso como completado
+                        const updateRes = await fetch(`${API_URL}/api/inscripciones/${inscripcion.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ estado: 'completado' })
+                        });
+
+                        if (updateRes.ok) {
+                            console.log('✅ Curso marcado como completado (evaluación aprobada)');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error al marcar curso como completado:', error);
+                }
+            }
+        };
+
+        marcarCursoCompletado();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [estado.aprobado, resultado]);
+
     const cargarEvaluacion = async () => {
         try{
             setFase('cargando');
