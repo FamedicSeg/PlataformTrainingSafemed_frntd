@@ -311,7 +311,7 @@ export default function AsistenciaPanel({
     // ── Fila 1: TEMA (altura variable) ─────────────────────────
     const temaLineas = doc.splitTextToSize(nombreCurso, valW - 6);
     const temaH = Math.max(rowH, temaLineas.length * 3 + 5);
-    celda(mL,        y, etqW, rowH, 'TEMA:',        true, FONDO_SECUNDARIO);
+    celda(mL,        y, etqW, temaH, 'TEMA:',        true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, temaH, nombreCurso);
     y += temaH;
 
