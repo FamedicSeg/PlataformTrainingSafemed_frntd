@@ -335,7 +335,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
     // ── Fila 4: DIRIGIDO A ─────────────────────────────────────
     const dirigidoLineas = doc.splitTextToSize(dirigidoA, valW - 6);
     const dirigidoH = Math.max(rowH, dirigidoLineas.length * 3 + 5); 
-    celda(mL,        y, etqW, rowH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
+    celda(mL,        y, etqW, dirigidoH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, dirigidoH, dirigidoA);
     y += dirigidoH;
 
