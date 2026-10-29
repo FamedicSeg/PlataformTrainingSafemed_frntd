@@ -125,6 +125,11 @@ export default function CursosDisponibles() {
     return formatearFecha(fechaStr, true);
   };
 
+  // Detectar si tiene evaluación pendiente: estado completado pero sin evaluación aprobada
+  const tieneEvaluacionPendiente = (cap) => {
+    return cap.estado === 'completado' && (cap.mejor_puntaje === null || !cap.evaluacion_aprobada);
+  };
+
   // Filtrar por búsqueda
   const capacitacionesFiltradas = capacitaciones.filter(c =>
     (c.curso_nombre || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -191,20 +196,22 @@ export default function CursosDisponibles() {
           {capacitacionesFiltradas.map(cap => {
             const expirado = esCursoExpirado(cap);
             const proximo = !expirado && esCursoProximo(cap);
+            const evaluacionPendiente = tieneEvaluacionPendiente(cap);
             const tieneNota = cap.mejor_puntaje !== null && cap.mejor_puntaje !== undefined;
+            const estCompletado = cap.estado === 'completado' && !evaluacionPendiente;
 
             return (
               <div key={cap.id} className="col-md-6 col-lg-4">
                 <div className="card h-100 shadow-sm" style={{
                   transition: 'all 0.3s ease',
                   borderWidth: '2px',
-                  borderColor: expirado ? '#dc3545' : proximo ? '#fd7e14' : cap.estado === 'completado' ? '#198754' : '#0d6efd',
+                  borderColor: expirado ? '#dc3545' : proximo ? '#fd7e14' : evaluacionPendiente ? '#ffc107' : estCompletado ? '#198754' : '#0d6efd',
                   borderStyle: 'solid',
                   opacity: expirado ? 0.75 : 1
                 }}>
                   {/* Header */}
                   <div className="card-header d-flex justify-content-between align-items-start" style={{
-                    backgroundColor: expirado ? '#f8d7da' : proximo ? '#fff3cd' : cap.estado === 'completado' ? '#d4edda' : '#e8f0fe'
+                    backgroundColor: expirado ? '#f8d7da' : proximo ? '#fff3cd' : evaluacionPendiente ? '#fff3cd' : estCompletado ? '#d4edda' : '#e8f0fe'
                   }}>
                     <div>
                       <h6 className="card-title mb-1">{cap.curso_nombre}</h6>
@@ -214,11 +221,13 @@ export default function CursosDisponibles() {
                       ? <span className="badge bg-danger">⛔ Expirado</span>
                       : proximo
                         ? <span className="badge bg-warning text-dark">🕐 Próximamente</span>
-                        : cap.estado === 'completado'
-                          ? <span className="badge bg-success">✅ Completado</span>
-                          : cap.estado === 'en progreso'
-                            ? <span className="badge bg-warning text-dark">🔵 En progreso</span>
-                            : <span className="badge bg-secondary">⚪ Sin iniciar</span>
+                        : evaluacionPendiente
+                          ? <span className="badge bg-warning text-dark">⏳ Evaluación pendiente</span>
+                          : estCompletado
+                            ? <span className="badge bg-success">✅ Completado</span>
+                            : cap.estado === 'en progreso'
+                              ? <span className="badge bg-warning text-dark">🔵 En progreso</span>
+                              : <span className="badge bg-secondary">⚪ Sin iniciar</span>
                     }
                   </div>
 
@@ -273,14 +282,23 @@ export default function CursosDisponibles() {
                           <Clock size={16} className="me-2" />
                           Próximamente
                         </button>
-                      ) : (
+                      ) : evaluacionPendiente ? (
                         <button
-                          className={`btn btn-${cap.estado === 'completado' ? 'success' : 'primary'}`}
+                          className="btn btn-warning text-dark"
                           onClick={() => handleVerCurso(cap.curso_id)}
                           disabled={loading}
                         >
                           <BookOpen size={16} className="me-2" />
-                          {cap.estado === 'completado' ? 'Ver Contenido' : 'Iniciar curso'}
+                          Completar Evaluación
+                        </button>
+                      ) : (
+                        <button
+                          className={`btn btn-${estCompletado ? 'success' : 'primary'}`}
+                          onClick={() => handleVerCurso(cap.curso_id)}
+                          disabled={loading}
+                        >
+                          <BookOpen size={16} className="me-2" />
+                          {estCompletado ? 'Ver Contenido' : 'Iniciar curso'}
                         </button>
                       )}
                     </div>

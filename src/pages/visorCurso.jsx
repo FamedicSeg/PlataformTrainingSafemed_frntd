@@ -205,6 +205,7 @@ export default function VisorCurso() {
       }
 
       // ✅ NUEVO: Verificar si el curso tiene evaluación
+      let hayEvaluacion = false;
       try {
         const evaluacionRes = await fetch(
           `${API_URL}/api/evaluaciones/curso/${cursoId}`,
@@ -218,6 +219,7 @@ export default function VisorCurso() {
         
         if (evaluacionData.data && evaluacionData.data.length > 0) {
           console.log('✅ Evaluación encontrada:', evaluacionData.data[0]);
+          hayEvaluacion = true;
           setTieneEvaluacion(true);
         } else {
           console.log('ℹ️ No hay evaluación para este curso');
@@ -226,6 +228,33 @@ export default function VisorCurso() {
       } catch (error) {
         console.error('Error verificando evaluación:', error);
         setTieneEvaluacion(false);
+      }
+
+      // ✅ CRÍTICO: Si hay evaluación pero el curso está marcado como completado SIN ser aprobada
+      // REVERTIR INMEDIATAMENTE a 'en progreso'
+      if (hayEvaluacion && inscripcionCurso.estado === 'completado' && !inscripcionCurso.evaluacion_aprobada) {
+        console.log('🔴 CRÍTICO: Curso completado pero evaluación NO aprobada. REVIRTIENDO...');
+        try {
+          const updateRes = await fetch(`${API_URL}/api/inscripciones/${inscripcionCurso.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${tokenFromStorage}`
+            },
+            body: JSON.stringify({ estado: 'en progreso' })
+          });
+
+          if (updateRes.ok) {
+            const updateData = await updateRes.json();
+            setInscripcion(updateData.data);
+            setCursoMarcadoCompletado(false);
+            console.log('✅ Estado REVERTIDO a "en progreso"');
+          } else {
+            console.warn('⚠️ Error revirtiendo:', updateRes.status);
+          }
+        } catch (error) {
+          console.error('❌ Error revirtiendo estado:', error);
+        }
       }
 
       setLoading(false);
