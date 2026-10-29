@@ -329,3 +329,15 @@
   width: 150% !important;
   gap: 5rem !important; /* Adjust the gap as needed */
 }
+
+.texto-evaluacion{
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd !important;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+  color: black;
+}

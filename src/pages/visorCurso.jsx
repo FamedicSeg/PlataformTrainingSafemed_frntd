@@ -587,10 +587,9 @@ export default function VisorCurso() {
         {/* 🔧 INDICADOR: Evaluación Pendiente */}
         {tieneEvaluacion && !cursoMarcadoCompletado && progreso === 100 && (
           <div className="alert alert-info d-flex align-items-center gap-3 mb-5 border-2 border-info" role="alert">
-            <div className="fs-5">📋</div>
             <div className="flex-grow-1">
-              <strong>Evaluación pendiente</strong>
-              <p className="mb-0 mt-1 small">
+              <strong> ⭕ Evaluación pendiente de realizar</strong>
+              <p className="evaluacion-final">
                 Has completado todos los módulos. Ahora debes realizar la evaluación final para completar este curso.
               </p>
             </div>

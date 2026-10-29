@@ -263,3 +263,12 @@
   background: var(--verde-completado);
   color: var(--blanco);
 }
+
+.evaluacion-final{
+  display: block;
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  color: #021b3d !important;
+
+}

@@ -512,7 +512,7 @@ export default function EvaluacionManager({ cursoId, onClose }) {
               <div className="mb-3">
                 <label className="form-label fw-semibold">Texto de la pregunta</label>
                 <textarea
-                  className="form-control"
+                  className="texto-evaluacion"
                   rows={3}
                   value={formPregunta.texto}
                   onChange={e => setFormPregunta(p => ({ ...p, texto: e.target.value }))}
@@ -538,7 +538,7 @@ export default function EvaluacionManager({ cursoId, onClose }) {
                     />
                     <input
                       type="text"
-                      className="form-control form-control-sm"
+                      className="texto-evaluacion"
                       value={op.texto}
                       onChange={e => handleOpcionTexto(idx, e.target.value)}
                       placeholder={`Opción ${idx + 1}`}
