@@ -550,6 +550,19 @@ export default function VisorCurso() {
           </div>
         </div>
 
+        {/* 🔧 INDICADOR: Evaluación Pendiente */}
+        {tieneEvaluacion && !cursoMarcadoCompletado && progreso === 100 && (
+          <div className="alert alert-info d-flex align-items-center gap-3 mb-5 border-2 border-info" role="alert">
+            <div className="fs-5">📋</div>
+            <div className="flex-grow-1">
+              <strong>Evaluación pendiente</strong>
+              <p className="mb-0 mt-1 small">
+                Has completado todos los módulos. Ahora debes realizar la evaluación final para completar este curso.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* MÓDULOS */}
         <div className="niveles-contenedor">
           {modulos.map((modulo, idx) => {
