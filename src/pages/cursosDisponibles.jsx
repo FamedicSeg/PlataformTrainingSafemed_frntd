@@ -29,6 +29,15 @@ export default function CursosDisponibles() {
   // Cargar capacitaciones del usuario (cursos + estado + nota)
   useEffect(() => {
     cargarDatos();
+
+    // Refresca cuando el usuario vuelve a esta página (después de ver un curso)
+    const handleFocus = () => {
+      console.log('👁️ Usuario volvió a la página, refrescando cursos...');
+      cargarDatos();
+    };
+    window.addEventListener('focus', handleFocus);
+
+    return () => window.removeEventListener('focus', handleFocus);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

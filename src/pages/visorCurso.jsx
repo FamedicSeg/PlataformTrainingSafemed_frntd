@@ -246,11 +246,16 @@ export default function VisorCurso() {
 
           if (updateRes.ok) {
             const updateData = await updateRes.json();
-            setInscripcion(updateData.data);
+            console.log('✅ Response de reversión:', updateData);
+            // Actualizar inscripcion con el nuevo estado desde el servidor
+            inscripcionCurso.estado = 'en progreso';
+            setInscripcion(inscripcionCurso);
             setCursoMarcadoCompletado(false);
             console.log('✅ Estado REVERTIDO a "en progreso"');
           } else {
             console.warn('⚠️ Error revirtiendo:', updateRes.status);
+            const errorData = await updateRes.json();
+            console.error('Error detail:', errorData);
           }
         } catch (error) {
           console.error('❌ Error revirtiendo estado:', error);
