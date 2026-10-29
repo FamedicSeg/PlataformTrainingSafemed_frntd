@@ -308,10 +308,12 @@ export default function AsistenciaPanel({
     const rowH  = 8;                       // altura fila estándar
     const valW  = useW - etqW;                // columna valor (fila simple)
 
-    // ── Fila 1: TEMA ───────────────────────────────────────────
+    // ── Fila 1: TEMA (altura variable) ─────────────────────────
+    const temaLineas = doc.splitTextToSize(nombreCurso, valW - 6);
+    const temaH = Math.max(rowH, temaLineas.length * 3 + 5);
     celda(mL,        y, etqW, rowH, 'TEMA:',        true, FONDO_SECUNDARIO);
-    celda(mL + etqW, y, valW, rowH, nombreCurso);
-    y += rowH;
+    celda(mL + etqW, y, valW, temaH, nombreCurso);
+    y += temaH;
 
     // ── Fila 2: FECHA | DURACIÓN ────────────────────────────
     // Dividimos el área de valores en dos mitades iguales
@@ -328,7 +330,7 @@ export default function AsistenciaPanel({
     celda(xRespVal,  y, respValW, rowH, duracion);
     y += rowH;
 
-    // FILA 3: LUGAR + RESPONSABLE
+    // ── Fila 3: LUGAR + RESPONSABLE
     const mitad2 = (useW - etqW * 2)/2;
     const xLugar = mL + etqW;
     const xResponsable = xLugar + mitad2;
@@ -350,7 +352,7 @@ export default function AsistenciaPanel({
     celda(mL + etqW, y, valW, dirigidoH, dirigidoA);
     y += dirigidoH;
 
-    // ── Fila 4: DESCRIPCIÓN (altura variable) ──────────────────
+    // ── Fila 5: DESCRIPCIÓN (altura variable) ──────────────────
     const descLineas = doc.splitTextToSize(descripcionCurso, valW - 6);
     const descH      = Math.max(rowH, descLineas.length * 4.5 + 4);
     celda(mL,        y, etqW, descH, 'DETALLE:', true, FONDO_SECUNDARIO);

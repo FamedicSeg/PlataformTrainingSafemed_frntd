@@ -295,7 +295,14 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
     const rowH  = 8;                       // altura fila estándar
     const valW  = useW - etqW;                // columna valor (fila simple)
 
-    // ── Fila 1: FECHA | DURACIÓN ────────────────────────────
+    // ── Fila 1: TEMA (altura variable) ─────────────────────────
+    const temaLineas = doc.splitTextToSize(nombreCurso, valW - 6);
+    const temaH = Math.max(rowH, temaLineas.length * 3 + 5);
+    celda(mL,        y, etqW, rowH, 'TEMA:',        true, FONDO_SECUNDARIO);
+    celda(mL + etqW, y, valW, temaH, nombreCurso);
+    y += temaH;
+
+    // ── Fila 2: FECHA | DURACIÓN ────────────────────────────
     // Dividimos el área de valores en dos mitades iguales
     const mitad     = (useW - etqW * 2) / 2;
     const xFechaVal = mL + etqW;
@@ -310,7 +317,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
     celda(xRespVal,  y, respValW, rowH, duracion);
     y += rowH;
 
-    // ── Fila 2: LUGAR + RESPONSABLE
+    // ── Fila 3: LUGAR + RESPONSABLE
     const mitad2 = (useW - etqW * 2)/2;
     const xLugar = mL + etqW;
     const xResponsable = xLugar + mitad2;
@@ -325,14 +332,14 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
 
 
 
-    // ── Fila 3: DIRIGIDO A ─────────────────────────────────────
+    // ── Fila 4: DIRIGIDO A ─────────────────────────────────────
     const dirigidoLineas = doc.splitTextToSize(dirigidoA, valW - 6);
     const dirigidoH = Math.max(rowH, dirigidoLineas.length * 3 + 5); 
     celda(mL,        y, etqW, rowH, 'DIRIGIDO A:', true, FONDO_SECUNDARIO);
     celda(mL + etqW, y, valW, dirigidoH, dirigidoA);
     y += dirigidoH;
 
-    // ── Fila 4: DESCRIPCIÓN (altura variable) ──────────────────
+    // ── Fila 5: DESCRIPCIÓN (altura variable) ──────────────────
     const descLineas = doc.splitTextToSize(descripcionCurso, valW - 6);
     const descH      = Math.max(rowH, descLineas.length * 4.5 + 4);
     celda(mL,        y, etqW, descH, 'DETALLE:', true, FONDO_SECUNDARIO);
