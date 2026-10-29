@@ -294,6 +294,9 @@ export default function EvaluacionVisor({ cursoId, onClose }) {
       />
     );
   }
+
+  // ✅ CORRECCIÓN AQUÍ: Se agregó el if para la fase 'info'
+  if (fase === 'info') {
     const intentosRestantes = Math.max(0, 2 - estado.intentos_usados);
 
     return (
@@ -390,7 +393,7 @@ export default function EvaluacionVisor({ cursoId, onClose }) {
         </div>
       </div>
     );
-  }
+  } // ✅ CORRECCIÓN AQUÍ: Aquí cierra el if (fase === 'info')
 
   if (fase === 'tomando') {
     return (
@@ -417,11 +420,12 @@ export default function EvaluacionVisor({ cursoId, onClose }) {
           <div className="evisor-preguntas">
             {preguntas.map((preg, idx) => (
               <div key={preg.id} className={`evisor-pregunta ${respuestas[preg.id] ? 'respondida' : ''}`}>
-                <p className="preg-texto">
-                  <span className="preg-num">{idx + 1}.</span> {preg.texto}
-                </p>
+                <div className="preg-header">
+                  <span className="preg-num">{idx + 1}</span>
+                  <p className="preg-texto">{preg.texto}</p>
+                </div>
                 <div className="opciones-radio">
-                  {preg.opciones.map(op => (
+                  {preg.opciones.map((op, opIdx) => (
                     <label
                       key={op.id}
                       className={`opcion-radio-label ${respuestas[preg.id] === op.id ? 'seleccionada' : ''}`}
@@ -433,7 +437,8 @@ export default function EvaluacionVisor({ cursoId, onClose }) {
                         checked={respuestas[preg.id] === op.id}
                         onChange={() => seleccionarRespuesta(preg.id, op.id)}
                       />
-                      {op.texto}
+                      <span className="opcion-letra">{String.fromCharCode(65 + opIdx)}</span>
+                      <span className="opcion-texto">{op.texto}</span>
                     </label>
                   ))}
                 </div>

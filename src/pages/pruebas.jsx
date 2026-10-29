@@ -408,12 +408,12 @@ if (fase === 'tomando'){
                 <div className="evisor-preguntas">
                     {preguntas.map((preg, idx)=>(
                         <div key={preg.id} className={`evisor-pregunta ${respuestas[preg.id] ? 'respondida' : ''}`}>
-                            <p className="preg-texto">
-                                <span className="preg-num">{idx+1}.</span>
-                                {preg.texto}
-                            </p>
+                            <div className="preg-header">
+                                <span className="preg-num">{idx+1}</span>
+                                <p className="preg-texto">{preg.texto}</p>
+                            </div>
                             <div className="opciones-radio">
-                                {preg.opciones.map(op => (
+                                {preg.opciones.map((op, opIdx) => (
                                     <label
                                     key={op.id}
                                     className={`opcion-radio-label ${respuestas[preg.id] === op.id ? 'seleccionada' : ''}`}>
@@ -424,7 +424,8 @@ if (fase === 'tomando'){
                                             checked={respuestas[preg.id] === op.id}
                                             onChange={() => seleccionarRespuesta(preg.id, op.id)}
                                         />
-                                        {op.texto}
+                                        <span className="opcion-letra">{String.fromCharCode(65 + opIdx)}</span>
+                                        <span className="opcion-texto">{op.texto}</span>
                                     </label>
                                 ))}
                             </div>

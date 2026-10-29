@@ -117,12 +117,14 @@
   border-radius: 4px;
   padding: 2px;
   user-select: none;
+  /* Asegura que el grid mantenga su tamaño natural siempre */
+  width: max-content; 
 }
 
 .crucigrama-celda {
   width: 36px;
   height: 36px;
-  background: #343a40; /* negro por defecto (celda vacía) */
+  background: #343a40;
   position: relative;
   border-radius: 2px;
 }
@@ -183,6 +185,7 @@
   padding-top: 8px;
   caret-color: transparent;
   outline: none;
+  box-sizing: border-box;
 }
 
 .celda-input:focus {
@@ -200,6 +203,7 @@
   color: #1e293b;
   padding-top: 8px;
   text-transform: uppercase;
+  box-sizing: border-box;
 }
 
 /* ── Pistas list (visor) ────────────────────────────────────── */
@@ -208,12 +212,6 @@
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   margin-top: 0.75rem;
-}
-
-@media (max-width: 600px) {
-  .crucigrama-pistas-panel {
-    grid-template-columns: 1fr;
-  }
 }
 
 .crucigrama-pistas-grupo h6 {
@@ -274,7 +272,7 @@
   background: #2563eb;
 }
 
-.btn-enviar-crucigrama{
+.btn-enviar-crucigrama {
   margin-top: 20px;
   display: inline-block;
   width: auto;
@@ -295,9 +293,11 @@
   background-color: #2563eb;
   color: #fff;
 }
+
 /* ── Visor container ────────────────────────────────────────── */
 .crucigrama-visor-wrap {
   display: flex;
+  margin-top: 10px !important;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
@@ -315,4 +315,102 @@
 
 .crucigrama-info-bar span strong {
   color: #374151;
+}
+
+/* ============================================================
+   RESPONSIVE MÓVIL (Ajustes para celulares)
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .crucigrama-pista-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    position: relative;
+    padding-right: 40px;
+  }
+  .crucigrama-pista-row .btn-eliminar-pista {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff0f0;
+  }
+}
+
+@media (max-width: 600px) {
+  .crucigrama-pistas-panel {
+    grid-template-columns: 1fr;
+  }
+
+  /* 1. EL CONTENEDOR PADRE */
+  /* Forzamos a que no use flexbox para que no se estire al tamaño del grid */
+  .crucigrama-visor-wrap {
+    display: block !important; 
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden; /* Corta lo que se salga de la tarjeta blanca */
+    padding: 0;
+    margin: 0;
+  }
+
+  /* 2. LA "VENTANA" DE SCROLL */
+  .crucigrama-visor {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto !important; /* Activa el deslizamiento horizontal */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* Deslizamiento suave en iOS */
+    overscroll-behavior-x: contain; /* Evita que la página entera se mueva */
+    padding: 15px 10px; /* Un pequeño respiro */
+  }
+
+  /* 3. EL GRID OSCURO */
+  .crucigrama-grid {
+    width: max-content; /* Obliga al grid a mantener su tamaño real */
+    min-width: max-content;
+    margin: 0 auto; /* Lo centra si es más pequeño que la pantalla */
+  }
+
+  .crucigrama-celda {
+    width: 32px;
+    height: 32px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .celda-input {
+    font-size: 1rem;
+    padding-top: 8px;
+  }
+
+  .celda-letra-preview {
+    font-size: 0.9rem;
+    padding-top: 8px;
+  }
+
+  .celda-numero {
+    font-size: 8px;
+    top: 1px;
+    left: 2px;
+  }
+
+  .crucigrama-pistas-grupo li {
+    font-size: 0.85rem;
+    padding: 8px 4px;
+  }
+}
+
+@media (max-width: 380px) {
+  .crucigrama-celda {
+    width: 28px;
+    height: 28px;
+  }
+  .celda-input, .celda-letra-preview {
+    font-size: 0.85rem;
+    padding-top: 6px;
+  }
+  .celda-numero {
+    font-size: 7px;
+  }
 }
