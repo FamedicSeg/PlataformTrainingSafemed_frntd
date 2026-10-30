@@ -183,9 +183,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
     const duracion = primerRegistro.curso_duracion || '—';
     const procesoCurso = (primerRegistro.curso_proceso || '—');
 
-    // Nombre del admin desde localStorage
-    const adminUser   = JSON.parse(localStorage.getItem('admin_proceso_user') || '{}');
-    const responsable = adminUser.nombre || '—';
+    const responsable = primerRegistro.capacitador_nombre || '—';
 
 
     const doc   = new jsPDF('portrait', 'mm', 'a4');
