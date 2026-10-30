@@ -592,12 +592,18 @@ export default function VisorCurso() {
 
         {progreso === 100 && cursoMarcadoCompletado && (
           <div className="alert alert-success text-center mt-5 shadow-sm rounded-pill py-3 fs-5">
-            ¡Felicidades! Has completado este curso...
+            🚀 ¡Felicidades! Has completado este curso...
           </div>
         )}
 
         {/* BOTÓN MANUAL — por si el Swal fue cerrado o el curso ya estaba completado */}
-        {progreso === 100 && tieneEvaluacion && (
+        {progreso === 100 && tieneEvaluacion && inscripcion?.evaluacion_aprobada === true && (
+          <div className="alert alert-success text-center mt-4 mb-5 shadow-sm">
+            Ya aprobaste la evaluación de este curso
+          </div>
+        )}
+
+        {progreso === 100 && tieneEvaluacion && inscripcion?.evaluacion_aprobada !== true && (
           <div className="text-center mt-4 mb-5">
             <button
               className="btn btn-success btn-lg px-5 py-3 shadow"
