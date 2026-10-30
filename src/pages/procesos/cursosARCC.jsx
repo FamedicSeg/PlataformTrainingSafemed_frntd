@@ -302,7 +302,7 @@ export default function CoursesARCC() {
                     <div className="mt-auto">
                       <div className="mb-2">
                         <small className={`estado-curso ${noDisponible ? 'proximo' : completado ? 'completado' : 'pendiente'}`}>
-                          {noDisponible ? 'Próximamente' : completado ? '? ✅ Curso realizado' : 'Por comenzar'}
+                          {noDisponible ? 'Próximamente' : completado ? '✅ Curso realizado' : 'Por comenzar'}
                         </small>
                         {esCursoSincronico(curso) && (
                           <span className="badge bg-info ms-2"></span>
