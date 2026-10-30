@@ -13,6 +13,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
   const [usuariosAsignados, setUsuariosAsignados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchTermAsignados, setSearchTermAsignados] = useState('');
   const [selectedUsers, setSelectedUsers] = useState([]); 
   const [selectedAssigned, setSelectedAssigned] = useState([]); 
   const [estado, setEstado] = useState('no iniciado');
@@ -84,7 +85,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
 
   // Filtrar usuarios no asignados
   const usuariosDisponibles = usuarios.filter(u => {
-    // 1. Verificar que no estÃ© asignado
+    // 1. Verificar que no esté asignado
     const yaAsignado = usuariosAsignados.some(a => a.usuario_id === u.id);
     if (yaAsignado) return false;
 
@@ -92,7 +93,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     if (filtroEmpresa && (u.empresa_socio || '').toLowerCase() !== filtroEmpresa.toLowerCase()) return false;
     if (filtroCargo && (u.cargo || '').toLowerCase() !== filtroCargo.toLowerCase()) return false;
 
-    // 2. Si no hay tÃ©rmino de bÃºsqueda, mostrar todos los disponibles
+    // 2. Si no hay término de búsqueda, mostrar todos los disponibles
     if (!searchTerm.trim()) return true;
 
     // 3. Buscar en nombre o proceso
@@ -103,6 +104,23 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     const cargo = (u.cargo || '').toLowerCase();
 
     // Retornar si coincide en nombre o proceso
+    return nombre.includes(termino) || proceso.includes(termino) || empresa.includes(termino) || cargo.includes(termino);
+  });
+
+  // Filtrar usuarios asignados con los mismos criterios
+  const usuariosAsignadosFiltrados = usuariosAsignados.filter(a => {
+    // Filtros de empresa y cargo
+    if (filtroEmpresa && (a.empresa_socio || '').toLowerCase() !== filtroEmpresa.toLowerCase()) return false;
+    if (filtroCargo && (a.cargo || '').toLowerCase() !== filtroCargo.toLowerCase()) return false;
+
+    if (!searchTermAsignados.trim()) return true;
+
+    const termino = searchTermAsignados.toLowerCase().trim();
+    const nombre = (a.usuario_nombre || '').toLowerCase();
+    const proceso = (a.usuario_proceso || '').toLowerCase();
+    const empresa = (a.empresa_socio || '').toLowerCase();
+    const cargo = (a.cargo || '').toLowerCase();
+
     return nombre.includes(termino) || proceso.includes(termino) || empresa.includes(termino) || cargo.includes(termino);
   });
 
@@ -664,7 +682,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
               {/* Panel de usuarios asignados */}
               <div className="columna-asignar-usuarios">
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h6 className="mb-0">👥 Usuarios Asignados ({usuariosAsignados.length})</h6>
+                  <h6 className="mb-0">👥 Usuarios Asignados ({usuariosAsignadosFiltrados.length})</h6>
                   
                   {/* Botones para eliminar */}
                   {usuariosAsignados.length > 0 && (
@@ -700,13 +718,32 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                   )}
                 </div>
 
+                {/* Búsqueda de usuarios asignados */}
+                <div className="input-group mb-3">
+                  
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Buscar usuario asignado por nombre..."
+                    value={searchTermAsignados}
+                    onChange={(e) => setSearchTermAsignados(e.target.value)}
+                  />
+                  <button
+                    className="btn btn-outline-primary"
+                    onClick={handleSelectByProcess}
+                    title="Seleccionar todos los usuarios del proceso buscado"
+                  >
+                    <Users size={18} />
+                  </button>
+                </div>
+
                 <div className="list-group" style={{ maxHeight: '400px', overflowY: 'auto', fontSize: '14px' }}>
-                  {usuariosAsignados.length === 0 ? (
+                  {usuariosAsignadosFiltrados.length === 0 ? (
                     <div className="alert alert-info mb-0">
                       No hay usuarios asignados 👥
                     </div>
                   ) : (
-                    usuariosAsignados.map(inscripcion => {
+                    usuariosAsignadosFiltrados.map(inscripcion => {
                       const isSelected = selectedAssigned.some(a => a.id === inscripcion.id);
                       return (
                         <div 
