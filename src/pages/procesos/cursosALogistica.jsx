@@ -273,7 +273,7 @@ export default function CoursesALogistica() {
                       </h5>
                       {noDisponible ? (
                         <span className="badge bg-warning text-dark">
-                          
+                          ⛔
                         </span>
                       ) : completado && (
                         <span className="badge bg-success">
