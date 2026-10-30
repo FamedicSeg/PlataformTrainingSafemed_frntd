@@ -135,3 +135,30 @@
     box-sizing: border-box; 
     width: 100%;
 }
+
+.etiqueta-cargo-empresa-nombre{
+    margin-left: 0.5rem;
+    background-color: #7a8385 !important;
+    color: #fff;
+    padding: 5px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+}
+
+.etiqueta-cargo-empresa-nombre2{
+    margin-left: 0.5rem;
+    background-color: #034352 !important;
+    color: #fff !important;
+    padding: 5px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+}
+
+.etiqueta-cargo-empresa-nombre3 {
+    margin-left: 0.5rem;
+    background-color: #ffffff !important;
+    color: #02262e;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+}

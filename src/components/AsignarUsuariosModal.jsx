@@ -16,6 +16,8 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
   const [selectedUsers, setSelectedUsers] = useState([]); 
   const [selectedAssigned, setSelectedAssigned] = useState([]); 
   const [estado, setEstado] = useState('no iniciado');
+  const [filtroEmpresa, setFiltroEmpresa] = useState('');
+  const [filtroCargo, setFiltroCargo] = useState('');
 
   // Cargar datos
   useEffect(() => {
@@ -86,6 +88,10 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     const yaAsignado = usuariosAsignados.some(a => a.usuario_id === u.id);
     if (yaAsignado) return false;
 
+    // Agregamos los filtros de empresa y cargo
+    if (filtroEmpresa && (u.empresa_socio || '').toLowerCase() !== filtroEmpresa.toLowerCase()) return false;
+    if (filtroCargo && (u.cargo || '').toLowerCase() !== filtroCargo.toLowerCase()) return false;
+
     // 2. Si no hay tÃ©rmino de bÃºsqueda, mostrar todos los disponibles
     if (!searchTerm.trim()) return true;
 
@@ -93,9 +99,11 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
     const termino = searchTerm.toLowerCase().trim();
     const nombre = (u.nombre || '').toLowerCase();
     const proceso = (u.proceso || '').toLowerCase();
+    const empresa = (u.empresa_socio || '').toLowerCase();
+    const cargo = (u.cargo || '').toLowerCase();
 
     // Retornar si coincide en nombre o proceso
-    return nombre.includes(termino) || proceso.includes(termino);
+    return nombre.includes(termino) || proceso.includes(termino) || empresa.includes(termino) || cargo.includes(termino);
   });
 
   // Seleccionar un usuario individual (para asignar)
@@ -543,7 +551,7 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Buscar usuario por nombre o proceso..."
+                    placeholder="Buscar usuario por nombre, cargo o empresa"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -600,8 +608,14 @@ export default function AsignarUsuariosModal({ cursoId, onClose, onAssign }) {
                             <div>
                               <div>
                                 <strong>{usuario.nombre} - </strong>
-                                <span className="badge bg-info2 ms-2">
+                                <span className="etiqueta-cargo-empresa-nombre">
                                   {usuario.proceso || 'Sin proceso'}
+                                  </span>
+                                  <span className="etiqueta-cargo-empresa-nombre2">
+                                  {usuario.cargo || 'Sin cargo'}
+                                </span>     
+                                <span className="etiqueta-cargo-empresa-nombre3">
+                                  {usuario.empresa_socio || 'Sin empresa'}
                                 </span>
                               </div>
                               <p className="mb-0 small text-muted" style={{ fontSize: '12px' }}>
