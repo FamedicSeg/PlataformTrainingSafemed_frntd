@@ -288,7 +288,7 @@ export default function CoursesInvestigacionDesarrollo() {
                       <span style={{ fontWeight: 'bold' }}>Fecha de inicio: </span> {curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
                     </p>
                     <p className="descripcion-curso">
-                      <span style={{ fontWeight: 'bold' }}>Fecha de fin: </span> {curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
+                      <span style={{ fontWeight: 'bold' }}>Fecha cierre: </span> {curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
                     </p>
 
                     {/* Aviso de disponibilidad futura */}
