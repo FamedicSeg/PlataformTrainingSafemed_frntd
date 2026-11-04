@@ -304,6 +304,11 @@ export default function CoursesSeguridadFisica() {
                         <small className={`estado-curso ${noDisponible ? 'proximo' : completado ? 'completado' : 'pendiente'}`}>
                           {noDisponible ? 'Próximamente' : completado ? '✅ Curso realizado' : 'Por comenzar'}
                         </small>
+                        {!noDisponible && completado && (
+                          <small className="ms-2 text-success">
+                            <i className="bi bi-check-circle"></i> Realizado
+                          </small>
+                        )}
                         {esCursoSincronico(curso) && (
                           <span className="badge bg-info ms-2"></span>
                         )}
