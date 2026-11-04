@@ -21,13 +21,13 @@ export default function Procesos(){
         {id:3, name: "Asuntos Regulatorios y Control de Calidad" , desc: "Capacitación de Control de Calidad" ,link: "/courses/asuntosRegulatorios", enabled: true},
         {id:2, name: "Aseguramiento de la Calidad y Seguridad" , desc: "Capacitación de Aseguramiento de la Calidad y Seguridad" , link: "/courses/sgcs", enabled: true},
         {id:1, name: "Almacenamiento y Logística", desc: "Capacitación de Almacenamiento y Logística", link:"/courses/almacenamientoLogistica", enabled: true},
-        {id:15, name: "Seguridad Informática", desc: "Capacitación de la Seguridad en la Información", link:"/courses/seguridadInformatica", enabled: true},        
+        {id:15, name: "Seguridad Informática", desc: "Capacitación de Seguridad en la Información", link:"/courses/seguridadInformatica", enabled: true},        
         {id:5, name: "Gerencia", desc: "Capacitación de Dirección", link:"/courses/gerencia", enabled: true},
         {id:7, name: "Gestión Comercial", desc: "Capacitación de Gestión Comercial", link:"/courses/ventas", enabled: true},
         {id:9, name: "Desarrollo e Investigación", desc: "Capacitación de Desarrollo e Investigación", link:"/courses/investigacionDesarrollo", enabled: true},
         {id:4, name: "Compras e Importaciones", desc: "Capacitación de Compras", link:"/courses/compras", enabled: true},
         {id:10, name: "Marketing", desc: "Capacitación de Marketing", link:"/courses/marketing", enabled: true},
-        {id:13, name: "Seguridad Física", desc: "Capacitación de la Seguridad Física", link:"/courses/seguridad-fisica", enabled: true},
+        {id:13, name: "Seguridad Física", desc: "Capacitación de Seguridad Física", link:"/courses/seguridad-fisica", enabled: true},
         {id:8, name: "Infraestructura y Mantenimiento", desc: "Capacitación de Infraestructura y Mantenimiento", link:"/courses/mantenimiento", enabled: true},
     ];
 
