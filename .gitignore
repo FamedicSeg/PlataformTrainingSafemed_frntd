@@ -2,6 +2,9 @@
 node_modules/
 npm-debug.log*
 
+# Build output
+dist/
+
 # Variables de entorno - CRÍTICO NO SUBIR
 .env
 .env.local
