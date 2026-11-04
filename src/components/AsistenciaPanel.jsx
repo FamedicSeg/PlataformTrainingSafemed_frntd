@@ -145,8 +145,8 @@ export default function AsistenciaPanel({
 
   };
 
-  // El PDF incluye todas las inscripciones del curso, sin importar su estado.
-  const pdfActivo = registrosCurso.length > 0;
+  // El PDF incluye solo las inscripciones del curso que coinciden con los filtros (estado, empresa, etc).
+  const pdfActivo = registrosFiltrados.length > 0;
 
   // ── Exportar a PDF ────────────────────────────────────────────
   const exportarPDF = async () => {
@@ -180,9 +180,9 @@ export default function AsistenciaPanel({
     }
 
     // Datos del curso
-    const primerRegistro   = registrosCurso[0] || {};
+    const primerRegistro   = registrosFiltrados[0] || {};
     const nombreCurso      = primerRegistro.curso_nombre        || '—';
-    const fechaFallback    = registrosCurso
+    const fechaFallback    = registrosFiltrados
       .map(r => r.inicio_en)
       .filter(Boolean)
       .sort()[0] || null;
@@ -359,7 +359,7 @@ export default function AsistenciaPanel({
 
     // ── Tabla de asistencia ────────────────────────────────────
     const headers = ['N°', 'APELLIDOS Y NOMBRES', 'CÉDULA', 'CARGO', 'ESTADO / FIRMA'];
-    const rows = registrosCurso.map((r, idx) => [
+    const rows = registrosFiltrados.map((r, idx) => [
       idx + 1,
       r.usuario_nombre,
       r.cedula_identidad || '—',
@@ -546,7 +546,7 @@ export default function AsistenciaPanel({
           <button
             className="btn-download-pdf"
             onClick={exportarPDF}
-            title={pdfActivo ? 'Exportar PDF con todos los inscritos, sin importar su estado' : 'Selecciona un curso con registros para exportar'}
+            title={pdfActivo ? 'Exportar PDF con los registros filtrados' : 'Selecciona un curso y filtro de estado para exportar'}
             disabled={!pdfActivo}
             style={{ opacity: pdfActivo ? 1 : 0.45, cursor: pdfActivo ? 'pointer' : 'not-allowed' }}
           >

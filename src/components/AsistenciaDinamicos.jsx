@@ -20,6 +20,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
   const [cargando, setCargando] = useState(true);
   const [filtroCurso, setFiltroCurso] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('');
+  const [filtroEmpresa, setFiltroEmpresa] = useState('');
   const [cursosUnicos, setCursosUnicos] = useState([]);
 
   useEffect(() => {
@@ -100,10 +101,15 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
   };
 
   // ── Filtros ───────────────────────────────────────────────────
+  const empresasUnicas = [...new Set(asistencia.map(r => r.empresa_socio).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'es'));
+
+  const coincideEmpresa = (r) => !filtroEmpresa || r.empresa_socio === filtroEmpresa;
+
   const registrosFiltrados = asistencia.filter(r => {
     const coincideCurso  = !filtroCurso || String(r.curso_id) === filtroCurso;
     const coincideEstado = filtroEstado === '' || r.estado === filtroEstado;
-    return coincideCurso && coincideEstado;
+    return coincideCurso && coincideEstado && coincideEmpresa(r);
   });
 
   // ── Exportar a CSV ────────────────────────────────────────────
@@ -133,7 +139,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
   };
 
   // ── PDF solo activo cuando hay curso seleccionado + estado completado ────
-  const pdfActivo = filtroCurso !== '' && filtroEstado === 'completado';
+  const pdfActivo = registrosFiltrados.length > 0;
 
   // ── Exportar a PDF ────────────────────────────────────────────
   const exportarPDF = async () => {
@@ -510,6 +516,18 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
             <option value="completado">Completado</option>
           </select>
 
+          {/* Filtro por empresa */}
+          <select
+            className="form-select form-select-sm"
+            value={filtroEmpresa}
+            onChange={e => setFiltroEmpresa(e.target.value)}
+          >
+            <option value="">Todas las empresas</option>
+            {empresasUnicas.map(emp => (
+              <option key={emp} value={emp}>{emp}</option>
+            ))}
+          </select>
+
           <button className="btn-actualizar-asistencia" onClick={cargarAsistencia} title="Actualizar">
             <RefreshCw size={15} />
           </button>
@@ -521,7 +539,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
           <button
             className="btn-download-pdf"
             onClick={exportarPDF}
-            title={pdfActivo ? 'Exportar PDF' : 'Selecciona un curso y filtra por "Completado" para exportar'}
+            title={pdfActivo ? 'Exportar PDF con los registros filtrados' : 'Selecciona un curso y filtros para exportar'}
             disabled={!pdfActivo}
             style={{ opacity: pdfActivo ? 1 : 0.45, cursor: pdfActivo ? 'pointer' : 'not-allowed' }}
           >
