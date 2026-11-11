@@ -20,6 +20,9 @@ import ReportesUsuario from '../components/ReportesUsuario';
 import DocumentosConformidad from '../components/documentosConformidad';
 import ResultadosPruebaTTHH from '../components/ResultadosPruebaTTHH';
 import CapacitadoresManager from '../components/CapacitadoresManager';
+// ✅ NUEVO - Importar componentes de Gerencia
+import GerenciaDashboard from '../components/GerenciaDashboard';
+import GerenciaReportes from '../components/GerenciaReportes';
 import '../styles/pages/adminProcesoHome.css';
 
 export default function AdminProcesoHome() {
@@ -51,6 +54,7 @@ export default function AdminProcesoHome() {
   }, [navigate]);
 
   const esTalentoHumano = adminUser?.proceso_name?.trim().toUpperCase() === 'TALENTO HUMANO';
+  const esGerencia = adminUser?.proceso_name?.trim().toUpperCase() === 'GERENCIA';
   const esCapacitador = adminUser?.role === 'capacitador';
 
   // Cargar cursos pendientes + polling cada 30s (solo para TALENTO HUMANO)
@@ -103,7 +107,13 @@ export default function AdminProcesoHome() {
     );
   }
 
-  const navItems = [
+  const navItems = esGerencia && !esCapacitador ? [
+    // ✅ GERENCIA - Solo ve Inicio, Dashboards y Reportes
+    { id: 'inicio', label: 'Inicio', icon: Home },
+    { id: 'dashboards-gerencia', label: 'Dashboards', icon: BarChart2 },
+    { id: 'reportes-gerencia', label: 'Reportes de Participación', icon: PieChart }
+  ] : [
+    // ✅ OTROS PROCESOS - Items estándar
     { id: 'inicio', label: 'Inicio', icon: Home },
     { id: 'gestionar-cursos', label: 'Gestionar Cursos', icon: BookOpen },
     { id: 'mis-reuniones', label: 'Mis Reuniones', icon: Video },
@@ -136,6 +146,9 @@ export default function AdminProcesoHome() {
     'documentos-conformidad': 'Documentos de Conformidad',
     'prueba-tthh': 'Resultados Prueba Final – Talento Humano',
     'gestion-empleados': 'Ingreso y Salida de Empleados',
+    // ✅ NUEVO - Títulos para Gerencia
+    'dashboards-gerencia': 'Dashboards de Gerencia',
+    'reportes-gerencia': 'Reportes de Participación',
   };
 
   const handleNavClick = (item) => {
@@ -234,6 +247,11 @@ export default function AdminProcesoHome() {
         return esTalentoHumano ? <ResultadosPruebaTTHH /> : null;
       case 'gestion-empleados':
         return esTalentoHumano && !esCapacitador ? <EmpleadosManager /> : null;
+      // ✅ NUEVO - Cases para Gerencia
+      case 'dashboards-gerencia':
+        return esGerencia && !esCapacitador ? <GerenciaDashboard /> : null;
+      case 'reportes-gerencia':
+        return esGerencia && !esCapacitador ? <GerenciaReportes /> : null;
       default:
         return null;
     }

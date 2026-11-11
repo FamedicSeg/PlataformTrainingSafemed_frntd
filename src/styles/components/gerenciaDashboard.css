@@ -1,0 +1,462 @@
+/* ═════════════════════════════════════════════════════════════════════ */
+/* GERENCIA DASHBOARD - ESTILOS                                          */
+/* ═════════════════════════════════════════════════════════════════════ */
+
+.gd-container {
+  padding: 24px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.gd-loading,
+.gd-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+  color: #666;
+}
+
+.gd-error {
+  color: #dc3545;
+}
+
+.gd-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════ */
+/* TARJETAS DE RESUMEN                                                 */
+/* ═══════════════════════════════════════════════════════════════════ */
+
+.gd-resumen {
+  margin-bottom: 32px;
+}
+
+.gd-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.gd-card {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.gd-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.gd-card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.gd-card-primary .gd-card-icon {
+  background: #e7f1ff;
+  color: #0d6efd;
+}
+
+.gd-card-success .gd-card-icon {
+  background: #d1f0e0;
+  color: #198754;
+}
+
+.gd-card-warning .gd-card-icon {
+  background: #fff3cd;
+  color: #ff8c00;
+}
+
+.gd-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gd-card-label {
+  font-size: 12px;
+  color: #4b4b4b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.gd-card-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.gd-card-percent {
+  font-size: 10px;
+  color: #535353;
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════ */
+/* ESTADO DE PARTICIPACIÓN                                             */
+/* ═══════════════════════════════════════════════════════════════════ */
+
+.gd-estado {
+  margin-bottom: 32px;
+}
+
+.gd-estado-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.gd-estado-card {
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid;
+  display: flex;
+  gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.gd-estado-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.gd-estado-completado {
+  border-left-color: #198754;
+}
+
+.gd-estado-completado .gd-estado-icon {
+  color: #198754;
+}
+
+.gd-estado-progreso {
+  border-left-color: #0dcaf0;
+}
+
+.gd-estado-progreso .gd-estado-icon {
+  color: #0dcaf0;
+}
+
+.gd-estado-no-iniciado {
+  border-left-color: #dc3545;
+}
+
+.gd-estado-no-iniciado .gd-estado-icon {
+  color: #dc3545;
+}
+
+.gd-estado-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.gd-estado-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gd-estado-label {
+  font-size: 12px;
+  color: #535353;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.gd-estado-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.gd-estado-desc {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════ */
+/* PROCESOS                                                            */
+/* ═══════════════════════════════════════════════════════════════════ */
+
+.gd-procesos {
+  margin-bottom: 32px;
+}
+
+.gd-procesos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gd-proceso-item {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.gd-proceso-item:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.gd-proceso-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 5px 20px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.gd-proceso-header:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+}
+
+.gd-proceso-title {
+  flex: 1;
+}
+
+.gd-proceso-title h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.gd-proceso-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.gd-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gd-stat-label {
+  font-size: 11px;
+  color: #535353;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.gd-stat-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.gd-stat-completados .gd-stat-value {
+  color: #198754;
+}
+
+.gd-proceso-toggle {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #535353;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: all 0.2s ease;
+}
+
+.gd-proceso-toggle:hover {
+  color: #0d6efd;
+  transform: scale(1.2);
+}
+
+.gd-proceso-detalle {
+  padding: 0;
+  border-top: 1px solid #dee2e6;
+}
+
+.gd-cursos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.gd-cursos-table thead {
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.gd-cursos-table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #535353;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.gd-cursos-table td {
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 13px;
+  color: #1a1a1a;
+}
+
+.gd-cursos-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.gd-completados {
+  color: #198754 !important;
+  font-weight: 600;
+}
+
+.gd-progreso {
+  color: #0dcaf0 !important;
+  font-weight: 600;
+}
+
+.gd-no-iniciado {
+  color: #dc3545 !important;
+  font-weight: 600;
+}
+
+.gd-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #999;
+}
+
+/* ═══════════════════════════════════════════════════════════════════ */
+/* ACCIONES                                                            */
+/* ═══════════════════════════════════════════════════════════════════ */
+
+.gd-acciones {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.gd-acciones button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════ */
+/* RESPONSIVE                                                          */
+/* ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .gd-container {
+    padding: 16px;
+  }
+
+  .gd-cards-grid,
+  .gd-estado-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gd-proceso-header {
+    flex-wrap: wrap;
+  }
+
+  .gd-proceso-stats {
+    width: 100%;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .gd-cursos-table {
+    font-size: 12px;
+  }
+
+  .gd-cursos-table th,
+  .gd-cursos-table td {
+    padding: 8px;
+  }
+
+  .gd-card-value {
+    font-size: 24px;
+  }
+
+  .gd-estado-value {
+    font-size: 22px;
+  }
+}
+
+.text-center-nombre-curso{
+  font-weight: 600 !important;
+}
+
+.btn-datos-actualizar{
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+  border-radius: 8px;
+}
+
+.btn-datos-actualizar:hover {
+  background-color: #032659;
+  border-color: #032659;
+}
+
+.btn-datos-excel{
+  background-color: #198754;
+  border-color: #198754;
+  border-color: #198754;
+  color: #fff;
+  border-radius: 8px;
+}
+
+.btn-datos-excel:hover {
+  background-color: #146c43;
+  border-color: #146c43;
+}
+.btn-datos-pdf{
+  background-color: #f00d0d;
+  border-color: #f00d0d;
+  color: #fff;
+  border-radius: 8px;
+}
+.btn-datos-pdf:hover {
+  background-color: #5c020b;
+  border-color: #5c020b;
+}
