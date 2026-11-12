@@ -131,6 +131,34 @@ export default function Curso3({ curso }) {
         }
       }, [nombre, nombreCursoBD, niveles.length]);
     
+      // REGISTRAR CURSO ESTÁTICO EN cursos_completados
+      const registrarCursoEstatico = useCallback(async () => {
+        try {
+          const response = await fetch(`${API_URL}/api/progreso/completar-curso-estatico`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              nombre: nombre,
+              cursoDbName: nombreCursoBD,
+              cursoNombre: curso.nombre
+            })
+          });
+
+          const data = await response.json();
+          
+          if (data.ok) {
+            console.log(`✅ Curso estático registrado en cursos_completados:`, data);
+            return true;
+          } else {
+            console.error('❌ Error registrando curso estático:', data.message);
+            return false;
+          }
+        } catch (error) {
+          console.error('❌ Error al registrar curso estático:', error);
+          return false;
+        }
+      }, [nombre, nombreCursoBD, curso.nombre, API_URL]);
+    
       // SUMAR 25% AL PROGRESO GENERAL CUANDO SE COMPLETA EL CURSO
       const sumarProgresoGeneral = useCallback(async () => {
         try {
@@ -150,7 +178,7 @@ export default function Curso3({ curso }) {
         } catch (error) {
           console.error("Error actualizando progreso general:", error);
         }
-      }, [nombre]);
+      }, [nombre, API_URL]);
     
       // DETECTAR FINAL DEL CURSO Y MARCAR COMO COMPLETADO
       useEffect(() => {
@@ -170,6 +198,9 @@ export default function Curso3({ curso }) {
             clearTimeout(procesandoTimeout);
             
             if (cursoMarcado) {
+              // Registrar en cursos_completados (para reportes)
+              await registrarCursoEstatico();
+              
               // Solo sumar progreso general si es la primera vez que se completa
               if (!courseCompletedFromDB) {
                 await sumarProgresoGeneral();
@@ -192,7 +223,7 @@ export default function Curso3({ curso }) {
         };
     
         finalizarCurso();
-      }, [progreso, cargando, cursoMarcadoCompletado, courseCompletedFromDB, navigate, sumarProgresoGeneral, marcarCursoCompletadoEnBD, curso.nombre, nombreCursoBD]);
+      }, [progreso, cargando, cursoMarcadoCompletado, courseCompletedFromDB, navigate, sumarProgresoGeneral, marcarCursoCompletadoEnBD, registrarCursoEstatico, curso.nombre, nombreCursoBD]);
     
       // MARCAR NIVEL COMPLETADO (frontend + backend)
       const marcarCompletado = (nivelId) => {

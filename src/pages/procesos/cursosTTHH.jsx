@@ -23,7 +23,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 2 horas", 
       link: "/courses/reglamentointerno",
       dbName: "reglamentoInterno",
-      bloqueado: true,
+      bloqueado: false,
       esEstatico: true
     },
     { 
@@ -193,18 +193,50 @@ export default function CoursesTTHH() {
     return Math.round((cursosCompletadosCount / totalCursos) * 100);
   };
 
-  // Manejar clic en botÃ³n de curso
+  // Manejar clic en botón de curso
   const esCursoExpirado = (curso) => !!curso.fecha_fin && new Date() > new Date(curso.fecha_fin);
+
+  // Función para registrar curso estático como completado
+  const registrarCursoEstaticoCompletado = async (curso) => {
+    if (!curso.esEstatico || estaCursoCompletado(curso.dbName)) return;
+    
+    try {
+      const response = await fetch(`${API_URL}/api/progreso/completar-curso-estatico`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: nombre,
+          cursoDbName: curso.dbName,
+          cursoNombre: curso.name
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.ok) {
+        console.log(`✅ Curso estático registrado: ${curso.name}`);
+        // Actualizar estado local
+        setCursosCompletados(prev => ({
+          ...prev,
+          [curso.dbName]: true
+        }));
+      } else {
+        console.error('❌ Error registrando curso estático:', data.message);
+      }
+    } catch (error) {
+      console.error('❌ Error al registrar curso estático:', error);
+    }
+  };
 
   const manejarClicCurso = (curso) => {
     if (curso.bloqueado || esCursoExpirado(curso)) return;
     if (estaCursoCompletado(curso.dbName)) {
-      // Si el curso ya estÃ¡ completado, preguntar si quiere repasar
+      // Si el curso ya está completado, preguntar si quiere repasar
       if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
         navigate(curso.link);
       }
     } else {
-      // Si no estÃ¡ completado, iniciar normalmente
+      // Si no está completado, iniciar normalmente
       navigate(curso.link);
     }
   };

@@ -151,7 +151,35 @@ export default function Curso5({ curso }) {
       return false;
     }
   }, [nombre, nombreCursoBD, niveles.length]);
-  
+
+  // REGISTRAR CURSO ESTÁTICO EN cursos_completados
+  const registrarCursoEstatico = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/progreso/completar-curso-estatico`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: nombre,
+          cursoDbName: nombreCursoBD,
+          cursoNombre: curso.nombre
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.ok) {
+        console.log(`✅ Curso estático registrado en cursos_completados:`, data);
+        return true;
+      } else {
+        console.error('❌ Error registrando curso estático:', data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error('❌ Error al registrar curso estático:', error);
+      return false;
+    }
+  }, [nombre, nombreCursoBD, curso.nombre, API_URL]);
+
   // VERIFICACIÓN PERIÓDICA SI EL CURSO YA ESTÁ COMPLETADO
   useEffect(() => {
     const verificarCursoCompletado = async () => {
@@ -203,6 +231,9 @@ export default function Curso5({ curso }) {
         clearTimeout(procesandoTimeout);
         
         if (cursoMarcado) {
+          // Registrar en cursos_completados (para reportes)
+          await registrarCursoEstatico();
+          
           setMostrarProcesando(false);
          /* 
           // Redirigir después de un breve retraso
@@ -224,7 +255,7 @@ export default function Curso5({ curso }) {
     };
     
     finalizarCurso();
-  }, [progreso, cargando, cursoMarcadoCompletado, navigate, marcarCursoCompletadoEnBD, curso.nombre, nombreCursoBD]);
+  }, [progreso, cargando, cursoMarcadoCompletado, navigate, marcarCursoCompletadoEnBD, registrarCursoEstatico, curso.nombre, nombreCursoBD]);
   
   // MARCAR NIVEL COMPLETADO
   const marcarCompletado = (nivelId) => {

@@ -1,9 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+﻿import { useEffect, useState, useRef } from 'react';
 import { Users, CheckCircle2, Clock, AlertCircle, TrendingUp, Download, FileText } from 'lucide-react';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
 import Chart from 'chart.js/auto';
+import CursoDetailPanel from './CursoDetailPanel';
 import '../styles/components/gerenciaDashboard.css';
 
 export default function GerenciaDashboard() {
@@ -13,6 +14,8 @@ export default function GerenciaDashboard() {
   const [estadisticas, setEstadisticas] = useState(null);
   const [loading, setLoading] = useState(true);
   const [expandedProceso, setExpandedProceso] = useState(null);
+  const [cursoSeleccionado, setCursoSeleccionado] = useState(null);
+  const [panelAbierto, setPanelAbierto] = useState(false);
   const chartRefPastel = useRef(null);
   const chartRefBarras = useRef(null);
   const chartInstancePastel = useRef(null);
@@ -138,6 +141,7 @@ export default function GerenciaDashboard() {
       const workbook = XLSX.utils.book_new();
       const fechaExporte = new Date().toLocaleDateString('es-ES');
 
+      // Hoja de Resumen
       const dataResumen = [
         ['RESUMEN GENERAL DE CAPACITACIONES', ''],
         ['Fecha de Exportación', fechaExporte],
@@ -152,6 +156,7 @@ export default function GerenciaDashboard() {
       sheetResumen['!cols'] = [{ wch: 30 }, { wch: 15 }];
       XLSX.utils.book_append_sheet(workbook, sheetResumen, 'Resumen');
 
+      // Hoja de Estado General
       const dataEstado = [
         ['ESTADO DE PARTICIPACIÓN', ''],
         [''],
@@ -164,6 +169,7 @@ export default function GerenciaDashboard() {
       sheetEstado['!cols'] = [{ wch: 20 }, { wch: 15 }];
       XLSX.utils.book_append_sheet(workbook, sheetEstado, 'Estado General');
 
+      // Hoja de Procesos (resumen)
       const dataProcesos = [
         ['ESTADÍSTICAS POR PROCESO', '', '', '', '', ''],
         ['Proceso', 'Inscritos', 'Completados', 'En Progreso', 'No Iniciados', 'Total Cursos'],
@@ -182,6 +188,7 @@ export default function GerenciaDashboard() {
       ];
       XLSX.utils.book_append_sheet(workbook, sheetProcesos, 'Por Proceso');
 
+      // Hoja de Detalle de Cursos
       const dataDetalleCursos = [
         ['DETALLE DE CURSOS', '', '', '', '', ''],
         ['Proceso', 'Curso', 'Inscritos', 'Completados', 'En Progreso', 'No Iniciados'],
@@ -199,6 +206,59 @@ export default function GerenciaDashboard() {
         { wch: 35 }, { wch: 50 }, { wch: 12 }, { wch: 15 }, { wch: 15 }, { wch: 15 }
       ];
       XLSX.utils.book_append_sheet(workbook, sheetDetalle, 'Detalle Cursos');
+
+      // Crear una hoja por proceso con cursos organizados por año
+      procesos.forEach(proceso => {
+        const cursosProceso = detalles_procesos.filter(c => c.proceso_nombre === proceso.proceso_nombre);
+        
+        // Agrupar cursos por año
+        const cursosPorAño = {};
+        cursosProceso.forEach(curso => {
+          const año = curso.año || 2026; // Si no hay año, asumir 2026
+          if (!cursosPorAño[año]) {
+            cursosPorAño[año] = [];
+          }
+          cursosPorAño[año].push(curso);
+        });
+
+        // Construir datos para la hoja
+        const dataProcesoPorAño = [
+          [`${proceso.proceso_nombre.toUpperCase()} - CURSOS POR AÑO`, '', '', '', '', ''],
+          [''],
+        ];
+
+        // Ordenar años descendentemente
+        const años = Object.keys(cursosPorAño).sort((a, b) => b - a);
+
+        años.forEach(año => {
+          dataProcesoPorAño.push([`AÑO ${año}`, '', '', '', '', '']);
+          dataProcesoPorAño.push(['Curso', 'Tipo', 'Inscritos', 'Completados', 'En Progreso', 'No Iniciados']);
+          
+          cursosPorAño[año].forEach(curso => {
+            const tipo = curso.es_dinamico ? 'Dinámico' : 'Estático';
+            dataProcesoPorAño.push([
+              curso.curso_nombre,
+              tipo,
+              curso.personas_inscritas || 0,
+              curso.personas_completadas || 0,
+              curso.personas_en_progreso || 0,
+              curso.personas_no_iniciadas || 0,
+            ]);
+          });
+          
+          dataProcesoPorAño.push(['']);
+        });
+
+        // Crear hoja para este proceso
+        const sheetProcesoPorAño = XLSX.utils.aoa_to_sheet(dataProcesoPorAño);
+        sheetProcesoPorAño['!cols'] = [
+          { wch: 50 }, { wch: 12 }, { wch: 12 }, { wch: 15 }, { wch: 15 }, { wch: 15 }
+        ];
+        
+        // Nombre de la hoja (máximo 31 caracteres en Excel)
+        const nombreHoja = proceso.proceso_nombre.substring(0, 28);
+        XLSX.utils.book_append_sheet(workbook, sheetProcesoPorAño, nombreHoja);
+      });
 
       XLSX.writeFile(workbook, `Reportes_Gerencia_${fechaExporte}.xlsx`);
       Swal.fire({
@@ -597,9 +657,21 @@ export default function GerenciaDashboard() {
                       </thead>
                       <tbody>
                         {detalles_procesos
-                          .filter(d => d.proceso_nombre === proceso.proceso_nombre && d.curso_nombre)
+                          .filter(d => {
+                            const procName = (d.proceso_nombre || '').trim().toLowerCase().replace(/\s+/g, '_');
+                            const compName = (proceso.proceso_nombre || '').trim().toLowerCase().replace(/\s+/g, '_');
+                            return procName === compName && d.curso_nombre;
+                          })
                           .map((curso, cidx) => (
-                            <tr key={cidx}>
+                            <tr
+                              key={cidx}
+                              onClick={() => {
+                                setCursoSeleccionado(curso);
+                                setPanelAbierto(true);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                              className="curso-row-clickeable"
+                            >
                               <td className="text-center-nombre-curso">{curso.curso_nombre}</td>
                               <td className="text-center">{curso.personas_inscritas || 0}</td>
                               <td className="text-center gd-completados">{curso.personas_completadas || 0}</td>
@@ -629,10 +701,19 @@ export default function GerenciaDashboard() {
         <button className="btn-datos-excel" onClick={exportarExcel}>
           <Download size={18} /> Exportar a Excel
         </button>
+        {/*
         <button className="btn-datos-pdf" onClick={exportarPDF}>
           <FileText size={18} /> Exportar a PDF
         </button>
+        */}
       </div>
+
+      <CursoDetailPanel
+        curso={cursoSeleccionado}
+        proceso={cursoSeleccionado?.proceso_nombre || ''}
+        isOpen={panelAbierto}
+        onClose={() => setPanelAbierto(false)}
+      />
 
       <canvas ref={chartRefPastel} style={{ display: 'none' }} width="300" height="300"></canvas>
       <canvas ref={chartRefBarras} style={{ display: 'none' }} width="600" height="400"></canvas>

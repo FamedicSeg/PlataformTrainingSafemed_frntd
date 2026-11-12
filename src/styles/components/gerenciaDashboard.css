@@ -335,7 +335,17 @@
 }
 
 .gd-cursos-table tbody tr:hover {
-  background: #f8f9fa;
+  background: #f0f4f8;
+  box-shadow: inset 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.curso-row-clickeable {
+  transition: all 0.2s ease;
+}
+
+.curso-row-clickeable:hover {
+  background: #f0f4f8 !important;
+  box-shadow: inset 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
 .gd-completados {
@@ -431,11 +441,15 @@
   border-color: #0d6efd;
   color: #fff;
   border-radius: 8px;
+  font-size: 14px !important;
+  height: 40px !important;
 }
 
 .btn-datos-actualizar:hover {
   background-color: #032659;
   border-color: #032659;
+  font-size: 14px !important;
+  height: 40px !important;
 }
 
 .btn-datos-excel{
@@ -444,19 +458,27 @@
   border-color: #198754;
   color: #fff;
   border-radius: 8px;
+  font-size: 14px !important;
+  height: 40px !important;
 }
 
 .btn-datos-excel:hover {
   background-color: #146c43;
   border-color: #146c43;
+  font-size: 14px !important;
+  height: 40px !important;
 }
 .btn-datos-pdf{
   background-color: #f00d0d;
   border-color: #f00d0d;
   color: #fff;
   border-radius: 8px;
+  font-size: 14px !important;
+  height: 40px !important;
 }
 .btn-datos-pdf:hover {
   background-color: #5c020b;
   border-color: #5c020b;
+  font-size: 14px !important;
+  height: 40px !important;
 }
