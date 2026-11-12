@@ -273,7 +273,7 @@ export default function GerenciaReportes() {
                   <th>Cédula</th>
                   <th>Proceso</th>
                   <th>Cargo</th>
-                  <th className="text-center">Estado</th>
+                  {/*<th className="text-center">Estado</th>*/}
                   <th className="text-center">Inscritos</th>
                   <th className="text-center">Completados</th>
                   <th className="text-center">En Progreso</th>
@@ -290,12 +290,12 @@ export default function GerenciaReportes() {
                       <td>{persona.cedula_identidad}</td>
                       <td>{persona.proceso || '—'}</td>
                       <td>{persona.cargo || '—'}</td>
-                      <td className="text-center">
+                      {/*<td className="text-center">
                         <span className={`gr-badge gr-badge-${estadoInfo.color}`}>
                           <IconoEstado size={14} />
                           {estadoInfo.texto}
                         </span>
-                      </td>
+                      </td>*/}
                       <td className="text-center">{persona.total_inscripciones || 0}</td>
                       <td className="text-center gr-completados">
                         <strong>{persona.cursos_completados || 0}</strong>

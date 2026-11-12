@@ -2,7 +2,7 @@
 import { Users, CheckCircle2, Clock, AlertCircle, TrendingUp, Download, FileText } from 'lucide-react';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
-import { jsPDF } from 'jspdf';
+//import { jsPDF } from 'jspdf';
 import Chart from 'chart.js/auto';
 import CursoDetailPanel from './CursoDetailPanel';
 import '../styles/components/gerenciaDashboard.css';
@@ -232,13 +232,11 @@ export default function GerenciaDashboard() {
 
         años.forEach(año => {
           dataProcesoPorAño.push([`AÑO ${año}`, '', '', '', '', '']);
-          dataProcesoPorAño.push(['Curso', 'Tipo', 'Inscritos', 'Completados', 'En Progreso', 'No Iniciados']);
+          dataProcesoPorAño.push(['Curso', 'Inscritos', 'Completados', 'En Progreso', 'No Iniciados']);
           
           cursosPorAño[año].forEach(curso => {
-            const tipo = curso.es_dinamico ? 'Dinámico' : 'Estático';
             dataProcesoPorAño.push([
               curso.curso_nombre,
-              tipo,
               curso.personas_inscritas || 0,
               curso.personas_completadas || 0,
               curso.personas_en_progreso || 0,
@@ -275,6 +273,7 @@ export default function GerenciaDashboard() {
     }
   };
 
+  {/*
   const exportarPDF = async () => {
     try {
       Swal.fire({
@@ -536,7 +535,7 @@ export default function GerenciaDashboard() {
       console.error('Error exportando PDF:', error);
       Swal.fire('Error', 'Error al generar PDF: ' + error.message, 'error');
     }
-  };
+  }; */}
 
   return (
     <div className="gd-container">
