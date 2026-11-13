@@ -23,7 +23,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 2 horas", 
       link: "/courses/reglamentointerno",
       dbName: "reglamentoInterno",
-      bloqueado: false,
+      bloqueado: true,
       esEstatico: true
     },
     { 
@@ -32,7 +32,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 10 horas", 
       link: "/courses/derechoslaborales",
       dbName: "derechos_laborales",
-      bloqueado: false,
+      bloqueado: true,
       esEstatico: true
     },
     { 
@@ -41,7 +41,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 10 horas", 
       link: "/courses/igualdadgenero",
       dbName: "igualdad_genero",
-      bloqueado: false,
+      bloqueado: true,
       esEstatico: true
     },
     { 
@@ -50,7 +50,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 10 horas", 
       link: "/courses/erradicacionviolencia",
       dbName: "erradicacion_Violencia",
-      bloqueado: false,
+      bloqueado: true,
       esEstatico: true
     },
     { 
@@ -59,7 +59,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 10 horas", 
       link: "/courses/otrosrelacionados",
       dbName: "otrosRelacionados",
-      bloqueado: false,
+      bloqueado: true,
       esEstatico: true
     }
   ];
