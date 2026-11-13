@@ -115,7 +115,9 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
   // ── Exportar a CSV ────────────────────────────────────────────
   const exportarCSV = () => {
     const cabecera = ['Apellidos y Nombres', 'Cédula', 'Proceso', 'Cargo', 'Curso', 'Fecha Inicio', 'Estado'];
-    const filas = registrosFiltrados.map(r => [
+    const filas = registrosFiltrados
+      .sort((a, b) => (a.usuario_nombre || '').localeCompare(b.usuario_nombre || '', 'es'))
+      .map(r => [
       r.usuario_nombre,
       r.cedula_identidad,
       r.usuario_proceso,
@@ -145,6 +147,9 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
   const exportarPDF = async () => {
     if (!pdfActivo) return;
 
+    const registrosOrdenados = registrosFiltrados
+      .sort((a, b) => (a.usuario_nombre || '').localeCompare(b.usuario_nombre || '', 'es'));
+
     // Pre-cargar logo como base64
     let logoDataUrl = null;
     try {
@@ -173,9 +178,9 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
     }
 
     // Datos del curso
-    const primerRegistro   = registrosFiltrados[0] || {};
+    const primerRegistro   = registrosOrdenados[0] || {};
     const nombreCurso      = primerRegistro.curso_nombre        || '—';
-    const fechaFallback    = registrosFiltrados
+    const fechaFallback    = registrosOrdenados
       .map(r => r.inicio_en)
       .filter(Boolean)
       .sort()[0] || null;
@@ -352,7 +357,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
 
     // ── Tabla de asistencia ────────────────────────────────────
     const headers = ['N°', 'APELLIDOS Y NOMBRES', 'CÉDULA', 'CARGO', 'ESTADO / FIRMA'];
-    const rows = registrosFiltrados.map((r, idx) => [
+    const rows = registrosOrdenados.map((r, idx) => [
       idx + 1,
       r.usuario_nombre,
       r.cedula_identidad || '—',
@@ -581,7 +586,9 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
               </tr>
             </thead>
             <tbody>
-              {registrosFiltrados.map((r, idx) => {
+              {registrosFiltrados
+                .sort((a, b) => (a.usuario_nombre || '').localeCompare(b.usuario_nombre || '', 'es'))
+                .map((r, idx) => {
                 const { label, cls } = etiquetaEstado(r.estado);
                 return (
                   <tr key={r.id}>
