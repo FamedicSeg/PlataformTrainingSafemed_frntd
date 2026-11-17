@@ -114,30 +114,37 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
 
   // ── Exportar a CSV ────────────────────────────────────────────
   const exportarCSV = () => {
-    const cabecera = ['Apellidos y Nombres', 'Cédula', 'Proceso', 'Cargo', 'Curso', 'Fecha Inicio', 'Estado'];
-    const filas = registrosFiltrados
-      .sort((a, b) => (a.usuario_nombre || '').localeCompare(b.usuario_nombre || '', 'es'))
-      .map(r => [
-      r.usuario_nombre,
-      r.cedula_identidad,
-      r.usuario_proceso,
-      r.usuario_cargo,
-      r.curso_nombre,
-      formatearFecha(r.inicio_en),
-      capitalizarEstado(r.estado)
-    ]);
+    // Importar XLSX dinámicamente
+    import('xlsx').then(({ default: XLSX }) => {
+      const datos = registrosFiltrados
+        .sort((a, b) => (a.usuario_nombre || '').localeCompare(b.usuario_nombre || '', 'es'))
+        .map(r => ({
+          'Apellidos y Nombres': r.usuario_nombre,
+          'Cédula': r.cedula_identidad,
+          'Proceso': r.usuario_proceso,
+          'Cargo': r.usuario_cargo,
+          'Curso': r.curso_nombre,
+          'Fecha Inicio': formatearFecha(r.inicio_en),
+          'Estado': capitalizarEstado(r.estado)
+        }));
 
-    const contenido = [cabecera, ...filas]
-      .map(f => f.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(','))
-      .join('\n');
+      const ws = XLSX.utils.json_to_sheet(datos);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Asistencia');
+      
+      // Ajustar ancho de columnas
+      ws['!cols'] = [
+        { wch: 25 }, // Nombres
+        { wch: 15 }, // Cédula
+        { wch: 15 }, // Proceso
+        { wch: 15 }, // Cargo
+        { wch: 20 }, // Curso
+        { wch: 15 }, // Fecha
+        { wch: 15 }  // Estado
+      ];
 
-    const blob = new Blob(['\uFEFF' + contenido], { type: 'text/csv;charset=utf-8;' });
-    const url  = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href     = url;
-    link.download = 'asistencia_dinamicos.csv';
-    link.click();
-    URL.revokeObjectURL(url);
+      XLSX.writeFile(wb, 'asistencia_dinamicos.xlsx');
+    }).catch(err => console.error('Error al exportar:', err));
   };
 
   // ── PDF solo activo cuando hay curso seleccionado + estado completado ────
@@ -537,8 +544,8 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
             <RefreshCw size={15} />
           </button>
 
-          <button className="btn btn-outline-success btn-sm" onClick={exportarCSV} title="Exportar CSV">
-            <Download size={15} className="me-1" /> CSV
+          <button className="btn btn-outline-success btn-sm" onClick={exportarCSV} title="Descargar EXCEL">
+            <Download size={15} className="me-1" /> DESCARGAR EXCEL
           </button>
 
           <button

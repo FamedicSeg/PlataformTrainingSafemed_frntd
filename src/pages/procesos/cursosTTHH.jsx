@@ -32,7 +32,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 10 horas", 
       link: "/courses/derechoslaborales",
       dbName: "derechos_laborales",
-      bloqueado: true,
+      bloqueado: false,
       esEstatico: true
     },
     { 
@@ -41,7 +41,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 10 horas", 
       link: "/courses/igualdadgenero",
       dbName: "igualdad_genero",
-      bloqueado: true,
+      bloqueado: false,
       esEstatico: true
     },
     { 
@@ -50,7 +50,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 10 horas", 
       link: "/courses/erradicacionviolencia",
       dbName: "erradicacion_Violencia",
-      bloqueado: true,
+      bloqueado: false,
       esEstatico: true
     },
     { 
@@ -59,7 +59,7 @@ export default function CoursesTTHH() {
       desc: "Duración: 10 horas", 
       link: "/courses/otrosrelacionados",
       dbName: "otrosRelacionados",
-      bloqueado: true,
+      bloqueado: false,
       esEstatico: true
     }
   ];
@@ -119,6 +119,12 @@ export default function CoursesTTHH() {
         }),
         fetch(`${API_URL}/api/progreso/cursos-completados/${encodeURIComponent(nombre)}`)
       ]);
+
+      // Validar que las respuestas sean exitosas
+      if (!respDinamicos.ok || !respEstaticos.ok) {
+        console.warn("⚠️ Error al obtener datos del usuario - Usuario puede estar inactivo");
+        return new Set();
+      }
 
       const completadosObj = {};
       // âœ… GUARDAR IDs DE CURSOS ASIGNADOS
@@ -426,13 +432,13 @@ export default function CoursesTTHH() {
         </div>
         */}
 
-        {/* PRUEBA FINAL 
+         PRUEBA FINAL 
         <div className="text-center mt-5">
           {listo4Cursos ? (
             localStorage.getItem("pruebaAprobada") === "true" ? (
               <div className="alert alert-success py-3">
                 <i className="bi bi-award me-2"></i>
-                Â¡Felicidades! Has completado toda la capacitaciÃ³n y aprobado la prueba final.
+                ¡Felicidades! Has completado toda la capacitación y aprobado la prueba final.
               </div>
             ) : (
               
@@ -440,17 +446,17 @@ export default function CoursesTTHH() {
                 className="btn btn-final"
                 onClick={() => navigate("/prueba")}
               >
-                Ir a la prueba final ðŸ“
+                Ir a la prueba final 📝
               </button>
             )
           ) : (
             <div className="alert alert-info">
               <i className="bi bi-info-circle me-2"></i>
-              La prueba final se habilitarÃ¡ cuando completes los 4 temas requeridos ({completadosRequeridos}/4 completados).
+              La prueba final se habilitará cuando completes los 4 temas requeridos ({completadosRequeridos}/4 completados).
             </div>
           )}
         </div>
-        */}
+
 
       </div>
 
