@@ -115,7 +115,7 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
   // ── Exportar a EXCEL ──────────────────────────────────────────
   const exportarExcel = () => {
     // Importar XLSX dinámicamente
-    import('xlsx').then(({ default: XLSX }) => {
+    import('xlsx').then((XLSX) => {
       const datos = registrosFiltrados
         .sort((a, b) => (a.usuario_nombre || '').localeCompare(b.usuario_nombre || '', 'es'))
         .map(r => ({
