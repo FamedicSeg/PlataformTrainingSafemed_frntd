@@ -112,8 +112,8 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
     return coincideCurso && coincideEstado && coincideEmpresa(r);
   });
 
-  // ── Exportar a CSV ────────────────────────────────────────────
-  const exportarCSV = () => {
+  // ── Exportar a EXCEL ──────────────────────────────────────────
+  const exportarExcel = () => {
     // Importar XLSX dinámicamente
     import('xlsx').then(({ default: XLSX }) => {
       const datos = registrosFiltrados
@@ -544,8 +544,8 @@ export default function AsistenciaDinamicos({ asistenciaUrl = '/api/inscripcione
             <RefreshCw size={15} />
           </button>
 
-          <button className="btn btn-outline-success btn-sm" onClick={exportarCSV} title="Descargar EXCEL">
-            <Download size={15} className="me-1" /> DESCARGAR EXCEL
+          <button className="btn btn-outline-success btn-sm" onClick={exportarExcel} title="Descargar EXCEL">
+            <Download size={15} className="me-1" /> EXCEL
           </button>
 
           <button

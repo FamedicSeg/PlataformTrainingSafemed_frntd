@@ -540,7 +540,7 @@ export default function AsistenciaPanel({
           </button>
 
           <button className="btn btn-outline-success btn-sm" onClick={exportarExcel} title="Exportar Excel">
-            <Download size={15} className="me-1" /> Excel
+            <Download size={15} className="me-1" /> EXCEL
           </button>
 
           <button
