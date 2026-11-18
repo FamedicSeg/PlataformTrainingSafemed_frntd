@@ -48,6 +48,8 @@ const SalaJitsiMeet = ({ cursoId, moduloId, nombreCurso, nombreModulo, userEmail
     const [horaInicio] = useState(new Date());
     const [_loading, _setLoading] = useState(false);
     const [asistenciaRegistrada, setAsistenciaRegistrada] = useState(false);
+    const [jwtToken, setJwtToken] = useState(null);
+    const [tokenError, setTokenError] = useState(null);
     const entradaEnviada = useRef(false);
 
     // Hook de grabación
@@ -73,6 +75,44 @@ const SalaJitsiMeet = ({ cursoId, moduloId, nombreCurso, nombreModulo, userEmail
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // ✅ Generar JWT token para Jitsi
+    useEffect(() => {
+      const obtenerTokenJitsi = async () => {
+        try {
+          console.log('🔐 Solicitando token JWT para Jitsi...');
+          const response = await fetch(`${API_URL}/api/jitsi/generar-token`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              userName: displayName,
+              userEmail: userEmailFinal,
+              roomName: roomName
+            })
+          });
+
+          const data = await response.json();
+          if (response.ok && data.token) {
+            console.log('✅ Token JWT obtenido exitosamente');
+            setJwtToken(data.token);
+            setTokenError(null);
+          } else {
+            throw new Error(data.error || 'Error desconocido generando token');
+          }
+        } catch (error) {
+          console.error('❌ Error obteniendo token JWT:', error.message);
+          setTokenError(error.message);
+        }
+      };
+
+      if (roomName && displayName && userEmailFinal) {
+        obtenerTokenJitsi();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [roomName, displayName, userEmailFinal]);
 
     const registrarEntrada = async () => {
       if (!usuarioId) {
@@ -239,71 +279,100 @@ const SalaJitsiMeet = ({ cursoId, moduloId, nombreCurso, nombreModulo, userEmail
             <div className="jitsi-principal-container-usuario">
                 {/* Sala Jitsi Meet */}
                 <div className="jitsi-sala-contenedor-usuario">
-                <JitsiMeeting
-                    roomName={roomName}
-                    displayName={displayName}
-                    userEmail={userEmailFinal}
-                    configOverwrite={{
-                        startWithAudioMuted: false,
-                        startWithVideoMuted: false,
-                        prejoinPageEnabled: true,
-                        disableModeratorIndicator: true,
-                        enableLobbyMode: false,
-                        enableRecording: true,
-                        recordingType: 'local',
-                        enableInsecureRoomNameWarning: false,
-                        enableWelcomePage: false,
-                        requireDisplayName: false,
-                        // Deshabilitar autenticación y membersOnly
-                        authRequired: false,
-                        membersOnly: false,
-                        moderatedRoomServiceUrl: '',
-                        disableDisconnectIf: false,
-                        // NO MOSTRAR OPCIÓN DE ANFITRIÓN
-                        disableInviteFunctions: false,
-                        localRecording: true,
-                        subject: nombreCurso,
-                        features: {
-                            recording: true,
-                            livestreaming: false,
-                            'show-virtual-background-button': true,
-                            'screenshare.enabled': true,
-                            'chat': true,
-                            'polls': false,
-                        },
-                        desktopSharingChromeExtId: undefined,
-                        desktopSharingChromeSources: ['screen', 'window'],
-                        desktopSharingFirefoxDisabled: false,
-                    }}
-                    interfaceConfigOverwrite={{
-                        TOOLBAR_BUTTONS: [
-                            'camera', 'microphone', 'desktop', 'fullscreen', 'hangup',
-                            'chat', 'recording', 'settings', 'raisehand', 'help'
-                        ],
-                        SHOW_JITSI_WATERMARK: false,
-                        SHOW_BRAND_WATERMARK: false,
-                        DEFAULT_BACKGROUND: '#222222',
-                        MOBILE_APP_PROMO: false,
-                        HIDE_INVITE_BUTTON: false
-                    }}
-                    onApiReady={(externalApi) => {
-                        console.log('✅ Jitsi API listo');
-                        externalApi.addEventListener('participantJoined', ()=>{
-                            setParticipantesActuales((prev) => prev + 1);
-                        });
-                        externalApi.addEventListener('participantLeft', ()=>{
-                            setParticipantesActuales((prev) => Math.max(1, prev - 1));
-                        });
-                    }}
-                    onReadyToClose={handleConferenciaTerminada}
-                    onError={(error) => {
-                        console.error('❌ Error en Jitsi:', error);
-                    }}
-                    getIFrameRef={(iframeRef) => {
-                        iframeRef.style.height = '100%';
-                        iframeRef.style.width = '100%';
-                    }}
-                />
+                    {tokenError && (
+                        <div style={{
+                            padding: '15px',
+                            marginBottom: '10px',
+                            backgroundColor: '#ffebee',
+                            color: '#c62828',
+                            borderRadius: '4px',
+                            fontSize: '14px'
+                        }}>
+                            ⚠️ Error obteniendo acceso a Jitsi: {tokenError}
+                        </div>
+                    )}
+                    {!jwtToken ? (
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '100%',
+                            fontSize: '16px',
+                            color: '#666'
+                        }}>
+                            🔄 Preparando sala de videoconferencia...
+                        </div>
+                    ) : (
+                        <JitsiMeeting
+                            roomName={roomName}
+                            displayName={displayName}
+                            userEmail={userEmailFinal}
+                            jwt={jwtToken}
+                            configOverwrite={{
+                                startWithAudioMuted: false,
+                                startWithVideoMuted: false,
+                                prejoinPageEnabled: true,
+                                disableModeratorIndicator: true,
+                                enableLobbyMode: false,
+                                enableRecording: true,
+                                recordingType: 'local',
+                                enableInsecureRoomNameWarning: false,
+                                enableWelcomePage: false,
+                                requireDisplayName: false,
+                                // ✅ Con JWT, no necesitamos estas configuraciones
+                                authRequired: false,
+                                membersOnly: false,
+                                enableAuth: false,
+                                moderatedRoomServiceUrl: '',
+                                disableDisconnectIf: false,
+                                disableInviteFunctions: false,
+                                localRecording: true,
+                                subject: nombreCurso,
+                                chromeExtensionBanner: undefined,
+                                defaultLanguage: 'es',
+                                oauth: [],
+                                features: {
+                                    recording: true,
+                                    livestreaming: false,
+                                    'show-virtual-background-button': true,
+                                    'screenshare.enabled': true,
+                                    'chat': true,
+                                    'polls': false,
+                                },
+                                desktopSharingChromeExtId: undefined,
+                                desktopSharingChromeSources: ['screen', 'window'],
+                                desktopSharingFirefoxDisabled: false,
+                            }}
+                            interfaceConfigOverwrite={{
+                                TOOLBAR_BUTTONS: [
+                                    'camera', 'microphone', 'desktop', 'fullscreen', 'hangup',
+                                    'chat', 'recording', 'settings', 'raisehand', 'help'
+                                ],
+                                SHOW_JITSI_WATERMARK: false,
+                                SHOW_BRAND_WATERMARK: false,
+                                DEFAULT_BACKGROUND: '#222222',
+                                MOBILE_APP_PROMO: false,
+                                HIDE_INVITE_BUTTON: false
+                            }}
+                            onApiReady={(externalApi) => {
+                                console.log('✅ Jitsi API listo');
+                                externalApi.addEventListener('participantJoined', ()=>{
+                                    setParticipantesActuales((prev) => prev + 1);
+                                });
+                                externalApi.addEventListener('participantLeft', ()=>{
+                                    setParticipantesActuales((prev) => Math.max(1, prev - 1));
+                                });
+                            }}
+                            onReadyToClose={handleConferenciaTerminada}
+                            onError={(error) => {
+                                console.error('❌ Error en Jitsi:', error);
+                            }}
+                            getIFrameRef={(iframeRef) => {
+                                iframeRef.style.height = '100%';
+                                iframeRef.style.width = '100%';
+                            }}
+                        />
+                    )}
             </div>
 
             {/* Panel de controles lateral */}
