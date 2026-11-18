@@ -10,7 +10,7 @@ export const cursoErradicacionViolencia = {
         id: 301,
         titulo: "Acoso Laboral y Violencia en el Ecuador",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831246/Acoso_Laboral_y_Violencia_en_Ecuador_g1bedx.mp4", 
+        url: "https://www.youtube.com/watch?v=vDVaq3c9uQ4", 
         completado: false,
         width: "200",
         height: "215",
@@ -21,7 +21,7 @@ export const cursoErradicacionViolencia = {
         id: 302,
         titulo: "Cero Tolerancia a La Violencia Laboral",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829933/Infografia_6_gvj9pv.png",
+        url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/1/1208.jpg",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -29,7 +29,7 @@ export const cursoErradicacionViolencia = {
         id: 303,
         titulo: "No discriminación - Inclusión",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829975/Infografia_7_lkfbd8.png",
+        url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/1/1207.jpg",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
 
@@ -38,7 +38,7 @@ export const cursoErradicacionViolencia = {
         id: 304,
         titulo: "Discriminación Laboral",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831260/Discriminacion_Laboral_dlaure.mp4",
+        url: "https://www.youtube.com/watch?v=ukh1O84IEXE",
         completado: false,
         descripcion: "Revisa el siguiente video informativo.",
         autor: "Autor: Silvana Leal"
@@ -47,7 +47,7 @@ export const cursoErradicacionViolencia = {
         id: 305,
         titulo: "Canal de Denuncias - Protocolos",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765829995/Infografia_8_qvh6gq.png",
+        url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/1/1204.jpg",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -73,7 +73,7 @@ export const cursoErradicacionViolencia = {
         id: 308,
         titulo: "Cómo prevenir la Violencia Laboral",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831287/Como_prevenir_la_violencia_laboral_u8xnny.mp4",
+        url: "https://www.youtube.com/watch?v=a2MS3tjmd8g&t=22s",
         completado: false,
         descripcion: "En este video informativo aprenderás cómo prevenir la violencia laboral."
     },
@@ -81,7 +81,7 @@ export const cursoErradicacionViolencia = {
       id: 309,
         titulo: "La violencia en el trabajo, Discriminación Laboral",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831449/La_violencia_en_el_trabajo_Discriminacion_en_el_trabajo_usfolm.mp4",
+        url: "https://www.youtube.com/watch?v=X-zjT2snWTE",
         completado: false,
         descripcion: "En este video informativo aprenderás como actuar ante la violencia en el trabajo y la discriminación laboral con esta dramatización."
     }

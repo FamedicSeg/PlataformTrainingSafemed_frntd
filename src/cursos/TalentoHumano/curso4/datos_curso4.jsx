@@ -10,7 +10,7 @@ export const cursoOtrosRelacionados = {
         id: 401,
         titulo: "Principios de Igualdad de Remuneración",
         tipo: "video",
-        url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831524/Principio_de_igualdad_de_remuneracion_y47kdr.mp4", 
+        url: "https://www.youtube.com/watch?v=dQClIVFiNzM", 
         completado: false,
         width: "200",
         height: "215",
@@ -20,7 +20,7 @@ export const cursoOtrosRelacionados = {
         id: 402,
         titulo: "Estructura Salarial Transparente y Equitativa",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830065/Infografia_9_asxd5f.png",
+        url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/1/1206.jpg",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
     },
@@ -28,7 +28,7 @@ export const cursoOtrosRelacionados = {
         id: 403,
         titulo: "Auditoría Retribuida y Corrección de brechas",
         tipo: "imagen",
-        url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830091/Infografia_10_tgg3c4.png",
+        url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/1/1203.jpg",
         completado: false,
         descripcion: "Revisa el contenido de la siguiente infografía."
 
@@ -37,7 +37,7 @@ export const cursoOtrosRelacionados = {
       id: 404,
       titulo: "Eliminación de Estereotipos y Roles de Género",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830100/Infografia_11_fjwqin.png",
+      url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/1/1200.jpg",
       completado: false,
       descripcion: "Revisa el siguiente contenido"
     },
@@ -53,7 +53,7 @@ export const cursoOtrosRelacionados = {
       id: 406,
       titulo: "Evaluación justa del desempeño",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830125/Infografia_12_ufbska.png",
+      url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/1/1201.jpg",
       completado: false,
       descripcion: "Revisa la siguiente infroamción."
     },
@@ -69,7 +69,7 @@ export const cursoOtrosRelacionados = {
       id: 408,
       titulo: "Conciliación Laboral y Correspondencia Familiar",
       tipo: "imagen",
-      url: "https://res.cloudinary.com/dlupri3mm/image/upload/v1765830143/Infografia_14_zh6rs8.png",
+      url: "https://ortewujmiggxjglhdmie.supabase.co/storage/v1/object/public/modulos/1/1202.jpg",
       completado: false,
       descripcion: "Revisa la siguiente información."
     },
@@ -85,7 +85,7 @@ export const cursoOtrosRelacionados = {
       id: 410,
       titulo: "Conciliación laboral, familiar y personal.",
       tipo: "video",
-      url: "https://res.cloudinary.com/dlupri3mm/video/upload/v1765831539/Conciliacion_laboral_familiar_y_personal_aueynl.mp4",
+      url: "https://www.youtube.com/watch?v=QQVxAZqhkzw",
       completado: false,
       descripcion: "Mira el siguiente video informativo."
     }
