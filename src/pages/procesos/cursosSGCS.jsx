@@ -340,8 +340,8 @@ export default function CoursesSGCS() {
                         </>
                       )}
                       
-                      {/* Bot�n para repasar incluso si est� completado */}
-                      {!noDisponible && completado && (
+                      {/* Botón para repasar incluso si está completado */}
+                      {completado && (
                         <button
                           className="btn btn-outline-primary w-100 mt-2"
                           onClick={() => navigate(curso.link, { state: { courseId: curso.id, repasar: true } })}
