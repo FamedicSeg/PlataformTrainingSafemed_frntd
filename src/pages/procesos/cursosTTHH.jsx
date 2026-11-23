@@ -381,6 +381,7 @@ export default function CoursesTTHH() {
                         <button
                           className="btn btn-outline-primary w-100 mt-2"
                           onClick={() => navigate(curso.link, { state: { courseId: curso.id, repasar: true } })}
+                          style={{ pointerEvents: 'auto' }}
                         >
                           <i className="bi bi-arrow-repeat me-2"></i>
                           Volver a Revisar el Curso
