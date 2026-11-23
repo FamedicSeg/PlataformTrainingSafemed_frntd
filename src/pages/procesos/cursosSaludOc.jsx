@@ -58,6 +58,7 @@ export default function CoursesSaludOc() {
             estado: c.estado,
             mejor_puntaje: c.mejor_puntaje,
             evaluacion_aprobada: c.evaluacion_aprobada,
+            crear_evaluacion: c.crear_evaluacion,
             link: c.tipo === 'Sincr�nico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
             dbName: `curso_${c.curso_id}`,
             bloqueado: false,
@@ -67,6 +68,8 @@ export default function CoursesSaludOc() {
         const completadosObj = {};
         cursosDinamicos.forEach(c => {
           if (c.mejor_puntaje !== null && c.evaluacion_aprobada) {
+            completadosObj[c.dbName] = true;
+          } else if (c.mejor_puntaje === null && !c.crear_evaluacion) {
             completadosObj[c.dbName] = true;
           }
         });

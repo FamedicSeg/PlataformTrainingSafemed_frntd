@@ -58,6 +58,7 @@ export default function CoursesSGCS() {
             estado: c.estado,
             mejor_puntaje: c.mejor_puntaje,
             evaluacion_aprobada: c.evaluacion_aprobada,
+            crear_evaluacion: c.crear_evaluacion,
             link: c.tipo === 'Sincrónico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
             dbName: `curso_${c.curso_id}`,
             bloqueado: false,
@@ -68,7 +69,11 @@ export default function CoursesSGCS() {
         cursosDinamicos.forEach(c => {
           if (c.mejor_puntaje !== null && c.evaluacion_aprobada) {
             completadosObj[c.dbName] = true;
+          } else if (c.mejor_puntaje === null && !c.crear_evaluacion) {
+            // Sin evaluación requerida
+            completadosObj[c.dbName] = true;
           }
+          // Si requiere evaluación pero no la hizo → NO marca como completado (en progreso)
         });
         _setCursosCompletados(completadosObj);
         setCourses(cursosDinamicos);

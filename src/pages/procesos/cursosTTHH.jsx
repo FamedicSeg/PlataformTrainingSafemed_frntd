@@ -138,8 +138,8 @@ export default function CoursesTTHH() {
           if (inscripcion.mejor_puntaje !== null && inscripcion.evaluacion_aprobada) {
             // Evaluación aprobada
             completadosObj[`curso_${inscripcion.curso_id}`] = true;
-          } else if (inscripcion.mejor_puntaje === null && inscripcion.porcentaje_modulos === 100) {
-            // Sin evaluación pero módulos completos
+          } else if (inscripcion.mejor_puntaje === null && inscripcion.porcentaje_modulos === 100 && !inscripcion.crear_evaluacion) {
+            // Sin evaluación requerida pero módulos completos
             completadosObj[`curso_${inscripcion.curso_id}`] = true;
           }
           // Si hay evaluación pero no fue aprobada, NO marcar como completado
