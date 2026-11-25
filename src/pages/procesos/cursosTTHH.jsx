@@ -135,12 +135,14 @@ export default function CoursesTTHH() {
       if (dataDinamicos.success && dataDinamicos.data) {
         dataDinamicos.data.forEach(inscripcion => {
           asignados.add(inscripcion.curso_id); // â† Agregar a asignados
-          if (inscripcion.mejor_puntaje !== null && inscripcion.evaluacion_aprobada) {
-            // Evaluación aprobada
-            completadosObj[`curso_${inscripcion.curso_id}`] = true;
-          } else if (inscripcion.mejor_puntaje === null && inscripcion.porcentaje_modulos === 100 && !inscripcion.crear_evaluacion) {
-            // Sin evaluación requerida pero módulos completos
-            completadosObj[`curso_${inscripcion.curso_id}`] = true;
+          if (inscripcion.estado === 'completado') {
+            if (inscripcion.mejor_puntaje !== null && inscripcion.evaluacion_aprobada) {
+              // Evaluación aprobada
+              completadosObj[`curso_${inscripcion.curso_id}`] = true;
+            } else if (inscripcion.mejor_puntaje === null && inscripcion.porcentaje_modulos === 100 && !inscripcion.crear_evaluacion) {
+              // Sin evaluación requerida pero módulos completos
+              completadosObj[`curso_${inscripcion.curso_id}`] = true;
+            }
           }
           // Si hay evaluación pero no fue aprobada, NO marcar como completado
         });
