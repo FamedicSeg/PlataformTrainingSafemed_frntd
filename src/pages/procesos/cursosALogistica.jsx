@@ -67,10 +67,12 @@ export default function CoursesALogistica() {
         
         const completadosObj = {};
         cursosDinamicos.forEach(c => {
-          if (c.mejor_puntaje !== null && c.evaluacion_aprobada) {
-            completadosObj[c.dbName] = true;
-          } else if (c.mejor_puntaje === null && !c.crear_evaluacion && c.porcentaje_modulos === 100) {
-            completadosObj[c.dbName] = true;
+          if (c.estado === 'completado') {
+            if (c.mejor_puntaje !== null && c.evaluacion_aprobada) {
+              completadosObj[c.dbName] = true;
+            } else if (c.mejor_puntaje === null && !c.crear_evaluacion && c.porcentaje_modulos === 100) {
+              completadosObj[c.dbName] = true;
+            }
           }
         });
         _setCursosCompletados(completadosObj);

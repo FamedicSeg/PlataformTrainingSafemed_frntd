@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Video, Clock } from "lucide-react";
@@ -59,7 +59,7 @@ export default function CoursesARCC() {
             mejor_puntaje: c.mejor_puntaje,
             evaluacion_aprobada: c.evaluacion_aprobada,
             crear_evaluacion: c.crear_evaluacion,
-            link: c.tipo === 'Sincrónico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
+            link: c.tipo === 'SincrÃ³nico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
             dbName: `curso_${c.curso_id}`,
             bloqueado: false,
             esEstatico: false
@@ -67,10 +67,12 @@ export default function CoursesARCC() {
         
         const completadosObj = {};
         cursosDinamicos.forEach(c => {
-          if (c.mejor_puntaje !== null && c.evaluacion_aprobada) {
-            completadosObj[c.dbName] = true;
-          } else if (c.mejor_puntaje === null && !c.crear_evaluacion && c.porcentaje_modulos === 100) {
-            completadosObj[c.dbName] = true;
+          if (c.estado === 'completado') {
+            if (c.mejor_puntaje !== null && c.evaluacion_aprobada) {
+              completadosObj[c.dbName] = true;
+            } else if (c.mejor_puntaje === null && !c.crear_evaluacion && c.porcentaje_modulos === 100) {
+              completadosObj[c.dbName] = true;
+            }
           }
         });
         _setCursosCompletados(completadosObj);
@@ -85,7 +87,7 @@ export default function CoursesARCC() {
     }
   };
 
-  // FUNCIÓN PARA CARGAR PROGRESO DESDE BACKEND
+  // FUNCIÃ“N PARA CARGAR PROGRESO DESDE BACKEND
   const cargarProgreso = async () => {
     try {
       const res = await fetch(`${API_URL}/api/progreso/get`, {
@@ -105,9 +107,9 @@ export default function CoursesARCC() {
     }
   };
 
-  // DETECTAR SI ES CURSO SINCRÓNICO
+  // DETECTAR SI ES CURSO SINCRÃ“NICO
   const esCursoSincronico = (curso) => {
-    return curso?.tipo === 'Sincrónico';
+    return curso?.tipo === 'SincrÃ³nico';
   };
 
 
@@ -116,7 +118,7 @@ export default function CoursesARCC() {
     return esCursoExpiradoSeguro(curso.fecha_fin_curso);
   };
 
-  // DETECTAR SI CURSO A�N NO HA LLEGADO
+  // DETECTAR SI CURSO Aï¿½N NO HA LLEGADO
   const esCursoProximo = (curso) => {
     return esCursoProximoSeguro(curso.fecha_inicio_curso);
   };
@@ -127,7 +129,7 @@ export default function CoursesARCC() {
     setCursoJitsiActual(null);
   };
 
-  // VERIFICAR SI CURSO ESTÁ COMPLETADO
+  // VERIFICAR SI CURSO ESTÃ COMPLETADO
   const estaCursoCompletado = (cursoDbName) => {
     return _cursosCompletados[cursoDbName] || false;
   };
@@ -162,7 +164,7 @@ export default function CoursesARCC() {
   const manejarClicCurso = (curso) => {
     if (esCursoExpirado(curso)) return;
     if (estaCursoCompletado(curso.dbName)) {
-      if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
+      if (window.confirm(`Ya completaste "${curso.name}". Â¿Deseas repasarlo?`)) {
         navigate(curso.link);
       }
     } else {
@@ -179,7 +181,7 @@ export default function CoursesARCC() {
 
   return (
     <>
-      {/* SI ESTÁ ACTIVO JITSI, MOSTRAR SOLO JITSI */}
+      {/* SI ESTÃ ACTIVO JITSI, MOSTRAR SOLO JITSI */}
       {jitsiActivo && cursoJitsiActual ? (
         <div style={{ width: '100%', height: '100vh' }}>
           <SalaJitsiMeet
@@ -213,7 +215,7 @@ export default function CoursesARCC() {
         
             <div className="text-center mb-5">
               <h2 className="titulo-pagina">
-                Plataforma de Capacitación Laboral
+                Plataforma de CapacitaciÃ³n Laboral
               </h2>
               <h3 className="titulo-pagina">
                 Cursos de Asuntos Regulatorios y Control de Calidad
@@ -242,7 +244,7 @@ export default function CoursesARCC() {
           </div>
           <div className="text-end mt-1">
             <small className="text-muted">
-              Progreso calculado automáticamente
+              Progreso calculado automÃ¡ticamente
             </small>
           </div>
         </div>
@@ -276,16 +278,16 @@ export default function CoursesARCC() {
                       </h5>
                       {noDisponible ? (
                         <span className="badge bg-warning text-dark">
-                          ⛔
+                          â›”
                         </span>
                       ) : completado && (
                         <span className="badge bg-success">
-                          ✅
+                          âœ…
                         </span>
                       )}
                     </div>
                     <p className="descripcion-curso">
-                      <span style={{ fontWeight: 'bold' }}>Duración: </span> {curso.duracion}
+                      <span style={{ fontWeight: 'bold' }}>DuraciÃ³n: </span> {curso.duracion}
                     </p>
                     <p className="descripcion-curso">
                       <span style={{ fontWeight: 'bold' }}>Fecha de inicio: </span> {curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
@@ -297,7 +299,7 @@ export default function CoursesARCC() {
                     {/* Aviso de disponibilidad futura */}
                     {proximo && (
                       <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#aeaeac', border: '1px solid #a3abad55', fontSize: '0.8rem', color: '#046385' }}>
-                        ⚠ Disponible el {new Date(curso.fecha_inicio_curso).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        âš  Disponible el {new Date(curso.fecha_inicio_curso).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </div>
                     )}
                     
@@ -305,7 +307,7 @@ export default function CoursesARCC() {
                     <div className="mt-auto">
                       <div className="mb-2">
                         <small className={`estado-curso ${noDisponible ? 'proximo' : completado ? 'completado' : 'pendiente'}`}>
-                          {noDisponible ? 'Próximamente' : completado ? '✅ Curso realizado' : 'Por comenzar'}
+                          {noDisponible ? 'PrÃ³ximamente' : completado ? 'âœ… Curso realizado' : 'Por comenzar'}
                         </small>
                         {!noDisponible && completado && (
                           <small className="ms-2 text-success">
@@ -321,7 +323,7 @@ export default function CoursesARCC() {
                       {esCursoExpirado(curso) ? (
                         // Curso expirado
                         <button className="btn-no-disponible-curso" disabled>
-                          ⛔ No Disponible
+                          â›” No Disponible
                         </button>
                       )  : (
                         // CURSOS ASINCRONICOS
@@ -329,7 +331,7 @@ export default function CoursesARCC() {
                           {esCursoProximo(curso) ? (
                             <button className="btn btn-warning text-dark w-100" disabled>
                               <Clock size={16} className="me-2" />
-                              Próximamente
+                              PrÃ³ximamente
                             </button>
                           ) : (
                             <button
@@ -337,13 +339,13 @@ export default function CoursesARCC() {
                               onClick={() => manejarClicCurso(curso)}
                               disabled={cargandoCursos}
                             >
-                              {completado ? '✅ Curso realizado' : 'Iniciar curso'}
+                              {completado ? 'âœ… Curso realizado' : 'Iniciar curso'}
                             </button>
                           )}
                         </>
                       )}
                       
-                      {/* Bot�n para repasar incluso si est� completado */}
+                      {/* Botï¿½n para repasar incluso si estï¿½ completado */}
                       {!noDisponible && completado && (
                         <button
                           className="btn btn-outline-primary w-100 mt-2"
@@ -405,7 +407,7 @@ export default function CoursesARCC() {
             localStorage.getItem("pruebaAprobada") === "true" ? (
               <div className="alert alert-success py-3">
                 <i className="bi bi-award me-2"></i>
-                �Felicidades! Has completado toda la capacitaci�n y aprobado la prueba final.
+                ï¿½Felicidades! Has completado toda la capacitaciï¿½n y aprobado la prueba final.
               </div>
             ) : (
               <button
@@ -438,4 +440,5 @@ export default function CoursesARCC() {
     </>
   );
 }
+
 
