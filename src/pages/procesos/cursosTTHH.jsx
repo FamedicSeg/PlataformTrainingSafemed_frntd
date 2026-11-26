@@ -374,7 +374,7 @@ export default function CoursesTTHH() {
                           onClick={() => manejarClicCurso(curso)}
                           disabled={cargandoCursos || curso.bloqueado}
                         >
-                          {completado ? '✅ Curso realizado' : 'Iniciar curso'}
+                          {completado ? '✔ Curso realizado' : 'Iniciar curso'}
                         </button>
                       )}
                       

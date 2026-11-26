@@ -59,7 +59,7 @@ export default function CoursesCompras() {
             mejor_puntaje: c.mejor_puntaje,
             evaluacion_aprobada: c.evaluacion_aprobada,
             crear_evaluacion: c.crear_evaluacion,
-            link: c.tipo === 'SincrÃ³nico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
+            link: c.tipo === 'Sincrónico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
             dbName: `curso_${c.curso_id}`,
             bloqueado: false,
             esEstatico: false
@@ -107,9 +107,9 @@ export default function CoursesCompras() {
     }
   };
 
-  // DETECTAR SI ES CURSO SINCRÃ“NICO
+  // DETECTAR SI ES CURSO SINCRÓNICO
   const esCursoSincronico = (curso) => {
-    return curso?.tipo === 'SincrÃ³nico';
+    return curso?.tipo === 'Sincrónico';
   };
 
 
@@ -118,7 +118,7 @@ export default function CoursesCompras() {
     return esCursoExpiradoSeguro(curso.fecha_fin_curso);
   };
 
-  // DETECTAR SI CURSO AÃšN NO HA LLEGADO
+  // DETECTAR SI CURSO AÚN NO HA LLEGADO
   const esCursoProximo = (curso) => {
     return esCursoProximoSeguro(curso.fecha_inicio_curso);
   };
@@ -129,7 +129,7 @@ export default function CoursesCompras() {
     setCursoJitsiActual(null);
   };
 
-  // VERIFICAR SI CURSO ESTÃ COMPLETADO
+  // VERIFICAR SI CURSO ESTÁ COMPLETADO
   const estaCursoCompletado = (cursoDbName) => {
     return _cursosCompletados[cursoDbName] || false;
   };
@@ -164,7 +164,7 @@ export default function CoursesCompras() {
   const manejarClicCurso = (curso) => {
     if (esCursoExpirado(curso)) return;
     if (estaCursoCompletado(curso.dbName)) {
-      if (window.confirm(`Ya completaste "${curso.name}". Â¿Deseas repasarlo?`)) {
+      if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
         navigate(curso.link);
       }
     } else {
@@ -181,7 +181,7 @@ export default function CoursesCompras() {
 
   return (
     <>
-      {/* SI ESTÃ ACTIVO JITSI, MOSTRAR SOLO JITSI */}
+      {/* SI ESTÁ ACTIVO JITSI, MOSTRAR SOLO JITSI */}
       {jitsiActivo && cursoJitsiActual ? (
         <div style={{ width: '100%', height: '100vh' }}>
           <SalaJitsiMeet
@@ -215,7 +215,7 @@ export default function CoursesCompras() {
         
             <div className="text-center mb-5">
               <h2 className="titulo-pagina">
-                Plataforma de CapacitaciÃ³n Laboral
+                Plataforma de Capacitación Laboral
               </h2>
               <h3 className="titulo-pagina">
                 Cursos de Compras
@@ -244,7 +244,7 @@ export default function CoursesCompras() {
           </div>
           <div className="text-end mt-1">
             <small className="text-muted">
-              Progreso calculado automÃ¡ticamente
+              Progreso calculado automáticamente
             </small>
           </div>
         </div>
@@ -278,16 +278,16 @@ export default function CoursesCompras() {
                       </h5>
                       {noDisponible ? (
                         <span className="badge bg-warning text-dark">
-                          â›”
+                          ⛔
                         </span>
                       ) : completado && (
                         <span className="badge bg-success">
-                          âœ…
+                          ✔
                         </span>
                       )}
                     </div>
                     <p className="descripcion-curso">
-                      <span style={{ fontWeight: 'bold' }}>DuraciÃ³n: </span> {curso.duracion}
+                      <span style={{ fontWeight: 'bold' }}>Duración: </span> {curso.duracion}
                     </p>
                     <p className="descripcion-curso">
                       <span style={{ fontWeight: 'bold' }}>Fecha de inicio: </span> {curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
@@ -299,7 +299,7 @@ export default function CoursesCompras() {
                     {/* Aviso de disponibilidad futura */}
                     {proximo && (
                       <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#aeaeac', border: '1px solid #a3abad55', fontSize: '0.8rem', color: '#046385' }}>
-                        âš  Disponible el {new Date(curso.fecha_inicio_curso).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        ⏳ Disponible el {new Date(curso.fecha_inicio_curso).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </div>
                     )}
                     
@@ -307,7 +307,7 @@ export default function CoursesCompras() {
                     <div className="mt-auto">
                       <div className="mb-2">
                         <small className={`estado-curso ${noDisponible ? 'proximo' : completado ? 'completado' : 'pendiente'}`}>
-                          {noDisponible ? 'PrÃ³ximamente' : completado ? 'âœ… Curso realizado' : 'Por comenzar'}
+                          {noDisponible ? 'Próximamente' : completado ? '✔ Curso realizado' : 'Por comenzar'}
                         </small>
                         {!noDisponible && completado && (
                           <small className="ms-2 text-success">
@@ -323,7 +323,7 @@ export default function CoursesCompras() {
                       {esCursoExpirado(curso) ? (
                         // Curso expirado
                         <button className="btn-no-disponible-curso" disabled>
-                          â›” No Disponible
+                          ⛔ No Disponible
                         </button>
                       )  : (
                         // CURSOS ASINCRONICOS
@@ -331,7 +331,7 @@ export default function CoursesCompras() {
                           {esCursoProximo(curso) ? (
                             <button className="btn btn-warning text-dark w-100" disabled>
                               <Clock size={16} className="me-2" />
-                              PrÃ³ximamente
+                              Próximamente
                             </button>
                           ) : (
                             <button
@@ -339,7 +339,7 @@ export default function CoursesCompras() {
                               onClick={() => manejarClicCurso(curso)}
                               disabled={cargandoCursos}
                             >
-                              {completado ? 'âœ… Curso realizado' : 'Iniciar curso'}
+                              {completado ? '✔ Curso realizado' : 'Iniciar curso'}
                             </button>
                           )}
                         </>

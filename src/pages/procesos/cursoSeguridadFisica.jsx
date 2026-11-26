@@ -42,7 +42,7 @@ export default function CoursesSeguridadFisica() {
       if (data.success && data.data) {
         // Filtrar solo cursos del proceso "Seguridad Fï¿½sica"
         const cursosDinamicos = data.data
-          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'seguridad fÃ­sica')
+          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'seguridad fí­sica')
           .map((c) => ({
             id: c.curso_id,
             inscripcion_id: c.id,
@@ -59,7 +59,7 @@ export default function CoursesSeguridadFisica() {
             mejor_puntaje: c.mejor_puntaje,
             evaluacion_aprobada: c.evaluacion_aprobada,
             crear_evaluacion: c.crear_evaluacion,
-            link: c.tipo === 'SincrÃ³nico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
+            link: c.tipo === 'Sincrónico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
             dbName: `curso_${c.curso_id}`,
             bloqueado: false,
             esEstatico: false
@@ -77,7 +77,7 @@ export default function CoursesSeguridadFisica() {
         });
         _setCursosCompletados(completadosObj);
         setCourses(cursosDinamicos);
-        console.log('? Cursos de Seguridad FÃ­sica cargados:', cursosDinamicos.length);
+        console.log('? Cursos de Seguridad Física cargados:', cursosDinamicos.length);
       }
     } catch (error) {
       console.error('? Error cargando cursos:', error);
@@ -109,7 +109,7 @@ export default function CoursesSeguridadFisica() {
 
   // DETECTAR SI ES CURSO SINCRÃ“NICO
   const esCursoSincronico = (curso) => {
-    return curso?.tipo === 'SincrÃ³nico';
+    return curso?.tipo === 'Sincrónico';
   };
 
 
@@ -164,7 +164,7 @@ export default function CoursesSeguridadFisica() {
   const manejarClicCurso = (curso) => {
     if (esCursoExpirado(curso)) return;
     if (estaCursoCompletado(curso.dbName)) {
-      if (window.confirm(`Ya completaste "${curso.name}". Â¿Deseas repasarlo?`)) {
+      if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
         navigate(curso.link);
       }
     } else {
@@ -215,10 +215,10 @@ export default function CoursesSeguridadFisica() {
         
             <div className="text-center mb-5">
               <h2 className="titulo-pagina">
-                Plataforma de CapacitaciÃ³n Laboral
+                Plataforma de Capacitación Laboral
               </h2>
               <h3 className="titulo-pagina">
-                Cursos de Seguridad FÃ­sica
+                Cursos de Seguridad Física
               </h3>
               <p className="subtitulo-pagina">
                 Completa los cursos paso a paso y adquiere nuevas habilidades.
@@ -244,7 +244,7 @@ export default function CoursesSeguridadFisica() {
           </div>
           <div className="text-end mt-1">
             <small className="text-muted">
-              Progreso calculado automÃ¡ticamente
+              Progreso calculado automáticamente
             </small>
           </div>
         </div>
@@ -278,16 +278,16 @@ export default function CoursesSeguridadFisica() {
                       </h5>
                       {noDisponible ? (
                         <span className="badge bg-warning text-dark">
-                          â›”
+                          ⛔
                         </span>
                       ) : completado && (
                         <span className="badge bg-success">
-                          âœ…
+                          ✔
                         </span>
                       )}
                     </div>
                     <p className="descripcion-curso">
-                      <span style={{ fontWeight: 'bold' }}>DuraciÃ³n: </span> {curso.duracion}
+                      <span style={{ fontWeight: 'bold' }}>Duración: </span> {curso.duracion}
                     </p>
                     <p className="descripcion-curso">
                       <span style={{ fontWeight: 'bold' }}>Fecha de inicio: </span> {curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
@@ -299,7 +299,7 @@ export default function CoursesSeguridadFisica() {
                     {/* Aviso de disponibilidad futura */}
                     {proximo && (
                       <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#aeaeac', border: '1px solid #a3abad55', fontSize: '0.8rem', color: '#046385' }}>
-                        âš  Disponible el {new Date(curso.fecha_inicio_curso).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        ⏳ Disponible el {new Date(curso.fecha_inicio_curso).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </div>
                     )}
                     
@@ -307,7 +307,7 @@ export default function CoursesSeguridadFisica() {
                     <div className="mt-auto">
                       <div className="mb-2">
                         <small className={`estado-curso ${noDisponible ? 'proximo' : completado ? 'completado' : 'pendiente'}`}>
-                          {noDisponible ? 'PrÃ³ximamente' : completado ? 'âœ… Curso realizado' : 'Por comenzar'}
+                          {noDisponible ? 'Próximamente' : completado ? '✔ Curso realizado' : 'Por comenzar'}
                         </small>
                         {!noDisponible && completado && (
                           <small className="ms-2 text-success">
@@ -323,7 +323,7 @@ export default function CoursesSeguridadFisica() {
                       {esCursoExpirado(curso) ? (
                         // Curso expirado
                         <button className="btn-no-disponible-curso" disabled>
-                          â›” No Disponible
+                          ⛔ No Disponible
                         </button>
                       )  : (
                         // CURSOS ASINCRONICOS
@@ -331,7 +331,7 @@ export default function CoursesSeguridadFisica() {
                           {esCursoProximo(curso) ? (
                             <button className="btn btn-warning text-dark w-100" disabled>
                               <Clock size={16} className="me-2" />
-                              PrÃ³ximamente
+                              Próximamente
                             </button>
                           ) : (
                             <button
@@ -339,13 +339,13 @@ export default function CoursesSeguridadFisica() {
                               onClick={() => manejarClicCurso(curso)}
                               disabled={cargandoCursos}
                             >
-                              {completado ? 'âœ… Curso realizado' : 'Iniciar curso'}
+                              {completado ? '✔ Curso realizado' : 'Iniciar curso'}
                             </button>
                           )}
                         </>
                       )}
                       
-                      {/* Botï¿½n para repasar incluso si estï¿½ completado */}
+                      {/* Botón para repasar incluso si está completado */}
                       {!noDisponible && completado && (
                         <button
                           className="btn btn-outline-primary w-100 mt-2"
@@ -407,7 +407,7 @@ export default function CoursesSeguridadFisica() {
             localStorage.getItem("pruebaAprobada") === "true" ? (
               <div className="alert alert-success py-3">
                 <i className="bi bi-award me-2"></i>
-                ï¿½Felicidades! Has completado toda la capacitaciï¿½n y aprobado la prueba final.
+                ¡Felicidades! Has completado toda la capacitación y aprobado la prueba final.
               </div>
             ) : (
               <button

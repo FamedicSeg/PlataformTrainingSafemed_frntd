@@ -40,9 +40,9 @@ export default function CoursesGestionComercial() {
       const data = await response.json();
       
       if (data.success && data.data) {
-        // Filtrar solo cursos del proceso "Gestiï¿½n Comercial"
+        // Filtrar solo cursos del proceso "Gestión Comercial"
         const cursosDinamicos = data.data
-          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'gestiÃ³n comercial')
+          .filter(c => (c.proceso_nombre || '').toLowerCase() === 'gestión comercial')
           .map((c) => ({
             id: c.curso_id,
             inscripcion_id: c.id,
@@ -59,7 +59,7 @@ export default function CoursesGestionComercial() {
             mejor_puntaje: c.mejor_puntaje,
             evaluacion_aprobada: c.evaluacion_aprobada,
             crear_evaluacion: c.crear_evaluacion,
-            link: c.tipo === 'SincrÃ³nico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
+            link: c.tipo === 'Sincrónico' ? `/curso/${c.curso_id}` : `/curso/${c.curso_id}`,
             dbName: `curso_${c.curso_id}`,
             bloqueado: false,
             esEstatico: false
@@ -77,7 +77,7 @@ export default function CoursesGestionComercial() {
         });
         _setCursosCompletados(completadosObj);
         setCourses(cursosDinamicos);
-        console.log('? Cursos de GestiÃ³n Comercial cargados:', cursosDinamicos.length);
+        console.log('? Cursos de Gestión Comercial cargados:', cursosDinamicos.length);
       }
     } catch (error) {
       console.error('? Error cargando cursos:', error);
@@ -107,9 +107,9 @@ export default function CoursesGestionComercial() {
     }
   };
 
-  // DETECTAR SI ES CURSO SINCRÃ“NICO
+  // DETECTAR SI ES CURSO SINCRÓNICO
   const esCursoSincronico = (curso) => {
-    return curso?.tipo === 'SincrÃ³nico';
+    return curso?.tipo === 'Sincrónico';
   };
 
 
@@ -118,7 +118,7 @@ export default function CoursesGestionComercial() {
     return esCursoExpiradoSeguro(curso.fecha_fin_curso);
   };
 
-  // DETECTAR SI CURSO AÃšN NO HA LLEGADO
+  // DETECTAR SI CURSO AÚN NO HA LLEGADO
   const esCursoProximo = (curso) => {
     return esCursoProximoSeguro(curso.fecha_inicio_curso);
   };
@@ -129,7 +129,7 @@ export default function CoursesGestionComercial() {
     setCursoJitsiActual(null);
   };
 
-  // VERIFICAR SI CURSO ESTÃ COMPLETADO
+  // VERIFICAR SI CURSO ESTÁ COMPLETADO
   const estaCursoCompletado = (cursoDbName) => {
     return _cursosCompletados[cursoDbName] || false;
   };
@@ -164,7 +164,7 @@ export default function CoursesGestionComercial() {
   const manejarClicCurso = (curso) => {
     if (esCursoExpirado(curso)) return;
     if (estaCursoCompletado(curso.dbName)) {
-      if (window.confirm(`Ya completaste "${curso.name}". Â¿Deseas repasarlo?`)) {
+      if (window.confirm(`Ya completaste "${curso.name}". ¿Deseas repasarlo?`)) {
         navigate(curso.link);
       }
     } else {
@@ -215,10 +215,10 @@ export default function CoursesGestionComercial() {
         
             <div className="text-center mb-5">
               <h2 className="titulo-pagina">
-                Plataforma de CapacitaciÃ³n Laboral
+                Plataforma de Capacitación Laboral
               </h2>
               <h3 className="titulo-pagina">
-                Cursos de GestiÃ³n Comercial
+                Cursos de Gestión Comercial
               </h3>
               <p className="subtitulo-pagina">
                 Completa los cursos paso a paso y adquiere nuevas habilidades.
@@ -244,7 +244,7 @@ export default function CoursesGestionComercial() {
           </div>
           <div className="text-end mt-1">
             <small className="text-muted">
-              Progreso calculado automÃ¡ticamente
+              Progreso calculado automáticamente
             </small>
           </div>
         </div>
@@ -278,16 +278,16 @@ export default function CoursesGestionComercial() {
                       </h5>
                       {noDisponible ? (
                         <span className="badge bg-warning text-dark">
-                          â›”
+                          ⛔
                         </span>
                       ) : completado && (
                         <span className="badge bg-success">
-                          âœ…
+                          ✔
                         </span>
                       )}
                     </div>
                     <p className="descripcion-curso">
-                      <span style={{ fontWeight: 'bold' }}>DuraciÃ³n: </span> {curso.duracion}
+                      <span style={{ fontWeight: 'bold' }}>Duración: </span> {curso.duracion}
                     </p>
                     <p className="descripcion-curso">
                       <span style={{ fontWeight: 'bold' }}>Fecha de inicio: </span> {curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No disponible'}
@@ -299,7 +299,7 @@ export default function CoursesGestionComercial() {
                     {/* Aviso de disponibilidad futura */}
                     {proximo && (
                       <div className="mb-2 p-2 rounded" style={{ backgroundColor: '#aeaeac', border: '1px solid #a3abad55', fontSize: '0.8rem', color: '#046385' }}>
-                        âš  Disponible el {new Date(curso.fecha_inicio_curso).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        ⏳ Disponible el {new Date(curso.fecha_inicio_curso).toLocaleString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </div>
                     )}
                     
@@ -307,7 +307,7 @@ export default function CoursesGestionComercial() {
                     <div className="mt-auto">
                       <div className="mb-2">
                         <small className={`estado-curso ${noDisponible ? 'proximo' : completado ? 'completado' : 'pendiente'}`}>
-                          {noDisponible ? 'PrÃ³ximamente' : completado ? 'âœ… Curso realizado' : 'Por comenzar'}
+                          {noDisponible ? 'Próximamente' : completado ? '✔ Curso realizado' : 'Por comenzar'}
                         </small>
                         {!noDisponible && completado && (
                           <small className="ms-2 text-success">
@@ -323,7 +323,7 @@ export default function CoursesGestionComercial() {
                       {esCursoExpirado(curso) ? (
                         // Curso expirado
                         <button className="btn-no-disponible-curso" disabled>
-                          â›” No Disponible
+                          ⛔ No Disponible
                         </button>
                       )  : (
                         // CURSOS ASINCRONICOS
@@ -331,7 +331,7 @@ export default function CoursesGestionComercial() {
                           {esCursoProximo(curso) ? (
                             <button className="btn btn-warning text-dark w-100" disabled>
                               <Clock size={16} className="me-2" />
-                              PrÃ³ximamente
+                              Próximamente
                             </button>
                           ) : (
                             <button
@@ -339,7 +339,7 @@ export default function CoursesGestionComercial() {
                               onClick={() => manejarClicCurso(curso)}
                               disabled={cargandoCursos}
                             >
-                              {completado ? 'âœ… Curso realizado' : 'Iniciar curso'}
+                              {completado ? '✔ Curso realizado' : 'Iniciar curso'}
                             </button>
                           )}
                         </>
